@@ -6,10 +6,19 @@ Our world has multiple glaciers with kilometers of depth and millions of square 
 Some glaciers already have infrastructure to support research experiments as well, like Summit Station in Greenland and Amundsen-Scott South Pole Station in Antarctica. 
 The station at the South Pole was chosen for ARA due to successful history with radio measurements in ice through the RICE experiment and the support of the National Science Foundation. 
 
+\section{Station Design and Layout}
+
 % Motivation for radio antennas and the stations
 By analyzing the timing delays of signals between different antennas, the location of the neutrino event can be calculated.
 By using vertically and horizontally polarized antennas, the polarization of the neutrino signal can be measured, allowing us to estimate the neutrino's direction of travel. 
 Lastly, by analyzing the power of the signal coupled with the location of an event and its direction of travel, the energy of an event can be approximated. 
+
+For ARA it was determined that building stations in a hexagonal grid with a spacing of 2 kilometers between stations was the right balance between neutrino detection, cost of equipment and installation, and the possibility to observe a single neutrino interaction with multiple detectors. % cite ARA instrumentation paper
+The layout of the five ARA stations is shown in Figure~\ref{fig:ARA-station-layout}. 
+37 stations were planned initially but only 5 have been installed. 
+One reason is that the Gen2-Radio addition to the IceCube detector is expected to cover the ice in the space where ARA was originally planned for but hasn't been installed. 
+
+\missingfigure{ARA station layout \label{fig:ARA-station-layout}}
 
 % Would be fun to add something about the drills
 The first station was installed in December 2011, the second and third were installed in December 2012, and the fourth and fifth were installed in 2018. 
@@ -21,18 +30,29 @@ This means that each station is composed of an approximately rectangular prism o
 This design was chosen so that interferometry can be exploited to reconstruct neutrino events. 
 
 A clever way to get more out of interferometry is to put many radio antennas on a shorter baseline. 
-If you place multiple radio antennas in a line with a short distance between them, the time differences between all combinations of two antennas can be summed together, lowering the threshold for detecting a neutrino interaction greatly. % 1504.08006
+If you place multiple radio antennas in a line with a short distance between them, the time differences between all combinations of two antennas can be summed together, lowering the threshold for detecting a neutrino interaction greatly. % cite 1504.08006
 This inspired ARA to add 7 vertically polarized antennas separated by only 1 meter to a special fifth hole on the fifth station. 
 Below these 7 antennas are two horizontally polarized antennas used to help with polarization and signal arrival zenith reconstruction, since vertically polarized antennas are fairly azimuthally symmetric. 
-This string of 9 antennas is named the Phased Array and has generated a great support, inspiring future designs of radio detectors. % Kaeli's thesis
+This string of 9 antennas is named the Phased Array and has generated a great support, inspiring future designs of radio detectors. % cite Kaeli's thesis
 The Radio Neutrino Observatory of Greenland is one such experiment that uses a phased array to trigger and two "helper strings`` for reconstruction. % Check this and cite RNOG
 This design is also being considered for the radio component of IceCube-Gen2, the expansion of the lower-energy neutrino detector at the South Pole, IceCube. % Cite IceCube TR
 Figure~\ref{fig:ARA-station} shows ARA station 5 with its traditional four string design and its fifth Phased Array String. 
 
 \missingfigure{ARA Station \label{fig:ARA-station}}
 
-For ARA it was determined that a station spacing of 2 kilometers was the right balance between neutrino detection, cost of installation, and possibility to observe a single neutrino interaction with multiple detectors. % ARA instrumentation paper
-The layout of the five ARA stations is shown in Figure~\ref{fig:ARA-station-layout}. 
+\section{Hardware Design}
+
+\subsection{ARA DAQ}
+
+Signal chain as shown in Figure~\ref{fig:ARA-signalchain}.
+After the radio signal is measured by the antenna
+
+\todo{Work on Signal chain stuff}
+
+\missingfigure{ARA DAQ signal chain. \label{fig:ARA-signalchain}}
+
+The original data acquisition board for ARA was an ICRR board which was installed on our first station, A1. % cite, learn more
+It was later upgraded to the ARA Triggering and Readout Interface (ATRI) board which was also used for the next four stations. 
 
 
-\missingfigure{ARA station layout \label{fig:ARA-station-layout}}
+\subsection{Phased Array DAQ}
