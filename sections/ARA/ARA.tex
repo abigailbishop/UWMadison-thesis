@@ -63,11 +63,11 @@ It was later upgraded to the ARA Triggering and Readout Interface (ATRI) board w
 ARA has been releasing technical design and analysis papers for over a decade. A selection of studies are discussed in this section. 
 
 \subsection{Solar Flare Reconstruction} 
-Solar flares are typically release large amounts of radio-wavelength radiation, making them a good source for calibrating the ARA detector. 
-On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, called the Testbed \citep{ARAsolarflare}. 
-Our analyzers found 2,000 events over these 70 minutes that closely followed the azimuthal location of the Sun, as shown in Figure~\ref{fig:ARAsolarflare}.
+Solar flares typically release large amounts of radio-wavelength radiation, making them a good source for calibrating the ARA detector. 
+On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, the Testbed \citep{ARAsolarflare}. 
+2,000 events were found over these 70 minutes that were highly correlated with the location of the Sun, as shown in Figure~\ref{fig:ARAsolarflare}.
 The approximately 2 degree offset in reconstructed azimuth compared to expected azimuth is attributed to systematic uncertainties in the reconstruction algorithms that were used.
-This analysis not only demonstrates the Testbed's, and therefore the ARA detector's, reliability in reconstructing signals from distant sources but having a source with a known location helps the collaboration tune and improve the accuracy of its analysis methods. 
+This analysis not only demonstrated the Testbed's, and therefore the ARA detector's, reliability in reconstructing signals from distant sources, but having a source with a known location helps the collaboration tune and improve the accuracy of its analysis methods. 
 \begin{figure}[h]
     \centering
     \includegraphics[width=4.5in]{sections/ARA/images/ARAsolarflare.png}
@@ -79,15 +79,15 @@ This analysis not only demonstrates the Testbed's, and therefore the ARA detecto
 
 \subsection{Neutrino Search with 2 Detectors} 
 After 5 years of operation, the ARA collaboration carried out its first neutrino search. 
-Almost 2,200 days of livetime were analyzed from the second and third ARA station combined using a cut-based analysis\index{Cut-Based Analysis} \citep{ARAa2310mo,ARAa234yr}. % The actual number is 2,162 days
-These analyses define a collection of criteria such that a neutrino event will pass every cut but a background event will fail at least one. 
-These criteria include detector and background-related qualifications that filter out events like known calibration pulsing events, events with software glitches, and events with known or identified anthropogenic signals. 
+Almost 2,200 days of combined livetime were analyzed from the second and third ARA station using a cut-based analysis\index{Cut-Based Analysis} \citep{ARAa2310mo,ARAa234yr}. % The actual number is 2,162 days
+This type of analysis is built by defining a collection of criteria, called cuts, such that a neutrino event will pass every cut but a background event will fail at least one. 
+These criteria include detector and background-related qualifications that filter out events like known calibration pulsing events, events with software glitches, and events with known or assumed anthropogenic signals. 
 After these events are removed, cuts are applied to remove cosmic ray contamination. 
 Cosmic rays\index{Cosmic Rays} are expected to be more commonly observed in ARA and have similar signals to neutrinos, however cosmic rays have signal that comes entirely from fairly inclined directions as these events take place above the ice and sometimes also in the first few meters of the firn. 
 For example, this analysis applied a cut removing all events with a zenith less than 60$^{\circ}$ in A2 and 80$^{\circ}$ in A3. 
 This is a fairly harsh cut that removes "10-30\% of neutrinos" from simulated neutrino datasets \citep{ARAa234yr}, so improvements to this cut involving deliberate cosmic ray identification tools are an area of active development \citep{CRiniceARENA}. 
-After removing these events, all remaining events are assumed to originate from thermal backgrounds or from real signal. 
-Signal is then identified by determining if an events reconstruction confidence and power is strong enough, as shown in Figure~\ref{fig:ARA-A23-SignalCut}.
+After removing all background events that can be removed trivially, all remaining events are assumed to originate from thermal backgrounds or from real signal. 
+Signal is then identified by determining if an event's reconstruction confidence and signal power is strong enough, as shown in Figure~\ref{fig:ARA-A23-SignalCut}.
 
 \begin{figure}[h]
     \centering
@@ -98,21 +98,23 @@ Signal is then identified by determining if an events reconstruction confidence 
 \end{figure}
 
 This analysis involved two pipelines with slightly different cuts and configurations. 
-Any events that pass these cuts are assumed to be signal-like events, though they are scrutinized further to ensure all detections are neutrino events. 
+All events that pass these cuts are assumed to be signal-like events, though they are scrutinized further to ensure all detections are neutrino events. 
 Neither pipeline found any neutrino-like events, though when all cuts are imposed on data except for the zenith cut, both found some interesting events. 
-One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic).
-The second found 7 "near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the triplet found in the first analysis, so they're assumed to be background as well). 
-None of these surface events were further analyzed to determine if they were cosmic ray events. 
+One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic in origin).
+The second found 7 "near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
+At the time of publication, none of these surface events had been further analyzed to determine if they were cosmic ray events. 
 
 \subsection{Phased Array Search} 
-ARA's Phased Array (PA), which is connected to A5, has two main eras: \index {ARA Phased Array}
-The first is when the PA and A5 were both running together and the second is when the Phased Array was running on it's own with 7 of the A5 Vpols connected to the PA Data AQuisition board (DAQ).
+ARA's Phased Array (PA), which is connected to A5, has two main eras:
+The first is when the PA and A5 were both running and the second is when the Phased Array was running on it's own with 7 of the A5 Vpols connected to the PA Data AcQuisition board (DAQ) \index {ARA Phased Array}.
 The first mode ran from installation at the beginning of 2018 until the A5 DAQ suffered a fatal USB failure in October 2019. 
-At the start of 2019, the output from one channel connected to the A5 DAQ was split so it could be read out in both the A5 and PA DAQs which is useful for timing calibration. 
-An analysis was conducted on the 208.7 days of livetime in 2019 after the A5 channel was split and before the A5 DAQ expired as any event triggered by the highly-sensitive PA is also readout by the A5 DAQ, who's larger baseline is advantageous for reconstructing events \citep{ARApa}.
-A cut based analysis was used for this study as well, where cuts were manually chosen by the analyzer over 10\% of the data to eliminate events of anthropogenic, cosmic ray, faulty detector, and other non-thermal and non-signal orign. 
-After all cuts were applied to the 10\% of the data, the remaining data set was assumed to be entirely composed of thermal background events. 
+At the start of 2019, before the USB failure, the output from one channel connected to the A5 DAQ was split so it could be read out in both the A5 and PA DAQs which has been useful for timing calibration. 
+An analysis was conducted on the 208.7 days of livetime in 2019 after the A5 channel output was split and before the A5 DAQ went down as any event triggered by the highly-sensitive PA is also readout by the A5 DAQ, who's larger baseline is advantageous for reconstructing events \citep{ARApa}.
+A cut based analysis was used for this study as well, where cuts were manually chosen by the analyzer over 10\% of the data to eliminate events of anthropogenic, cosmic ray, faulty detector, and other non-thermal and non-signal origin. 
+After all cuts were chosen, tuned, and applied to 10\% of the data, all events in the 10\% sample that passed all cuts were assumed to be entirely composed of thermal background events. 
 Using these thermal background events and a database of simulated neutrino events, a Fischer Discriminant was trained to identify signal and thermal noise based events to use on the full 100\% dataset \citep{fisherDiscriminant}.
+
+%Results
 
 
 \subsection{Ice Studies} 
