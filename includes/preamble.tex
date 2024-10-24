@@ -101,7 +101,7 @@
 %\usepackage{graphicx}
 %\fi
 
-\usepackage{makeidx}
+\usepackage{imakeidx}
 \makeindex
 
 {\theoremstyle{plain}
@@ -178,6 +178,7 @@
 \fi 
 \prebibhook
   \begin{bibitemlist}{#1}}{\end{bibitemlist}\postbibhook}
+\newcommand{\prd}{Physical Review D}
 
 \AtBeginDocument{%
   \@ifpackageloaded{natbib}{% natbib is loaded
