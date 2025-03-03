@@ -1,10 +1,41 @@
 \chapter{Calculating the Performance of the Askaryan Radio Array}
 
-Simulation overview: AraSim, PyREx, NuRadioMC, NuTauMc and NuLeptonSim
+  Estimating the event rate and sensitivity of detectors such as ARA is a very important aspect to the field especially since experiments like ARA and RNO-G have yet to identify a UHE neutrino in their data. 
+  Every time a detector doesn't observe an event, these simulations allow that detector to place their expectation for the upper limit of the UHE neutrino flux, allowing them to claim if the flux was greater than their sensitivity then they would've been able to observe an event. 
+  These simulations typically include randomized event generation, ray tracing from the event to each antenna in a detector, and detector response to the ray-traced radiation from the event. 
+
+  There are multiple simulation frameworks dedicated to estimating the performance of UHE neutrino detectors. 
+  IceMC is the simulation framework the ARA simulation framework, AraSim is based on. 
+  IceMC simulates emissions from Earth-skimming, in-ice cascades propagating to the air-borne detector ANITA. % Cite IceMC
+  AraSim, built on the back of IceMC, simulates cascades in-ice and how they are observed in the ARA detector. % Cite AraSim
+  Other simulation packages are more modular and allow for the simulation of multiple detectors. 
+  For example, NuRadioMC is a simulation package that is primarily used by RNO-G but had been developed such that other experiments, like ARA and the European LOw-Frequency ARray, use the framework as well. % Cite NuRadioMC
+  Python for Radio Experiments, PyREx, is another package that can simulate many detectors. % Cite PyREx
+  Both AraSim and PyREx have been used and developed frequently over the course of my graduate school career. 
 
 \section{Using NuLeptonSim to Generate Event Lists}
 
+  The aforementioned simulation packages simulate events only to second order, meaning when a neutrino interacts with the ice, only the initial neutrino cascade is simulated and any additional cascades due to muons and taus resulting from charged current neutrino interactions are estimated.
+  AraSim and PyREx, for example, ignore muon tracks entirely and estimate tau decays by determining if the tau decay's particle cascade is greater in energy than the energy deposited in the initial cascade and, if so, overwriting the initial cascade with the tau cascade.
+  Important physics is lost in ignoring muon tracks and choosing between simulating neutrino cascades and subsequent tau decays. 
+  Given the importance of these event topologies in the IceCube detector, a study parameterizing the importance of these secondary interactions was motivated and conducted. 
+  
+  
+  The simulation package NuLeptonSim was used to generate event lists that included initial neutrino cascades and every subsequent cascade above &10^{16}$ eV. % Todo, double check this number, cite NuLeptonSim paper
+  This was done by first situating a cylinder with 15~km radius and 2.8~km depth at the center of a sheet of ice parameterized by the UNL Modified ice model that rested atop the Earth as described by the Preliminary Reference Earth Model. % Cite UNL Ice model, PREM, and give the equations for both
+  This simulation volume was chosen to encompass the visibility regions all five stations in the Askaryan Radio Array so that events seen by multiple stations could be studied. 
+  A uniform distribution of cords were calculated that passed through the Earth in all directions and the 100,000 that passed through the simulation volume were isolated. 
+  10,000 lower energy neutrinos ($10^{17}$ eV and $3\times10^{17} eV) and 1,000 higher energy neutrinos ($10^{18}$, $3\times10^{18}$, $10^{19}$, $3\times10^{19}$, $10^{20}$, $3\times10^{20}$, $10^{21} eV) in each of the three neutrino flavors were simulated along these 100,000 trajectories. 
+  The cross section for each neutrino was used to determine where each neutrino interacted within the earth. 
+  All outgoing particles resulting from the neutrino interaction with sufficient energy were propagated along the trajectory for a distance also driven by the particle's cross section and then forced to interact. 
+  Relevant parameters of all particle cascades that fell within the simulation volume were saved to a file and passed to either PyREx or AraSim to determine which events triggered one or more ARA station.
+  
+  % Add a visual aid for the trajectories
+
 \section{Effective Volume and Area Calculation Theory}
+
+  Effective volume and effective areas are similar in concept. 
+  The effective volume 
 
 \section{The Effective Volume Calculated with PyREx}
 
