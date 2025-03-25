@@ -1,17 +1,90 @@
 \chapter{Analysis of the Second Station for the Askaryan Radio Array's Five Station Analysis}
 
-\section{Data Cleaning}
-
-  Spark events, 1st minute cut, bad run cut, anthropogenic noise
-
-\section{Data Filtering}
-
-  Cosmic Ray events, solar activity? 
+  The data taken by the Askaryan Radio Array have been analyzed a few times for neutrinos, solar flares, and to deduce the properties of the ice at the South Pole. 
+  When the livetime of the five stations is added together, there are roughly 28 station-years of data but only 9 years of that data have been.
+  This is partly because each station takes so long to calibrate and prepare for analysis but also because there is so much data to clean before one can perform an analysis. 
+  For example, 8 of the station years that have been analyzed were analyzed by a team lead by two graduate students. 
+  ARA currently has 5 graduate students, 2 postdoctoral researchers, and a faculty member who are devoting large amounts of time to analyzing the full 28 station-years of ARA data. 
+  This process involves building an analysis pipeline from the ground up, cleaning years of data, and simulating neutrino and noise events then viewing how many are removed through the cleaning pipeline, and analyzing remaining events for neutrino signals. 
   
-\section{Expected Results}
+\section{Using the AraProc Analysis Pipeline}
+
+  AraProc is a python-based framework spearheaded by Marco Muzio and Professor Brian Clark that reads in L1 ARA data and converts it into smaller L2 data. % Provide the link
+  The root-formatted L1 data include raw waveforms that take up roughly 7 GB of space per full run. 
+  The root-formatted L2 data is created using the L1 data but only includes simple metadata and analysis variables describing each event, so full runs of L2 data only take up XXX GB of space. % Check number
+  The preexisting metadata saved includes the time of an event, the trigger type, and the detector configuration among other things. 
+  The calculated analysis variables generated include the reconstructed azimuth, zenith, and signal correlation for nearby 30m, "pulser", maps and distant 300m maps for each polarization (horizontal and vertical) as well as direct and refracted rays for the distant maps. 
+  Other analysis variables include the SNR of the coherently summed waveform for an event, the average RMS of the waveforms, the impulsivity, and the spark power ratios. 
+  Some of these analysis variables will be explained in more detail in the coming sections as they are used to employ various cuts. 
+  The AraProc framework can be run on computing clusters so many runs may be processed in parallel. 
+  
+\section{Removing Spoiled Data}
+
+  The first genre of cuts that will be discussed are those that remove bad events from the data. 
+  These events are usually the result of digitizing malfunctions. 
+
+  \subsection{Spark Events}
+  
+    Spark 
+  
+  \subsection{1st Minute Cut}
+  
+    During the first minute of a run, events from ARA stations are typically corrupted as the waveforms recorded usually have a large offset compared to the pedestal values of the waveform. 
+    % Explain pedestals
+    Due to this large offset, it is expected that the average waveform RMS and SNR are abnormal during the first minute of a run compared to the remainder of the run. 
+    Shown in Figure~\ref{fig:firstmin_waveform} are the waveforms in every ARA2 channel for an event in the first minute of a run. 
+    Figure~\ref{fig:firstmin_2d} shows how the average waveform RMS changes in the first 10 minutes of a run as well. 
+    
+    \missingfigure{Waveform of an event in the first minute of a run. \label{fig:firstmin_waveform}}
+    
+    \missingfigure{2D plot showing avg rms vs unixtime for the first 1 hour of a run. \label{fig:firstmin_2d}}
+
+\section{Removing Anthropogenic and Science Backgrounds}
+
+  After all poorly digitized events are removed, events that include backgrounds we do not want to misclassify as neutrino signals must be removed. 
+  This includes mis-tagged calibration pulser events, runs with known anthropogenic backgrounds, and potential cosmic ray events. 
+
+  \subsection{Geometry Cut}
+  
+    The geometry cut is programmed to catch calibration pulser events that are not tagged as calibration pulser events. 
+    % State how often this happens
+    This may occur because the calibration pulser on a station is programmed to run once per second but it is the station's job to trigger naturally on the signals from the pulser. % Check the 1 per second bit
+    The station records when the calibration pulser is firing and logs an event as a calibration event if the station triggers while the pulser is live. 
+    Sometimes this is not logged properly and an event that records waveforms from a calibration pulser is not actually tagged as a calibration event. 
+    For ARA2, events like these appear in the windows described in Table~\ref{tab:A2GC} on a configuration-by-configuration basis.
+    The Geometry Cut enforces that events that fall within these windows are removed entirely from the analysis to remove unwanted pulser contamination from our samples.  
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{|c|}
+        hi
+      \end{tabular}
+      \caption{Untagged Calibration Pulser reconstruction regions for ARA2.}
+      \label{tab:A2GC}
+    \end{table}
+
+  \subsection{Bad Run Cut}
+    
+    The Bad Run Cut draws directly from the Bad Run Log for the appropriate ARA station. 
+    Runs are typically added to the Bad Run Log if there are known anthropogenic backgrounds present during the run. 
+    This includes, but is not limited to, runs that are known to include surface pulsing calibration campaigns and heavy station activity that cannot be cleaned simply (for example, a geometry cut cannot remove snowmobile backgrounds that move in reconstructed azimuth and zenith). 
+    For runs that include a large portion of background, it is safer to remove the entire run than to add dozens of multi-dimensional and hyper-specific cuts to remove the data. 
+    The livetime reduction is not significant in doing so. 
+    
+  \subsection{Spatio-Temporal Cut}
+  
+    Any anthropogenic background that is not removed by the Bad Run Cut is likely to be removed 
+    
+  \subsection{Cosmic Ray Events}
+
+    Zenith Cut
+  
+  % solar activity? 
+  
+\section{Burn Sample and Simulation Performance in the Filtering Pipeline}
 
   Simulations and how they perform under cleaning and filtering.
   
-\section{Results}
+\section{Results from Analyzing the Full Data Sample}
 
   Upper limit or other. 
