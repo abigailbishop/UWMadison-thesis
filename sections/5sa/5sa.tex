@@ -22,10 +22,6 @@
 
   The first genre of cuts that will be discussed are those that remove bad events from the data. 
   These events are usually the result of digitizing malfunctions. 
-
-  \subsection{Spark Events}
-  
-    Spark 
   
   \subsection{1st Minute Cut}
   
@@ -35,9 +31,51 @@
     Shown in Figure~\ref{fig:firstmin_waveform} are the waveforms in every ARA2 channel for an event in the first minute of a run. 
     Figure~\ref{fig:firstmin_2d} shows how the average waveform RMS changes in the first 10 minutes of a run as well. 
     
-    \missingfigure{Waveform of an event in the first minute of a run. \label{fig:firstmin_waveform}}
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa/images/firstmin_station_2_run_17627_eventNo_2_trace.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa/images/firstmin_station_2_run_17627_eventNo_2_spectrum.png}
+      \end{subfigure}
+      \caption{Example waveform (left) and spectrum (right) for an event taken within the first minute of a new run, motivating the removal of all events within the first minute of a run. This is the second event of run 17,627 of ARA2.}
+      \label{fig:firstmin_waveform}
+    \end{figure}
     
-    \missingfigure{2D plot showing avg rms vs unixtime for the first 1 hour of a run. \label{fig:firstmin_2d}}
+    % SNR or RMS vs unix time for the start of the run is not that telling. I don't remember which variables showed that the first minute of runs were bad but I'll have to remind myself
+    % Myoungchul's wiki says its ADC. I'm not sure if we have anything related to ADC saved in L2 data
+    % So I might have to go back to L1 data for this
+    \missingfigure{2D plot showing ADC vs unixtime for the first 1 hour of a run. \label{fig:firstmin_2d}}
+
+  \subsection{Spark Events}
+  
+    Another class of detector glitch backgrounds is called the Spark Event. 
+    These events occur when one of the digitizing boards on the station's mainboard withstands a surge of current that ends up inflating the digitized signal. 
+    Since each digitizing board is responsible for one of a station's strings, one string has an inflated RMS and overall power compared to the other three strings when one of these events occurs. 
+    To identify these events, the ratio in average waveform power between the two strings with the greatest average power consumption. 
+    Each station has a different threshold for removing an event based on this so called spark power ratio, but for ARA2 the threshold is approximately 3. 
+    
+    The waveform and spectrum of an example spark event is shown in Figure~\ref{fig:spark_waveform}
+    
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa/images/spark_station_2_run_7100_eventNo_1467_trace.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa/images/spark_station_2_run_7100_eventNo_1467_spectrum.png}
+      \end{subfigure}
+      \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
+      \label{fig:spark_waveform}
+    \end{figure}
+    
 
 \section{Removing Anthropogenic and Science Backgrounds}
 
@@ -73,7 +111,19 @@
     
   \subsection{Spatio-Temporal Cut}
   
-    Any anthropogenic background that is not removed by the Bad Run Cut is likely to be removed 
+    Any anthropogenic background that is not removed by the Bad Run Cut is likely to be removed by the spatio-temporal cut. 
+    This cut looks for all events that pass a multi-dimensional threshold of impulsivity, correlation, signal-to-noise ratio, and root power ratio shown in Table~{tab:stcut}. 
+    If at least two events in a run pass this cut within 20 minutes, then the solid angle containing the events is calculated. 
+    If this solid angle containing the events is less than the defined threshold, then the events will be labeled as a spatio-temporal cluster and removed from the analysis. 
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{|c|}
+        hi
+      \end{tabular}
+      \caption{Parameters for the ARA2 Spatio-Temporal Cut. }
+      \label{tab:stcut}
+    \end{table}
     
   \subsection{Cosmic Ray Events}
 
