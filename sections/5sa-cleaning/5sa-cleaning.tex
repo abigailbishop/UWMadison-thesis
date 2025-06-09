@@ -128,22 +128,6 @@
   \subsection{Spatio-Temporal Cut}
   
     Any anthropogenic background that is not removed by the Bad Run Cut is likely to be removed by the spatio-temporal cut. 
-    This cut looks for all events that pass a multi-dimensional threshold of impulsivity, correlation, signal-to-noise ratio, and root power ratio shown in Table~{tab:stcut}. 
-    If at least two events in a run pass this cut within 20 minutes, then the solid angle containing the events is calculated. 
-    If this solid angle containing the events is less than the defined threshold, then the events will be labeled as a spatio-temporal cluster and removed from the analysis. 
-    
-    % Do the math for spatio temporal cut here
-    
-    \begin{table}
-      \centering
-      \begin{tabular}{ c c c c }
-        CSW SNR VPol & Average RPR & Impulsivity & Global Maximum Correlation \\
-        \hline
-        5 & 2 & 0.2 & 0.17
-      \end{tabular}
-      \caption{Parameters for the ARA2 Spatio-Temporal Cut. }
-      \label{tab:stcut}
-    \end{table}
     
   \subsection{Zenith Cut}
   
