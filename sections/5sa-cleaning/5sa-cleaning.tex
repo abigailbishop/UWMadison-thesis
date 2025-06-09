@@ -108,8 +108,8 @@
         Object Being Cut & $\theta (^{\circ})$ & $\Delta\theta (^{\circ})$ & $\phi (^{\circ})$ & $\Delta\phi (^{\circ})$ \\
         \hline
         CP 5V & -23.5 & 4.5 & -26.35 & 4.7 \\
-        CP 5V Mirror \#1 & 32.45 & 5.3 & -25.55 & 3.8 \\
-        CP 5V Mirror \#2 & 32.45 & 5.3 & -42.1 & 3.75 \\
+        CP 5V Mirror & 32.45 & 5.3 & -25.55 & 3.8 \\
+        % CP 5V Mirror & 32.45 & 5.3 & -42.1 & 3.75 \\
         CP 6V & 4.5 & 5.95 & 62.9 & 6.25 \\
         \hline
       \end{tabular}
@@ -145,11 +145,15 @@
       \label{tab:stcut}
     \end{table}
     
-  \subsection{Cosmic Ray Events}
-
+  \subsection{Zenith Cut}
+  
+    The Zenith Cut is employed at the end of the cleaning pipeline to remove any remaining anthropogenic surface events, such as continuous wave contaminated events that weren't fully filtered, and cosmic ray events. 
     The cosmic ray events that ARA can observe typically result from an ultra high energy cosmic ray (UHECR) interacting in the atmosphere, causing an airshower, and potentially impacting into the ice. 
     Depending on the energy and direction the UHECR is traveling in, an ARA station may see radio signals from the air shower portion and/or the ice-impacting core. 
     % Cite Nicolas, maybe show photos
+    The Zenith Cut is harsh and strict and is employed last so that other cuts can be tuned as much as possible to remove backgrounds. 
+    Continuous Wave contamination interferes with the reconstruction of a signal and can therefore make a surface event reconstruct in the ice. 
+    Relying on the zenith cut to remove all surface related backgrounds is risky for this reason and should be saved for last. 
     
   
   % solar activity? 
