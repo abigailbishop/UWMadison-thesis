@@ -1,4 +1,4 @@
-\chapter{Analysis of the Second Station for the Askaryan Radio Array's Five Station Analysis}
+\chapter{Data Cleaning for the Five Station Analysis}
 
   The data taken by the Askaryan Radio Array have been analyzed a few times for neutrinos, solar flares, and to deduce the properties of the ice at the South Pole. 
   When the livetime of the five stations is added together, there are roughly 28 station-years of data but only 9 years of that data have been analyzed.
@@ -38,12 +38,12 @@
       \centering
       \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{sections/5sa/images/firstmin_station_2_run_17627_eventNo_2_trace.png}
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/firstmin_station_2_run_17627_eventNo_2_trace.png}
       \end{subfigure}
       ~
       \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{sections/5sa/images/firstmin_station_2_run_17627_eventNo_2_spectrum.png}
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/firstmin_station_2_run_17627_eventNo_2_spectrum.png}
       \end{subfigure}
       \caption{Example waveform (left) and spectrum (right) for an event taken within the first minute of a new run, motivating the removal of all events within the first minute of a run. This is the second event of run 17,627 of ARA2.}
       \label{fig:firstmin_waveform}
@@ -68,12 +68,12 @@
       \centering
       \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{sections/5sa/images/spark_station_2_run_7100_eventNo_1467_trace.png}
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/spark_station_2_run_7100_eventNo_1467_trace.png}
       \end{subfigure}
       ~
       \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{sections/5sa/images/spark_station_2_run_7100_eventNo_1467_spectrum.png}
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/spark_station_2_run_7100_eventNo_1467_spectrum.png}
       \end{subfigure}
       \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
       \label{fig:spark_waveform}
@@ -108,8 +108,8 @@
         Object Being Cut & $\theta (^{\circ})$ & $\Delta\theta (^{\circ})$ & $\phi (^{\circ})$ & $\Delta\phi (^{\circ})$ \\
         \hline
         CP 5V & -23.5 & 4.5 & -26.35 & 4.7 \\
-        CP 5V Mirror #1 & 32.45 & 5.3 & -25.55 & 3.8 \\
-        CP 5V Mirror #2 & 32.45 & 5.3 & -42.1 & 3.75 \\
+        CP 5V Mirror \#1 & 32.45 & 5.3 & -25.55 & 3.8 \\
+        CP 5V Mirror \#2 & 32.45 & 5.3 & -42.1 & 3.75 \\
         CP 6V & 4.5 & 5.95 & 62.9 & 6.25 \\
         \hline
       \end{tabular}
@@ -157,7 +157,3 @@
 \section{Burn Sample and Simulation Performance in the Filtering Pipeline}
 
   Simulations and how they perform under cleaning and filtering.
-  
-\section{Results from Analyzing the Full Data Sample}
-
-  Upper limit or other. 
