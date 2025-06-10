@@ -91,15 +91,15 @@
     % State how often this happens
     This may occur because the calibration pulser on a station is programmed to run once per second but it is the station's job to trigger naturally on the signals from the pulser. % Check the 1 per second bit
     The station records when the calibration pulser is firing and logs an event as a calibration event if the station triggers while the pulser is live. 
-    Sometimes this is not logged properly and an event that records waveforms from a calibration pulser is not actually tagged as a calibration event. 
-    For ARA2, events like these appear in the windows described in Table~\ref{tab:A2GC} on a configuration-by-configuration basis.
+    Sometimes, such calibration pulser events are not tagged as such and slip into the science dataset.
+    For ARA2, events like these appear in the windows of reconstructed zenith and azimuth described in Table~\ref{tab:A2GC} on a configuration-by-configuration basis.
     The Geometry Cut enforces that events that fall within these windows are removed entirely from the analysis to remove unwanted pulser contamination from our samples.  
     
     The signals from calibration pulsers are usually recorded with strong pulses, making the interferometric reconstruction of the calpulser event obvious. 
     However pulser signals can shift in such a way that secondary solutions for the reconstruction overtake the correct solution. 
     This gives rise to populations of reconstructed calibration pulser events that are called "mirrors". 
-    % Show an example of a calpulser mirror.
-    % Plot showing the CP regions
+    \missingfigure{calibration pulser mirror skymap and trace}
+    \missingfigure{phi vs theta for all CP events with annotations pointing out CP5, CP5 mirror, and CP6}
     
     \begin{table}
       \centering
@@ -116,6 +116,13 @@
       \caption{Untagged Calibration Pulser reconstruction regions for ARA2. These cuts were inspired by the works of Myoungchul Kim from Chiba University.}
       \label{tab:A2GC}
     \end{table}
+    
+    To ensure that all potential untagged calibration pulser events are captured within the geometry cut, a gaussian kernel density equation is fit over the distribution of reconstructed zenith and azimuth of these events. 
+    The gaussian kernel density equation was chosen by Brian Clark as the most appropriate for our data. 
+    This allows us to model the tails of the reconstructed arrival directions to ensure no untagged calibration pulser events arise in our full data sample.
+    
+    \missingfigure{CP fits for CP5, CP5M, and CP6}
+    % Should I show a plot motivating calpulser leakage? Or just cite somebody else
 
   \subsection{Bad Run Cut}
     
@@ -135,15 +142,17 @@
     where $A$ is a scaling factor, $\alpha=\beta$ and is initialized to 1 but free to fit, $\sigma$ is initialized as the average between the lower and upper 1$\sigma$ boundaries of the curve is called the scale parameter, and $\mu$ is initialized as peak of the histogram and called the location parameter. 
     This distribution is "suitable for modelling highly skewed and heavy-tailed data" and fits our thermal backgrounds and outliers well.  % cite http://www.kurims.kyoto-u.ac.jp/EMIS/journals/AMEN/2020/AMEN-190321.pdf and their 1st source
     The first gamma Gumbel curve is fit to the thermal background and the second is fit to the remaining outliers. 
+    Examples of the gamma Gumbel curve fits to a clean and contaminated run of A2 are shown in Figure~\ref{fig:gumbel-clean} and Figure~\ref{fig:gumbel-dirty}, respectively.
     The difference between the test statistics of the Poisson negative log-likelihoods for each dual component gamma Gumbel distribution is then calculated. 
     This $\Delta TS$ parameter characterizes the separation between populations of thermal backgrounds and outliers in correlation-space. 
     A low $\Delta TS$ implies low separation and that the run is not polluted with abnormally correlated outliers. 
     A high $\Delta TS$ implies the opposite, that many events in the run are outliers in the regime of global max correlation. 
     A histogram of the $\Delta TS$ values for each run in each station's livetime configuration is plotted. 
-    A run-level cut based on the value of $\Delta TS$ for the run is determined based on the presence of runs with copious outliers compared to the distribution of runs that are predominately thermal. 
+    A run-level cut based on the value of $\Delta TS$ for the run is determined based on the presence of runs with copious outliers compared to the distribution of runs that are predominately thermal as shown in Figure~\ref{fig:deltaTS-per-config}. 
     
-    % Comment
-    I'd like to give an example of the pipeline here and report the values chosen for A2.
+    \missingfigure{Gumbel for a clean run in A2 \label{fig:gumbel-clean}}
+    \missingfigure{Gubmel for an outlier-y run in A2 \label{fig:gumbel-dirty}}
+    \missingfigure{Distribution of gumbel curves for each config of A2 \label{fig:deltaTS-per-config}}
     
     
   \subsection{Spatio-Temporal Cut}
