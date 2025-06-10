@@ -122,8 +122,29 @@
     The Bad Run Cut draws directly from the Bad Run Log for the appropriate ARA station. 
     Runs are typically added to the Bad Run Log if there are known anthropogenic backgrounds present during the run. 
     This includes, but is not limited to, runs that are known to include surface pulsing calibration campaigns and heavy station activity that cannot be cleaned simply (for example, a geometry cut cannot remove snowmobile backgrounds that move in reconstructed azimuth and zenith). 
+    
     For runs that include a large portion of background, it is safer to remove the entire run than to add dozens of multi-dimensional and hyper-specific cuts to remove the data. 
     The livetime reduction is not significant in doing so. 
+    Brian Clark created a pipeline that systematically identifies runs with an excessive amount of outliers. 
+    This pipeline takes the global maximum correlation for each RF event, plots them on a histogram, and fits two gamma Gumbel curves to the histogram. 
+    The Gumbel curve is defined as % Cite Gumbel
+    \begin{equation}
+      f(x) = A \frac{ \beta^{\alpha} }{ \sigma ~ \Gamma(\alpha) } e^{- ( \alpha \frac{x-\mu}{\sigma} + \beta e^{({-\frac{x-\mu}{\sigma} })} ) }
+      \label{eq:gumbel}
+    \end{equation}
+    where $A$ is a scaling factor, $\alpha=\beta$ and is initialized to 1 but free to fit, $\sigma$ is initialized as the average between the lower and upper 1$\sigma$ boundaries of the curve is called the scale parameter, and $\mu$ is initialized as peak of the histogram and called the location parameter. 
+    This distribution is "suitable for modelling highly skewed and heavy-tailed data" and fits our thermal backgrounds and outliers well.  % cite http://www.kurims.kyoto-u.ac.jp/EMIS/journals/AMEN/2020/AMEN-190321.pdf and their 1st source
+    The first gamma Gumbel curve is fit to the thermal background and the second is fit to the remaining outliers. 
+    The difference between the test statistics of the Poisson negative log-likelihoods for each dual component gamma Gumbel distribution is then calculated. 
+    This $\Delta TS$ parameter characterizes the separation between populations of thermal backgrounds and outliers in correlation-space. 
+    A low $\Delta TS$ implies low separation and that the run is not polluted with abnormally correlated outliers. 
+    A high $\Delta TS$ implies the opposite, that many events in the run are outliers in the regime of global max correlation. 
+    A histogram of the $\Delta TS$ values for each run in each station's livetime configuration is plotted. 
+    A run-level cut based on the value of $\Delta TS$ for the run is determined based on the presence of runs with copious outliers compared to the distribution of runs that are predominately thermal. 
+    
+    % Comment
+    I'd like to give an example of the pipeline here and report the values chosen for A2.
+    
     
   \subsection{Spatio-Temporal Cut}
   
