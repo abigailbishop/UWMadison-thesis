@@ -7,6 +7,20 @@
   ARA currently has 5 graduate students, 2 postdoctoral researchers, and a faculty member who are devoted to analyzing the full 28 station-years of ARA data. 
   This process involves building an analysis pipeline from the ground up, cleaning years of data, and simulating neutrino and noise events then viewing how many are removed through the cleaning pipeline, and analyzing remaining events for neutrino signals. 
   
+\section{Simulation Setup for Data Cleaning}
+
+  It is important to consider how each cut translates to overall data loss and expected neutrino event data loss. 
+  Neutrino events are therefore simulated uniformly in log( energy ) space with energies from $10^{15}$ eV to $10^{21}$ eV. 
+  As in Chapter 4 Section 4, neutrinos are thrown in a forward simulation along trajectories that intersect with a cylinder 15~km in radius and 3~km in depth. % Fix this reference, use variables
+  These neutrinos interact randomly within the Earth and all outgoing particles with energy greater than $10^{16}$ eV are simulated further. 
+  Muon and tau stochastic losses, tau decays, and outgoing neutrino interactions are simulated. 
+  
+  Noise simulations are also generated using the spectral coefficients calculated from the "software trigger" events that are read out once per second, regardless of sufficient signal to trigger the detector. % Check the frequency of these events
+  \missingfigure{Noise spectral coefficients for A2}
+  
+  The traces of the signal simulations and noise simulations are fed through the cleaning pipeline so that, as cuts are applied to remove backgrounds from the dataset, we can ensure that we are doing so in a way that maximized the potential residual neutrino event population. 
+  At the end of data cleaning, the goal is that our data distributions for key analysis variables resemble the noise simulation distributions such that any outliers that may arise are due to neutrino events. 
+  
 \section{Using the AraProc Analysis Pipeline}
 
   AraProc is a python-based framework spearheaded by Dr Marco Muzio and Professor Brian Clark that reads in L1 ARA data and converts it into condensed L2 data. % Provide the link
@@ -18,6 +32,7 @@
   Other analysis variables include the SNR of the coherently summed waveform for an event, the average RMS of the waveforms, the impulsivity, and the spark power ratios. 
   Some of these analysis variables will be explained in more detail in the coming sections as they are used to employ various cuts. 
   The AraProc framework can be run on computing clusters so many runs may be processed in parallel. 
+  \todo{Showcase some of the analysis variables}
   
 \section{Removing Spoiled Data}
 
@@ -78,7 +93,6 @@
       \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
       \label{fig:spark_waveform}
     \end{figure}
-    
 
 \section{Removing Anthropogenic and Science Backgrounds}
 
@@ -172,6 +186,12 @@
   
   % solar activity? 
   
-\section{Burn Sample and Simulation Performance in the Filtering Pipeline}
+\section{Efficiency of Cuts and Impact on Potential Neutrino Events}
 
-  Simulations and how they perform under cleaning and filtering.
+  \missingfigure{For each configuration: efficiencies, snr-vs-corr for noise, neutrinos with no and all cuts, data with no and all cuts.}
+  
+  
+  
+  
+  
+  
