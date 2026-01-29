@@ -17,9 +17,36 @@
   
   Noise simulations are also generated using the spectral coefficients calculated from the "software trigger" events that are read out once per second, regardless of sufficient signal to trigger the detector. % Check the frequency of these events
   \missingfigure{Noise spectral coefficients for A2}
+  \missingfigure{Example of a software trigger event and a simulated noise event.}
   
   The traces of the signal simulations and noise simulations are fed through the cleaning pipeline so that, as cuts are applied to remove backgrounds from the dataset, we can ensure that we are doing so in a way that maximized the potential residual neutrino event population. 
   At the end of data cleaning, the goal is that our data distributions for key analysis variables resemble the noise simulation distributions such that any outliers that may arise are due to neutrino events. 
+  
+\section{Defining Livetime Configurations for A2 \label{sec:a2configs}}
+
+  The behavior of detector triggering and readout changes dramatically as the detector's configuration is changed. 
+  This has serious effects on event reconstruction and analysis, so each station's livetime is divided into livetime configurations. 
+  These livetime configurations are mostly based on antenna/string masking, trigger window, and the amount of waveform readout ahead of the bin that triggered the detector, called the pre-trigger readout window or the number of pre-RF blocks. 
+  Each trigger block is 10~ns and the total trigger window is defined as 
+  \begin{equation}
+    TW = (N_{TB}+1) * 10~\text(ns)
+    \ref{eq:trigwin}
+  \end{equation}
+  and the default trigger window is 10 blocks meaning 110~ns.
+  Each RF block is 20~ns and the default setting for pre-RF blocks is 10, so the default pre-trigger readout window is 200~ns. 
+  As a station needs three like-polarization antennas to trigger, there may be signal recorded one or more antennas in advance of the bin that triggered so it's important to tune the number of pre-RF blocks accordingly. 
+  Having too few pre-RF blocks yielded poor reconstruction of calibration pulser events in configuration 6 of station 2 after String 1 was masked and was noticed in June 2020 on an Operations Call and adjusted. 
+  \missingfigure{Examples of Calpulser events in A2C5, C6, and C7}
+  \missingfigure{Reconstructed calpulser vs unixtime to show deterioration in C6}
+  
+  Figure~\ref{fig:configs} shows the evolution of these key parameters for the full station 2 livetime along with shaded regions indicating each defined livetime configuration. 
+  What is not pictured in this figure is the masking of String 1 of Station 2 which began on run 15527 in January of 2020. 
+  Note that these configurations have changed since the 4 year survey of Stations 2 and 3. 
+  That analysis placed emphasis on the masked antennas, trigger window, presence of trigger delays, and full readout window length. 
+  This analysis has discovered that the latter 2 settings are less impactful when defining run configurations compared to the antenna masking, trigger window, and recently appreciated pre-trigger readout window. 
+  Further considering each new livetime configuration requires a distinct set of noise, signal, and effective volume simulations that take well over a hundred thousand CPU-hours to generate, livetime configuration permutations are minimized by only considering the trigger window, pre-trigger readout window, and the status of antenna masking. 
+  \missingfigure{trigger window and pre RF blocks over time for A2 \label{fig:configs}}
+  \missingfigure{Table of the configs like the one on the Wiki}
   
 \section{Using the AraProc Analysis Pipeline}
 
@@ -105,7 +132,7 @@
     % State how often this happens
     This may occur because the calibration pulser on a station is programmed to run once per second but it is the station's job to trigger naturally on the signals from the pulser. % Check the 1 per second bit
     The station records when the calibration pulser is firing and logs an event as a calibration event if the station triggers while the pulser is live. 
-    Sometimes, such calibration pulser events are not tagged as such and slip into the science dataset.
+    Sometimes, calibration pulser events are not tagged as such and slip into the science dataset.
     For ARA2, events like these appear in the windows of reconstructed zenith and azimuth described in Table~\ref{tab:A2GC} on a configuration-by-configuration basis.
     The Geometry Cut enforces that events that fall within these windows are removed entirely from the analysis to remove unwanted pulser contamination from our samples.  
     
@@ -138,13 +165,42 @@
     \missingfigure{CP fits for CP5, CP5M, and CP6}
     % Should I show a plot motivating calpulser leakage? Or just cite somebody else
 
+  \subsection{Bad Configuration Cut}
+  
+    Station configurations where the livetime of data, excluding bad runs, is less than 30 days are excluded from analysis. 
+    Table~\ref{tab:badconfigs} shows the list of bad configurations for each station in the array. 
+    Note that A2, the station focused on in this thesis, does not have any bad configurations so this cut is not applied in this thesis. 
+    Due to challenges synchronizing the colocated A5 and PA instruments, A5 livetime recorded while the PA was recording are omitted to remove the possibility that duplicate events (events seen in both A5 and PA instruments) appear in the analysis. 
+    Configuration 2 of A5 has more than 30 days of raw livetime, but after excluding data taken while the PA was running, A5 has less than 30 days of livetime and is therefore excluded from the analysis. 
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{| c | c |}
+        \hline
+        Station & Bad Configurations \\
+        \hline
+        1 & 1 \\
+        2 & None \\
+        3 & None \\
+        4 & 1 \\
+        5 & 2 \\
+        PA & 3 \\
+      \end{tabular}
+      \caption{Every ARA station's livetime configurations excluded from the analysis via the Bad Run Cut due to a lack of sufficient livetime. }
+    \end{table}
+
   \subsection{Bad Run Cut}
     
     The Bad Run Cut draws directly from the Bad Run Log for the appropriate ARA station. 
     Runs are typically added to the Bad Run Log if there are known anthropogenic backgrounds present during the run. 
     This includes, but is not limited to, runs that are known to include surface pulsing calibration campaigns and heavy station activity that cannot be cleaned simply (for example, a geometry cut cannot remove snowmobile backgrounds that move in reconstructed azimuth and zenith). 
     
-    For runs that include a large portion of background, it is safer to remove the entire run than to add dozens of multi-dimensional and hyper-specific cuts to remove the data. 
+    Some runs can be cut due to unusual voltages in the digitizing daughter boards. \todo{explain the DDA run cut}
+    Others can be cut because the station's configuration is abnormal as discussed in Section~\ref{sec:a2configs}
+    
+    \missingfigure{}
+    
+    For runs that include a large portion of anthropogenic background, it is safer to remove the entire run than to add dozens of multi-dimensional and hyper-specific cuts to remove the data. 
     The livetime reduction is not significant in doing so. 
     Brian Clark created a pipeline that systematically identifies runs with an excessive amount of outliers. 
     This pipeline takes the global maximum correlation for each RF event, plots them on a histogram, and fits two gamma Gumbel curves to the histogram. 
@@ -181,12 +237,27 @@
     % Cite Nicolas, maybe show photos
     The Zenith Cut is harsh and strict and is employed last so that other cuts can be tuned as much as possible to remove backgrounds. 
     Continuous Wave contamination interferes with the reconstruction of a signal and can therefore make a surface event reconstruct in the ice. 
-    Relying on the zenith cut to remove all surface related backgrounds is risky for this reason and should be saved for last. 
+    Relying on the zenith cut to remove all surface related backgrounds is risky for this reason and should be employed near the end of cleaning. 
     
+    We employ a conservative zenith cut at 0 degrees in elevation to ensure that all surface events are removed from the analysis. 
+    
+  \subsection{Low Reconstruction Confidence Cut}
+    
+    For the few remaining events, they are cleaned up using 
   
   % solar activity? 
   
-\section{Efficiency of Cuts and Impact on Potential Neutrino Events}
+\section{Employment of Cuts and Impact on Potential Neutrino Events}
+
+  The cuts are applied to A2 data in the following order: 
+  \begin{enumerate}
+    \item Bad Run Cut
+    \item Spark Event Cut
+    \item Geometry Cut
+    \item Spatio-Temporal Cut
+    \item Zenith Cut
+    \item Low Reconstruction Confidence Cut
+  \end{enumerate}
 
   \missingfigure{For each configuration: efficiencies, snr-vs-corr for noise, neutrinos with no and all cuts, data with no and all cuts.}
   
