@@ -1,4 +1,459 @@
 \chapter{Analysis of the Second Station for the Askaryan Radio Array's Five Station Analysis}
+
+\section{Linear Discriminant Analysis}
+
+  In this analysis, the ultimate signal and background discrimination is performed using a Linear Discriminant Analysis (LDA).
+  Previous analyses have used the Fisher Discriminant or a cut in the 2 dimensional distribution of event correlation against signal strength. 
+  An LDA is a generalization of Fisher Discriminants and, if only using two variables, performs similarly to separating signal and background by drawing a line in the 2 dimensional histogram of event correlation versus signal strength. 
+  LDAs, for each event, will take a collection of analysis variables and combine them linearly into a single number by multiplying the array of variables for each event against a matrix that's been optimized for signal-background separation using a training set. 
+  The transformation matrix additionally will downweight repeated variables such that multiple, highly correlated observational metrics are not inflated in important purely based on how many correlated metrics there are. 
+  This analysis uses 19 variables summarized in this section, a signal dataset composed of simulated neutrino events following an $E^{-2}$ spectrum, and a background dataset composed of all events from each station's cleaned 10\% burn sample.   
+  
+  \pagebreak
+  \subsection{Signal Correlation Parameters}
+  
+    \subsubsection{Global Max Correlation}
+      
+      The cross correlation of all pairs of like-polarized antennas is performed on a sphere with a radius equal to the pulser's distance from the station's center (this is also called the "nearby" reconstruction) and a sphere with a radius of 300 meters (called the "distant" reconstruction). 
+      %The reconstructed correlation is computed by determining which point on the sphere the signals must have come from to be maximally correlated.
+      %The correlation is first computed between pairs of antennas where waveforms have been shifted in time according to the arrival delay of signals if they were to arrive from a certain location on the sphere. 
+      %Once time-shifted, the two waveforms are cross correlated to obtain their correlation value. 
+      %% What is the correlation? The maximum of the correlation function or the area under the curve or what? 
+      %% Is the total correlation an average of the correlation between all antennas? 
+      %It is a process that requires significant computation time as multiple locations on the sphere are tested in search of the best position on the sphere. 
+      
+      The maximum correlation in all four reconstructions (two polarizations, two distances) is saved to a variable called \texttt{global\_max\_corr} while the maximum correlation in horizontally and vertically polarized antennas separately are saved as \texttt{global\_max\_corr\_h} and \texttt{global\_max\_corr\_v}, respectively. Shown in Figure~\ref{fig:global_max_correlation} are example distributions of the \texttt{global\_max\_corr} variable.
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_global_max_corr.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          \caption{Global Max Correlation distributions from data. Left, 1-dimensional distribution. Right, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. }
+          \label{fig:global_max_correlation}
+        \end{figure}
+  
+  \pagebreak
+  \subsection{Signal Strength Parameters}
+  
+    \subsubsection{Average SNR}
+      
+      Both H and Vpol
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_avg_snr_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_avg_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_avg_snr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the average SNR of signals in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:avg_snr}
+        \end{figure}
+      
+    \subsubsection{Hilbert Enveloped SNR}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_hilbert_snr_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_hilbert_snr_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_hilbert_snr_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the Hilbert SNR of signals in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:hilbert_snr}
+        \end{figure}
+    
+    \subsubsection{Correlation SNR}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_corr_snr_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_corr_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_corr_snr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the correlation SNR in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:corr_snr}
+        \end{figure}
+      
+    \subsubsection{Coherently Summed SNR}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_csw_snr_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the Coherently Summed Waveform's SNR for vertically polarized antennas from data. Left, 1-dimensional distribution.  Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:csw_snr}
+        \end{figure}
+      
+    \subsubsection{Average and Coherently Summed Root Power Ratio}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_avg_rpr_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_avg_rpr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_avg_rpr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of average root power ratio of all vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:avg_rpr}
+        \end{figure}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_csw_rpr_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_csw_rpr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of root power ratio of events' coherently summed waveform from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:csw_rpr}
+        \end{figure}
+  
+  \pagebreak
+  \subsection{Signal Impulsivity Parameters}
+  
+    \subsubsection{Impulsivity}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_impulsivity_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impulsivity_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impulsivity_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of impulsivity from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:impulsivity}
+        \end{figure}
+    
+    \pagebreak
+    \subsubsection{Linear Fit Parameters}
+    
+      \begin{figure}[!ht]
+        \centering
+        \begin{subfigure}[t]{0.48\textwidth}
+          \centering
+          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/impLin_force_PA.png}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[t]{0.48\textwidth}
+          \centering
+          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/impLin_cp_PA.png}
+        \end{subfigure}
+        \caption{Example of a linear fit to an event's impulsivity curve courtesy of Marco Muzio.}
+        \label{fig:linearimp}
+      \end{figure}
+    
+      \begin{equation}
+        y = mx + b
+        \label{eq:linear}
+      \end{equation}
+    
+      \paragraph{bImp}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_bImp_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_bImp_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_bImp_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the fitted y-intercept of the linear fit to the impulsivity curve from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:bImp}
+        \end{figure}
+      
+      \paragraph{mImp}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_mImp_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_mImp_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_mImp_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the fitted slope of the linear fit to the impulsivity curve from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:mImp}
+        \end{figure}
+      
+      \paragraph{rhoImp}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_rhoImp_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_rhoImp_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_rhoImp_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the r-value of the linear fit to events' impulsivity curves from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:rhoImp}
+        \end{figure}
+    
+      \paragraph{impLinChi2}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_impLinChi2_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impLinChi2_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impLinChi2_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the difference between the linear fit to all events' impulsivity curves and an ideal $x=y$ curve from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:impLinChi2}
+        \end{figure}
+    
+    \pagebreak
+    \subsubsection{Functional Fit Parameters}
+    
+      \begin{figure}[!ht]
+        \centering
+        \begin{subfigure}[t]{0.48\textwidth}
+          \centering
+          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/impErf_force_PA.png}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[t]{0.48\textwidth}
+          \centering
+          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/impErf_cp_PA.png}
+        \end{subfigure}
+        \caption{Example of the hilbert-inspired curve given by Equation~\ref{eq:functionalimp} fit to an event's impulsivity curve.}
+        \label{fig:functionalimp}
+      \end{figure}
+    
+      \begin{equation}
+        h(t) \propto A e^{- t^2 / B^2 } + 1
+        \label{eq:hilbert}
+      \end{equation}
+      
+      \begin{equation}
+        H(\tau) = \frac{ A ~ \text{erf}( \tau / B ) + \tau }{ A ~ \text{erf}( 1 / B ) + 1}
+        \label{eq:functionalimp}
+      \end{equation}
+      
+      \paragraph{impErfA}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_impErfA_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impErfA_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impErfA_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the fitted $A$ term from Equation~\ref{eq:functionalimp} from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:impErfA}
+        \end{figure}
+      
+      \paragraph{impErfB}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_impErfB_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impErfB_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impErfB_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the fitted $B$ term from Equation~\ref{eq:functionalimp} from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:impErfB}
+        \end{figure}
+      
+      \paragraph{impErfLinChi2}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_impErfLinChi2_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impErfLinChi2_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impErfLinChi2_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the $\chi^2$ of each event's impulsivity curve when fit to Equation~\ref{eq:functionalimp} from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:impErfLinChi2}
+        \end{figure}
+      
+    \pagebreak
+    \subsubsection{impSig}
+      
+        \begin{figure}[!ht]
+          \centering
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_impSig_v.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impSig_v_vs_csw_snr_v_rf.png}
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.3\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_impSig_v_vs_global_max_corr_v_rf.png}
+          \end{subfigure}
+          \caption{Distributions of the significance of the functional fit given by Equation~\ref{eq:functionalimp} over the normal linear fit given in Equation~\ref{eq:linear} calculated via Wilk's Theorem from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+          \label{fig:impSig}
+        \end{figure}
+  
+  
+  % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2964 impulsivity metrics
+  \begin{table}
+    \centering
+    \resizebox{0.9\textwidth}{!}{ % Shrink the table since it overflows a bit
+      \begin{tabular}{c | p{0.8\linewidth} }
+        Variable Name & Definition \\
+        \hline
+        global\_max\_corr & Maximum correlation between waveforms in like-polarization antennas across all reconstruction maps  \\
+        global\_max\_corr\_v & Maximum correlation between waveforms in VPol antennas across all reconstruction maps \\
+        global\_max\_corr\_h & Maximum correlation between waveforms in HPol antennas across all reconstruction maps \\
+        avg\_snr\_v & Average SNR of signals from VPol antennas \\
+        avg\_snr\_h & Average SNR of signals from HPol antennas \\
+        hilbert\_snr\_v & Average Hilbert Enveloped SNR of signals from VPol antennas \\ 
+        corr\_snr\_v & Average SNR of the correlation function between all pairs of VPol antennas \\
+        csw\_snr\_v & Coherently Summed Signal to Noise Ratio  in VPol antennas \\
+        avg\_rpr\_v & Average SNR of signal power in VPol antennas \\ % Get a better definition
+        csw\_rpr\_v & SNR of the power in the CSW from signals in VPol antennas \\ % Get a better definition
+        impulsivity\_v & Power consumption during period maximal power consumption in the CSW compared to the rest of the CSW \\
+        bImp\_v & Y-intercept of the linear fit to the latter portion of the impulsivity curve\\
+        mImp\_v & Slope of the linear fit to the latter portion of the impulsivity curve \\
+        rhoImp\_v & R-value of the linear fit to the latter portion of the impulsivity curve\\
+        impLinChi2\_v & Difference between the linear fit to the latter portion of the impulsivity curve and a perfectly non-impulsive curve with a slope of 1. \\
+        impErfA\_v & $A$ term in the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
+        impErfB\_v & $B$ term in the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
+        impErfLinChi2\_v & $\chi^2$ of the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
+        impSig\_v & Significance of the functional impulsivity fit given by Equation~\ref{eq:functionalimp} compared to the linear fit via Wilk's Theorem \\
+      \end{tabular}
+    }
+    \caption{Analysis Variables used in the LDA along with their ranges and descriptions.}
+    \label{tab:LDAvars}
+  \end{table}
   
 \section{Results from Analyzing the Full Data Sample}
 
