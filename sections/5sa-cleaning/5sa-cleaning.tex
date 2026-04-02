@@ -95,7 +95,9 @@
     % Myoungchul's wiki says its ADC. I'm not sure if we have anything related to ADC saved in L2 data
     % So I might have to go back to L1 data for this
     \missingfigure{2D plot showing ADC vs unixtime for the first 1 hour of a run. \label{fig:firstmin_2d}}
-
+ 
+  \subsection{Low Reconstruction Confidence Cut}
+    
   \subsection{Spark Events}
   
     Another class of detector glitch backgrounds is called the Spark Event. 
@@ -119,6 +121,53 @@
       \end{subfigure}
       \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
       \label{fig:spark_waveform}
+    \end{figure}
+
+  \subsection{Anomalous Channel Cut}
+    
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.6\textwidth]{sections/5sa-cleaning/images/s4r3733e40469.png}
+      \caption{Event 40469 from Station 4 run 3733 demonstrating excessive recorded power in the bottom antennas of string 3.}
+      \label{fig:a4outlier}
+    \end{figure}
+
+    There are occasions where a channel pair reads out a waveform with more power than all other strings and antennas. 
+    Event 40469 from run 3733 recorded by Station 4 inspired this cut as the impulsive, as shown in Figure~\ref{fig:a4outlier}.
+    This event is reminiscent of 3 similar events from A2 that passed all cuts in the A2+A3 4 year analysis: Run 3439 event 19142, run 6290 event 29583, and run 3689 event 87466 \cite{a23}. % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032 slide 5
+    
+    The anomalous channel cut is designed to remove events where one channel's waveform has an unusually high amount of power and does not correlate well with waveforms from other antennas of the same polarization.
+    For the former, we calculate the \texttt{max\_rms\_ratio} by calculating the root-mean-square of the waveform recorded from all channels with like-polarization, find the max, and divide it by the average.
+    For the latter, we calculate the \texttt{max\_rms\_corr} by calculating the root-mean-square of all pair-wise cross-correlations between all channels of like-polarization, finding the maximum and identifying the maximum.
+    The bad run cut, the first minute cut, and the spark event cuts are then applied to the full burn sample, resulting in a thermal-like dataset of events. 
+    From this dataset, distributions of \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} for both vertically and horizontally polarized antennas are composed.
+    The tails on these four distributions are then fit to an exponential tail, the start of which is automatically adjusted to optimize the reduced $\chi^2$ of the fit.
+    The cut on each polarization of \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} is established as the point at which the integral under the tail's fit is equal to 1. 
+    Fits to these four variables are performed for each configuration on each station. 
+    An example of the fits from A2 configuration 7 are shown in Figure~\ref{fig:acc}
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_corr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_corr_h.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_ratio_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_ratio_h.png}
+      \end{subfigure}
+      \caption{Distributions, tail fits, and cuts established for the variables used in the Anomalous Channel Cut for A2 Configuration 7.}
+      \label{fig:acc}
     \end{figure}
 
 \section{Removing Anthropogenic and Science Backgrounds}
@@ -240,23 +289,24 @@
     Relying on the zenith cut to remove all surface related backgrounds is risky for this reason and should be employed near the end of cleaning. 
     
     We employ a conservative zenith cut at 0 degrees in elevation to ensure that all surface events are removed from the analysis. 
-    
-  \subsection{Low Reconstruction Confidence Cut}
-    
-    For the few remaining events, they are cleaned up using 
-  
+
+  \subsection{Surface-Like Cut}
   % solar activity? 
   
 \section{Employment of Cuts and Impact on Potential Neutrino Events}
 
   The cuts are applied to A2 data in the following order: 
   \begin{enumerate}
-    \item Bad Run Cut
+    \item Fast Filter (100\% sample only)
+    \item Bad Run and Bad Configuration Cut
+    \item First Minute Cut
     \item Spark Event Cut
-    \item Geometry Cut
+    \item Anomalous Channel Cut
+    \item Low Reconstruction Confidence Cut
+    \item Geometry and Known Sources Cut
     \item Spatio-Temporal Cut
     \item Zenith Cut
-    \item Low Reconstruction Confidence Cut
+    \item Surface-Like Cut
   \end{enumerate}
 
   \missingfigure{For each configuration: efficiencies, snr-vs-corr for noise, neutrinos with no and all cuts, data with no and all cuts.}
