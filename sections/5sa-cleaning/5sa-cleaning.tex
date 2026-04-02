@@ -95,8 +95,6 @@
     % Myoungchul's wiki says its ADC. I'm not sure if we have anything related to ADC saved in L2 data
     % So I might have to go back to L1 data for this
     \missingfigure{2D plot showing ADC vs unixtime for the first 1 hour of a run. \label{fig:firstmin_2d}}
- 
-  \subsection{Low Reconstruction Confidence Cut}
     
   \subsection{Spark Events}
   
@@ -177,6 +175,44 @@
       \end{subfigure}
       \caption{Distributions, tail fits, and cuts established for the variables used in the Anomalous Channel Cut for A2 Configuration 7.}
       \label{fig:acc}
+    \end{figure}
+
+  \subsection{Low Reconstruction Confidence Cut}
+
+    The last cut designed to remove spoiled data is one that removes signal-like events that do not reconstruct well. 
+    This cut defines signal like events as those with non-thermally high average signal-to-noise ratios in like-polarization antennas, non-thermal maximum correlation between waveforms from pairs of like-polarization antennas, and non-thermal impulsivity significance (the significance of the hypothesis test between a linear fit versus an error response function plus linear fit to the impulsivity curve, following Wilks’ theorem). 
+    A poorly reconstructing event is identified as those with non-thermally low correlation contrast, which is calculated from the skymap of pair-wise correlation values by dividing the difference between the maximum value and average value by the average value across the whole map.
+    An example of an event with low correlation contrast is shown in Figure~\ref{fig:lowcorrcontrast} and examples of fits to the four aforementioned variables are shown in Figure~\ref{fig:lrcc}.
+    
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.75\textwidth]{sections/5sa-cleaning/images/a4_lrcc.png}
+      \caption{An example of an event with a non-thermally low correlation contrast.}
+      \label{fig:lowcorrcontrast}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_avg_snr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_global_max_corr_v.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_impSig_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_corr_contrast_v.png}
+      \end{subfigure}
+      \caption{Distributions, tail fits, and cuts established for the variables used in the Low Reconstruction Confidence Cut for A2 Configuration 7.}
+      \label{fig:lrcc}
     \end{figure}
 
 \section{Removing Anthropogenic and Science Backgrounds}
