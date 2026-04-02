@@ -177,7 +177,7 @@
       \label{fig:acc}
     \end{figure}
 
-  \subsection{Low Reconstruction Confidence Cut}
+  \subsection{Low Reconstruction Confidence Cut \label{sec:lrcc}}
 
     The last cut designed to remove spoiled data is one that removes signal-like events that do not reconstruct well. 
     This cut defines signal like events as those with non-thermally high average signal-to-noise ratios in like-polarization antennas, non-thermal maximum correlation between waveforms from pairs of like-polarization antennas, and non-thermal impulsivity significance (the significance of the hypothesis test between a linear fit versus an error response function plus linear fit to the impulsivity curve, following Wilks’ theorem). 
@@ -323,20 +323,32 @@
   
     Any anthropogenic background that is not removed by the Bad Run Cut is likely to be removed by the spatio-temporal cut. 
     
-  \subsection{Zenith Cut}
+  \subsection{Zenith Cut and Surface-Like Cut}
   
     The Zenith Cut is employed at the end of the cleaning pipeline to remove any remaining anthropogenic surface events, such as continuous wave contaminated events that weren't fully filtered, and cosmic ray events. 
     The cosmic ray events that ARA can observe typically result from an ultra high energy cosmic ray (UHECR) interacting in the atmosphere, causing an airshower, and potentially impacting into the ice. 
     Depending on the energy and direction the UHECR is traveling in, an ARA station may see radio signals from the air shower portion and/or the ice-impacting core. 
     % Cite Nicolas, maybe show photos
     The Zenith Cut is harsh and strict and is employed last so that other cuts can be tuned as much as possible to remove backgrounds. 
+    Also note, that while traditionally refered to as the Zenith Cut, the cut is actually imposed on an events reconstructed elevation.
+
     Continuous Wave contamination interferes with the reconstruction of a signal and can therefore make a surface event reconstruct in the ice. 
     Relying on the zenith cut to remove all surface related backgrounds is risky for this reason and should be employed near the end of cleaning. 
     
-    We employ a conservative zenith cut at 0 degrees in elevation to ensure that all surface events are removed from the analysis. 
+    The surface-like cut is designed to remove events that are signal-like but have a high probability of originating from the surface. 
+    An event is determined as signal-like is the same as it was defined in Section~\ref{sec:lrcc}: if an event has non-thermally high average SNR, maximum waveform correlation score, and impulsivity significance. 
+    The variable \texttt{mindepth} characterizes the highest zenith an event may have come from and is used to determine if an event probably originated the surface. 
+    This variable is calculated using the map of correlation values for all locations on the sky in azimuth and zenith, as shown in Figure~\ref{fig:lowmindepth}.
+    The highest zenith in the reconstruction map with a correlation value equal or greater to 60\% of the maximimum correlation value in the whole map is the \texttt{mindeth} in degrees of elevation.
+    We take this one step further and use Fresnel's law to convert this \texttt{mindepth} into units of meters depth from the surface. 
+    This is used to catch any events that were not cut by the Low Reconstruction Confidence Cut or the traditional Zenith Cut. 
 
-  \subsection{Surface-Like Cut}
-  % solar activity? 
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.75\textwidth]{sections/5sa-cleaning/images/a1r3183e65990_mindepth.png}
+      \caption{An example of an event with a high \texttt{mindepth\_v}, meaning this event has many possible reconstructions that imply this event originated near the surface. This example is A1, run 3183, event 65990.}
+      \label{fig:lowmindepth}
+    \end{figure}
   
 \section{Employment of Cuts and Impact on Potential Neutrino Events}
 
