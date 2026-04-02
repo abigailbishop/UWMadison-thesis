@@ -103,9 +103,6 @@
     Another class of detector glitch backgrounds is called the Spark Event. 
     These events occur when one of the digitizing boards on the station's mainboard withstands a surge of current that inflates the digitized signal.
     Each digitizing board reads out one string for each ARA station so if one string has noticeably inflated RMS compared to the other strings, a spark event has likely taken place.
-    To identify these events, the ratio in average waveform power is taken between the two strings with the greatest average power consumption. 
-    Each station has a different threshold for removing an event based on this so called spark power ratio, but for ARA2 the threshold is approximately 3. 
-    
     The waveform and spectrum of an example spark event is shown in Figure~\ref{fig:spark_waveform}
     
     \begin{figure}
@@ -121,6 +118,18 @@
       \end{subfigure}
       \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
       \label{fig:spark_waveform}
+    \end{figure}
+
+    To systematically identify these events, the ratio in average waveform power is taken between the two strings with the greatest average power consumption and events with non-thermal, so-called, \texttt{spark\_power\_ratio}s are removed.
+    What is classified as a non-thermal \texttt{spark\_power\_ratio} is determined by fitting an exponential function to the tail of the distribution of \texttt{spark\_power\_ratio}s for all events in a station's configuration that aren't removed by the Bad Run Cut or the First Minute Cut.
+    The non-thermal \texttt{spark\_power\_ratio} cut is set where the integral beyond the exponential tail fit is 1. 
+    An example of the \texttt{spark\_power\_ratio} distribution, tail fit, and cut is shown in Figure~\ref{fig:spr}
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.6\textwidth]{sections/5sa-cleaning/images/A2_c7_spr.png}
+      \caption{The distribution of \texttt{spark\_power\_ratio}s for events in A2 configuration 7, the exponential function fit to the distribution's high-value tail, and cut established where the integral under the fit is equal to 1.}
+      \label{fig:spr}
     \end{figure}
 
   \subsection{Anomalous Channel Cut}
