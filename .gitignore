@@ -2,7 +2,7 @@
 .DS_Store
 
 
-## Core latex/pdflatex auxiliary files:
+## Core latex/lualatex auxiliary files:
 *.aux
 *.lof
 *.log
@@ -15,6 +15,7 @@
 *.cb
 *.cb2
 .*.lb
+*-luamml-mathml.html
 
 ## Intermediate documents:
 *.dvi
