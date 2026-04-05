@@ -95,15 +95,12 @@
     % Myoungchul's wiki says its ADC. I'm not sure if we have anything related to ADC saved in L2 data
     % So I might have to go back to L1 data for this
     \missingfigure{2D plot showing ADC vs unixtime for the first 1 hour of a run. \label{fig:firstmin_2d}}
-
+    
   \subsection{Spark Events}
   
     Another class of detector glitch backgrounds is called the Spark Event. 
     These events occur when one of the digitizing boards on the station's mainboard withstands a surge of current that inflates the digitized signal.
     Each digitizing board reads out one string for each ARA station so if one string has noticeably inflated RMS compared to the other strings, a spark event has likely taken place.
-    To identify these events, the ratio in average waveform power is taken between the two strings with the greatest average power consumption. 
-    Each station has a different threshold for removing an event based on this so called spark power ratio, but for ARA2 the threshold is approximately 3. 
-    
     The waveform and spectrum of an example spark event is shown in Figure~\ref{fig:spark_waveform}
     
     \begin{figure}
@@ -119,6 +116,103 @@
       \end{subfigure}
       \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
       \label{fig:spark_waveform}
+    \end{figure}
+
+    To systematically identify these events, the ratio in average waveform power is taken between the two strings with the greatest average power consumption and events with non-thermal, so-called, \texttt{spark\_power\_ratio}s are removed.
+    What is classified as a non-thermal \texttt{spark\_power\_ratio} is determined by fitting an exponential function to the tail of the distribution of \texttt{spark\_power\_ratio}s for all events in a station's configuration that aren't removed by the Bad Run Cut or the First Minute Cut.
+    The non-thermal \texttt{spark\_power\_ratio} cut is set where the integral beyond the exponential tail fit is 1. 
+    An example of the \texttt{spark\_power\_ratio} distribution, tail fit, and cut is shown in Figure~\ref{fig:spr}
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.6\textwidth]{sections/5sa-cleaning/images/A2_c7_spr.png}
+      \caption{The distribution of \texttt{spark\_power\_ratio}s for events in A2 configuration 7, the exponential function fit to the distribution's high-value tail, and cut established where the integral under the fit is equal to 1.}
+      \label{fig:spr}
+    \end{figure}
+
+  \subsection{Anomalous Channel Cut}
+    
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.6\textwidth]{sections/5sa-cleaning/images/s4r3733e40469.png}
+      \caption{Event 40469 from Station 4 run 3733 demonstrating excessive recorded power in the bottom antennas of string 3.}
+      \label{fig:a4outlier}
+    \end{figure}
+
+    There are occasions where a channel pair reads out a waveform with more power than all other strings and antennas. 
+    Event 40469 from run 3733 recorded by Station 4 inspired this cut as the impulsive, as shown in Figure~\ref{fig:a4outlier}.
+    This event is reminiscent of 3 similar events from A2 that passed all cuts in the A2+A3 4 year analysis: Run 3439 event 19142, run 6290 event 29583, and run 3689 event 87466 \cite{a23}. % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032 slide 5
+    
+    The anomalous channel cut is designed to remove events where one channel's waveform has an unusually high amount of power and does not correlate well with waveforms from other antennas of the same polarization.
+    For the former, we calculate the \texttt{max\_rms\_ratio} by calculating the root-mean-square of the waveform recorded from all channels with like-polarization, find the max, and divide it by the average.
+    For the latter, we calculate the \texttt{max\_rms\_corr} by calculating the root-mean-square of all pair-wise cross-correlations between all channels of like-polarization, finding the maximum and identifying the maximum.
+    The bad run cut, the first minute cut, and the spark event cuts are then applied to the full burn sample, resulting in a thermal-like dataset of events. 
+    From this dataset, distributions of \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} for both vertically and horizontally polarized antennas are composed.
+    The tails on these four distributions are then fit to an exponential tail, the start of which is automatically adjusted to optimize the reduced $\chi^2$ of the fit.
+    The cut on each polarization of \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} is established as the point at which the integral under the tail's fit is equal to 1. 
+    Fits to these four variables are performed for each configuration on each station. 
+    An example of the fits from A2 configuration 7 are shown in Figure~\ref{fig:acc}
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_corr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_corr_h.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_ratio_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_max_rms_ratio_h.png}
+      \end{subfigure}
+      \caption{Distributions, tail fits, and cuts established for the variables used in the Anomalous Channel Cut for A2 Configuration 7.}
+      \label{fig:acc}
+    \end{figure}
+
+  \subsection{Low Reconstruction Confidence Cut \label{sec:lrcc}}
+
+    The last cut designed to remove spoiled data is one that removes signal-like events that do not reconstruct well. 
+    This cut defines signal like events as those with non-thermally high average signal-to-noise ratios in like-polarization antennas, non-thermal maximum correlation between waveforms from pairs of like-polarization antennas, and non-thermal impulsivity significance (the significance of the hypothesis test between a linear fit versus an error response function plus linear fit to the impulsivity curve, following Wilks’ theorem). 
+    A poorly reconstructing event is identified as those with non-thermally low correlation contrast, which is calculated from the skymap of pair-wise correlation values by dividing the difference between the maximum value and average value by the average value across the whole map.
+    An example of an event with low correlation contrast is shown in Figure~\ref{fig:lowcorrcontrast} and examples of fits to the four aforementioned variables are shown in Figure~\ref{fig:lrcc}.
+    
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.75\textwidth]{sections/5sa-cleaning/images/a4_lrcc.png}
+      \caption{An example of an event with a non-thermally low correlation contrast.}
+      \label{fig:lowcorrcontrast}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_avg_snr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_global_max_corr_v.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_impSig_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-cleaning/images/a2c7_corr_contrast_v.png}
+      \end{subfigure}
+      \caption{Distributions, tail fits, and cuts established for the variables used in the Low Reconstruction Confidence Cut for A2 Configuration 7.}
+      \label{fig:lrcc}
     \end{figure}
 
 \section{Removing Anthropogenic and Science Backgrounds}
@@ -229,34 +323,94 @@
   
     Any anthropogenic background that is not removed by the Bad Run Cut is likely to be removed by the spatio-temporal cut. 
     
-  \subsection{Zenith Cut}
+  \subsection{Zenith Cut and Surface-Like Cut}
   
     The Zenith Cut is employed at the end of the cleaning pipeline to remove any remaining anthropogenic surface events, such as continuous wave contaminated events that weren't fully filtered, and cosmic ray events. 
     The cosmic ray events that ARA can observe typically result from an ultra high energy cosmic ray (UHECR) interacting in the atmosphere, causing an airshower, and potentially impacting into the ice. 
     Depending on the energy and direction the UHECR is traveling in, an ARA station may see radio signals from the air shower portion and/or the ice-impacting core. 
     % Cite Nicolas, maybe show photos
     The Zenith Cut is harsh and strict and is employed last so that other cuts can be tuned as much as possible to remove backgrounds. 
+    Also note, that while traditionally refered to as the Zenith Cut, the cut is actually imposed on an events reconstructed elevation.
+
     Continuous Wave contamination interferes with the reconstruction of a signal and can therefore make a surface event reconstruct in the ice. 
     Relying on the zenith cut to remove all surface related backgrounds is risky for this reason and should be employed near the end of cleaning. 
     
-    We employ a conservative zenith cut at 0 degrees in elevation to ensure that all surface events are removed from the analysis. 
-    
-  \subsection{Low Reconstruction Confidence Cut}
-    
-    For the few remaining events, they are cleaned up using 
-  
-  % solar activity? 
+    The surface-like cut is designed to remove events that are signal-like but have a high probability of originating from the surface. 
+    An event is determined as signal-like is the same as it was defined in Section~\ref{sec:lrcc}: if an event has non-thermally high average SNR, maximum waveform correlation score, and impulsivity significance. 
+    The variable \texttt{mindepth} characterizes the highest zenith an event may have come from and is used to determine if an event probably originated the surface. 
+    This variable is calculated using the map of correlation values for all locations on the sky in azimuth and zenith, as shown in Figure~\ref{fig:lowmindepth}.
+    The highest zenith in the reconstruction map with a correlation value equal or greater to 60\% of the maximimum correlation value in the whole map is the \texttt{mindeth} in degrees of elevation.
+    We take this one step further and use Fresnel's law to convert this \texttt{mindepth} into units of meters depth from the surface. 
+    This is used to catch any events that were not cut by the Low Reconstruction Confidence Cut or the traditional Zenith Cut. 
+
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.75\textwidth]{sections/5sa-cleaning/images/a1r3183e65990_mindepth.png}
+      \caption{An example of an event with a high \texttt{mindepth\_v}, meaning this event has many possible reconstructions that imply this event originated near the surface. This example is A1, run 3183, event 65990.}
+      \label{fig:lowmindepth}
+    \end{figure}
+
+\section{Quick Removal of Thermal-Like Events during 100\% Processing with the Fast Filter}
+
+  As every event in a run takes 1-2 seconds to be processed and there are typically $\mathcal{O}(100,000)$ events per full 100\% file, we designed a so-called Fast Filter based on two computationally efficient analysis variables that can distinguish well between thermal-like and signal-like events. 
+  This Fast Filter is a Linear Discriminant Analysis (LDA) trained using the unblinded 10\% data sample and simulated neutrinos labeled for the LDA as thermal-like and signal-like, respectively, with all cuts applied to both datasets.
+  The LDA is composed of four variables: \texttt{wavefront\_rms} and \texttt{avg\_s2} for each polarization of antennas. 
+
+  \texttt{wavefront\_rms} is a measure of how compatible observed waveforms are with an arriving plane wave. 
+  We use a simplified version of what was originally proposed by Carl Pfender and explained in Brian Clark's thesis.
+  For like-polarization antenna, we determine the time of maximum peak-to-peak (maximum minus minimum) voltage in any 20 nanosecond window over the whole waveform.
+  We then assume, for the purpose of this calculation, that the signal from a potential plane wave arrived at this antenna at this time of maximum peak-to-peak voltage separation.
+  For each pair of antennas, the time difference between these maximum peak-to-peak times is used to calculate the arrival angle of the signal as
+  \begin{equation}
+    cos(\theta) = \frac{c \Delta t}{n \Delta d}
+    \label{eq:wavefrontrms}
+  \end{equation}
+  where $c$ is the speed of light in a vacuum, $\Delta t$ is the time delay between antennas, $n$ is the refractive index of the medium (ice), and $\Delta d$ is the distance between the two antennas. 
+  When comparing the arrival angle calculated by each pair of antennas, if a plane wave was observed then these arrival angles should all be similar. 
+  If a thermal-like event was observed, then these calculated arrival angles should all be quite different from each other. 
+  To quantify this, we calculate the variance of all the calculated arrival angles (contrary to the canonical variable name of ``RMS'').
+  When this variance, the \texttt{wavefront\_rms}, is small, the recorded waveform has a strong likelihood of originating from a plane wave and when it is large, this scenario is less likely.
+
+  \texttt{avg\_s2} is a measure of signal causality constructed similarly to the \texttt{wavefront\_rms}. 
+  For all antennas of like-polarization, the time of maximum peak-to-peak voltage in any 20 nanosecond window of every waveform is identified. 
+  Again assuming that a plane wave arrived at each antenna at the determined time of maximal voltage separation, for each pair of antennas we calculate the average spacetime interval as
+  \begin{equation}
+    s^2 = \Delta r^2 - ({c}{n})^2 \Delta t^2
+    \label{eq:avg_s2}
+  \end{equation}
+  where $\Delta r$ is the distance between a pair of antennas, $c$ is the speed of light in a vacuum, $n$ is the index of refraction of the medium, and  $\Delta t$ is the time difference between the assumed signal arrival in each antenna (the time of maximal voltage separation).
+  When $s^2$ is positive this indicates a causal relationship between signals in each channel. 
+  When $s^2$ is negative, this indicates an acausal, non-physical signal that would not be expected of an arriving impulsive signal.
+  We take the average $s^2$ calculated over all antenna pairs of like-polarization and report this as the \texttt{avg\_s2}
+
+  The training of the Fast Filter's linear discriminant is then performed over both of these variables and for both polarizations of antennas (4 variables in total).
+  An example of the result of this training is shown in Figure~\ref{fig:fastfilter_LDA} for A2 Configuration 7.
+  We choose a Fast Filter cut such that 90\% of simulated neutrinos would be preserved and for A2 Configuration 7 this results in a removal of over 97\% of thermal-like events in the dataset.
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{sections/5sa-cleaning/images/a2c7_fastfilter.png}
+    \caption{Results of the Fast Filter's linear discriminant analysis trained on simulated neutrino data (blue, Signal line) and thermal-like data events (red, Background line).}
+    \label{fig:fastfilter_LDA}
+  \end{figure}
+
+  We learned, after the unblinding proposal when we were motivated to profile our L2 processing code after it was taking longer than expected, that the main computational bottleneck was not the generation of reconstruction skymaps built by cross-correlating waveforms 64,800 times but actually in performing the continuous waveform (CW) removal via the algorithm SineSubtract.
+  In future analyses we recommend attempting to speed up CW removal as opposed to identifying events to skip during L2 processing.
   
 \section{Employment of Cuts and Impact on Potential Neutrino Events}
 
   The cuts are applied to A2 data in the following order: 
   \begin{enumerate}
-    \item Bad Run Cut
+    \item Fast Filter (100\% sample only)
+    \item Bad Run and Bad Configuration Cut
+    \item First Minute Cut
     \item Spark Event Cut
-    \item Geometry Cut
+    \item Anomalous Channel Cut
+    \item Low Reconstruction Confidence Cut
+    \item Geometry and Known Sources Cut
     \item Spatio-Temporal Cut
     \item Zenith Cut
-    \item Low Reconstruction Confidence Cut
+    \item Surface-Like Cut
   \end{enumerate}
 
   \missingfigure{For each configuration: efficiencies, snr-vs-corr for noise, neutrinos with no and all cuts, data with no and all cuts.}
