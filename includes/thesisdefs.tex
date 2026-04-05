@@ -38,11 +38,13 @@
 \newcommand{\dissertation}{\gdef\@doctype{A dissertation}}
 \newcommand{\department}[1]{\gdef\@department{(#1)}}
 
-\newenvironment{titlepage}
- {\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+\provideenvironment{titlepage}{}{}
+\renewenvironment{titlepage}
+ {
+  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
   \else \newpage \fi \thispagestyle{empty}
-% \c@page\z@ -- deleted: count title page in thesis
-}{\if@restonecol\twocolumn \else \newpage \fi}
+ }{\if@restonecol\twocolumn \else \newpage \fi
+}
 
 \gdef\@degree{Doctor of Philosophy}    %Default is PhD
 \gdef\@doctype{A dissertation}         %Default is dissertation
