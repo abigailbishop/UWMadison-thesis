@@ -16,6 +16,14 @@
 % with this software (like your dissertation).
 %
 
+\DocumentMetadata{
+    lang = en-US,
+    pdfversion = 2.0,
+    pdfstandard = ua-2,
+    tagging = on,
+    tagging-setup = {math/setup=mathml-SE}
+}
+
 %%% You'll want ``oneside'' for the deposit version, but probably not for any versions that don't need to meet the UW requirements
 \documentclass[12pt,oneside,letterpaper]{memoir}
 
@@ -23,17 +31,19 @@
 \input{includes/defs}
 \input{includes/thesisdefs}
 \svnidlong{$LastChangedBy$}{$LastChangedRevision$}{$LastChangedDate$}{$HeadURL: http://freevariable.com/dissertation/branches/diss-template/dissertation.tex $} 
+
+\begin{document}
+
 \pagecolor{white}
 
 \clearpage\pagenumbering{roman}  % This makes the page numbers Roman (i, ii, etc)
 
-\title{Not Finished, But Abandoned}
-\author{Buckingham B.~Badger}
-\department{Computer Sciences}
-
-\date{2008}
-
-\begin{document}
+\makeatletter
+\gdef\@title{Not Finished, But Abandoned}
+\gdef\@author{Buckingham B.~Badger}
+\gdef\@department{(Computer Sciences)}
+\gdef\@date{2008}
+\makeatother
 
 %%% Uncomment the following if your .bib contains references that you will not 
 %%% explicitly cite, but that should be in the final bibliography:
