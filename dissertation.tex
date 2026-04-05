@@ -1,4 +1,4 @@
-%!TEX TS-program = pdflatex
+%!TEX TS-program = lualatex
 % dissertation.tex -- main dissertation file
 %
 % Wisconsin dissertation template
@@ -21,7 +21,8 @@
     pdfversion = 2.0,
     pdfstandard = ua-2,
     tagging = on,
-    tagging-setup = {math/setup=mathml-SE}
+    tagging-setup = {math/setup=mathml-SE},
+    testphase = {phase-III, math, table, firstaid} 
 }
 
 %%% You'll want ``oneside'' for the deposit version, but probably not for any versions that don't need to meet the UW requirements
@@ -37,13 +38,14 @@
 
 \pagecolor{white}
 
-\clearpage\pagenumbering{roman}  % This makes the page numbers Roman (i, ii, etc)
+% \clearpage
+\pagenumbering{roman}  % This makes the page numbers Roman (i, ii, etc)
 
 \makeatletter
-\gdef\@title{Not Finished, But Abandoned}
-\gdef\@author{Buckingham B.~Badger}
-\gdef\@department{(Computer Sciences)}
-\gdef\@date{2008}
+\gdef\@title{Search for Neutrinos with Energy Greater than $\boldsymbol{10^{16}}$~eV Using All 5 Stations of the Askaryan Radio Array at the South Pole}
+\gdef\@author{Abigail Rae Huffaker Bishop}
+\gdef\@department{(Physics)}
+\gdef\@date{2026}
 \makeatother
 
 %%% Uncomment the following if your .bib contains references that you will not 
