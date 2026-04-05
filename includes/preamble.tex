@@ -48,6 +48,17 @@
 \usepackage{amsthm}
 %\usepackage{theorem}
 \usepackage{hyperref}
+\hypersetup{
+  pdftitle={An Accessible Document}, 
+  pdfauthor={An Author}, 
+  pdfkeywords={Accessibility},
+  colorlinks=true,  
+  linkcolor=blue, 
+  urlcolor=blue, 
+  citecolor=black, 
+  pdfdisplaydoctitle=true, 
+}
+
 \usepackage{todonotes}
 
 \IfFileExists{mathpartir.sty}{%
@@ -85,7 +96,7 @@
 
 %% Avoid ugly "Type 3" fonts
 \usepackage{lmodern}
-\usepackage[LY1]{fontenc}
+\usepackage[T1]{fontenc}
 
 %% Substitute your favorite serif and sans fonts here....
 \IfFileExists{tgpagella.sty}{%
@@ -93,7 +104,7 @@
 \usepackage{tgpagella}%
 }{}
 
-\usepackage[LY1]{eulervm}
+\usepackage{eulervm}
 
 %\ifpdf
 %\usepackage[pdftex]{graphicx}
@@ -192,3 +203,10 @@
     \renewcommand{\bibsection}{\@memb@bsec}}{}
 }
 \makeatother
+
+\usepackage{tagpdf}
+  \tagpdfsetup{
+    activate-all,
+    math/alt/use,
+    interwordspace=true,
+  }
