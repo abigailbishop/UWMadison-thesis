@@ -46,14 +46,16 @@
  }{\if@restonecol\twocolumn \else \newpage \fi
 }
 
-\gdef\@degree{Doctor of Philosophy}    %Default is PhD
-\gdef\@doctype{A dissertation}         %Default is dissertation
+\gdef\@degree{Doctor of Philosophy}
+\gdef\@doctype{A dissertation}
 
-\gdef\@department{(Electrical Engineering)} % Default is Electical Engineering
-\gdef\@defensedate{01/01/2100}% Default is a long time from now.
+\gdef\@department{(Electrical Engineering)} 
+\gdef\@defensedate{XX/XX/2026}
 \gdef\@committee{
-  Jane Doeverything, Professor, Electrical Engineering\\
-  John Dosomethings, Associate Professor, Electrical Engineering\\
+  Albrecht Karle, Professor, Physics\\
+  Keith Bechtol, Associate Professor, Physics\\
+  Keith Bechtol, Associate Professor, Physics (University of Maryland)\\
+  External Member, Faculty, Not Physics\\
   }
 
 \renewcommand{\maketitle}{%
@@ -71,7 +73,7 @@
        by \\[\@thesistitlemedskip]
       \@author \\[\@thesistitlebigskip]
       \@doctype\ submitted in partial fulfillment of \\
-      the requirements for the degree of\\[\@thesistitlebigskip]
+      the requirements for the degree of\\
       \@degree \\[\@thesistitlemedskip]
       \@department \\[\@thesistitlebigskip]
       at the \\[\@thesistitlemedskip]
