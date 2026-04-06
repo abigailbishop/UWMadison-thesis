@@ -2,22 +2,75 @@
 
   The data taken by the Askaryan Radio Array have been analyzed a few times for neutrinos, solar flares, and to deduce the properties of the ice at the South Pole. 
   When the livetime of the five stations is added together, there are roughly 28 station-years of data but only 9 years of that data have been analyzed.
-  This is partly because each station takes so long to calibrate and prepare for analysis but also because there is so much data to clean before one can perform an analysis. 
+  This is partly because each station takes so long to calibrate and prepare for analysis that only some data was ready for analysis when previous analyses were conducted but also because there is so much data to clean before one can perform an analysis. 
   For example, 8 of the station years that have been analyzed were analyzed by a team lead by two graduate students. 
   ARA currently has 5 graduate students, 2 postdoctoral researchers, and a faculty member who are devoted to analyzing the full 28 station-years of ARA data. 
   This process involves building an analysis pipeline from the ground up, cleaning years of data, and simulating neutrino and noise events then viewing how many are removed through the cleaning pipeline, and analyzing remaining events for neutrino signals. 
   
 \section{Simulation Setup for Data Cleaning}
 
-  It is important to consider how each cut translates to overall data loss and expected neutrino event data loss. 
-  Neutrino events are therefore simulated uniformly in log( energy ) space with energies from $10^{15}$ eV to $10^{21}$ eV. 
+  It is important to consider how each cut translates to overall data loss and expected neutrino rejection. 
+  Neutrino events are therefore simulated uniformly in log( energy ) space with energies from $10^{16}$ eV to $10^{21}$ eV. 
   As in Chapter 4 Section 4, neutrinos are thrown in a forward simulation along trajectories that intersect with a cylinder 15~km in radius and 3~km in depth. % Fix this reference, use variables
   These neutrinos interact randomly within the Earth and all outgoing particles with energy greater than $10^{16}$ eV are simulated further. 
   Muon and tau stochastic losses, tau decays, and outgoing neutrino interactions are simulated. 
   
   Noise simulations are also generated using the spectral coefficients calculated from the "software trigger" events that are read out once per second, regardless of sufficient signal to trigger the detector. % Check the frequency of these events
-  \missingfigure{Noise spectral coefficients for A2}
-  \missingfigure{Example of a software trigger event and a simulated noise event.}
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.7\textwidth,
+      alt={  
+        Line plot of spectral coefficients as a function of frequency for vertically and horizontally polarized antennas on the four strings of A2 in configuration 7 compared to the previously used model. 
+        The old model is larger than the new models and there are differences between the horizontally and vertically polarized antennas, motivating the per-channel noise modelling. 
+      }
+      ]{sections/5sa-cleaning/images/noisemodel_sigmavsfreq_A_2_config_7}
+    \caption{Spectral coefficients for the }
+    \label{fig:noisemodel}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\textwidth,
+        alt={
+          Line plot showing voltage as a function of time for a thermal-like RF event (an event that triggered the detector). 
+          The line varies stochastically between -50 volts and 50 volts, characteristic of thermal-like recordings.
+        }
+        ]{sections/5sa-cleaning/images/event_rf_station_2_run_19291_eventNo_6573_7_trace.pdf} 
+        % python plot_event.py --station_id 2 --run_number 19291 --event_number 6573 --data_type data --channel 7
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\textwidth,
+        alt={
+          Line plot showing voltage as a function of time for a simulated noise event. 
+          The line varies stochastically between -50 volts and 50 volts, characteristic of thermal-like recordings.
+        }
+        ]{sections/5sa-cleaning/images/event_noise_station_2_noise_config_7_run_2700000001_eventNo_101_7_trace.pdf}
+        % python plot_event.py --station_id 2 --run_number 2700000001 --event_index 101 --data_type noise --channel 7 --config 7 # From 260213 sims
+    \end{subfigure}
+    \caption{Example of a thermal-like waveform in channel 7 (a bottom vertically polarized antenna) in A2 configuration 7 from data (left) and simulation (right).}
+    \label{fig:noiseevent}
+  \end{figure}
+  
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.75\textwidth,
+      alt={
+        Line plot showing voltage as a function of time for a software triggered event. 
+        The line varies stochastically between -50 volts and 50 volts, characteristic of thermal-like recordings.
+      }
+    ]{sections/5sa-cleaning/images/event_soft_station_2_run_19291_eventNo_6268_7_trace.pdf}
+    % python plot_event.py --station_id 2 --run_number 19291 --event_number 6268 --data_type data --channel 7
+    \caption{Example of a software triggered event showing mostly thermal-like data from an A2 configuration 7 event: Run 19291 Event 6288.}
+    \label{}
+  \end{figure}
   
   The traces of the signal simulations and noise simulations are fed through the cleaning pipeline so that, as cuts are applied to remove backgrounds from the dataset, we can ensure that we are doing so in a way that maximized the potential residual neutrino event population. 
   At the end of data cleaning, the goal is that our data distributions for key analysis variables resemble the noise simulation distributions such that any outliers that may arise are due to neutrino events. 
@@ -29,14 +82,14 @@
   These livetime configurations are mostly based on antenna/string masking, trigger window, and the amount of waveform readout ahead of the bin that triggered the detector, called the pre-trigger readout window or the number of pre-RF blocks. 
   Each trigger block is 10~ns and the total trigger window is defined as 
   \begin{equation}
-    TW = (N_{TB}+1) * 10~\text(ns)
-    \ref{eq:trigwin}
+    TW = (N_{TB}+1) * 10~\text{ns}
+    \label{eq:trigwin}
   \end{equation}
   and the default trigger window is 10 blocks meaning 110~ns.
   Each RF block is 20~ns and the default setting for pre-RF blocks is 10, so the default pre-trigger readout window is 200~ns. 
   As a station needs three like-polarization antennas to trigger, there may be signal recorded one or more antennas in advance of the bin that triggered so it's important to tune the number of pre-RF blocks accordingly. 
   Having too few pre-RF blocks yielded poor reconstruction of calibration pulser events in configuration 6 of station 2 after String 1 was masked and was noticed in June 2020 on an Operations Call and adjusted. 
-  \missingfigure{Examples of Calpulser events in A2C5, C6, and C7}
+
   \missingfigure{Reconstructed calpulser vs unixtime to show deterioration in C6}
   
   Figure~\ref{fig:configs} shows the evolution of these key parameters for the full station 2 livetime along with shaded regions indicating each defined livetime configuration. 
@@ -45,12 +98,57 @@
   That analysis placed emphasis on the masked antennas, trigger window, presence of trigger delays, and full readout window length. 
   This analysis has discovered that the latter 2 settings are less impactful when defining run configurations compared to the antenna masking, trigger window, and recently appreciated pre-trigger readout window. 
   Further considering each new livetime configuration requires a distinct set of noise, signal, and effective volume simulations that take well over a hundred thousand CPU-hours to generate, livetime configuration permutations are minimized by only considering the trigger window, pre-trigger readout window, and the status of antenna masking. 
-  \missingfigure{trigger window and pre RF blocks over time for A2 \label{fig:configs}}
-  \missingfigure{Table of the configs like the one on the Wiki}
+  
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.75\textwidth,
+      alt={
+        Three vertically stacked plots showing the number of blocks in a RF-triggered waveform, the number of pre-RF blocks used to center a waveform, and the number of blocks in a software-triggered waveform as a function of run number. 
+        Colored backgrounds for the three plots distinguish the 7 A2 livetime configurations.
+        The colored backgrounds line up with many changes in RF trigger block and pre-RF trigger block settings.
+      }
+    ]{sections/5sa-cleaning/images/a2_2013_2021_woBadRuns_blk_info.png}
+    \caption{
+      The number of RF Trigger blocks (waveform length for RF events), the number of Pre-RF Trigger Blocks (amount of time before the triggering block to include in RF event read out, affects where the trigger block lays in the waveform), and the number of Software Trigger blocks (waveform length of software triggered events) as a function of run number extracted from A2 configuration files.
+      The differently colored backgrounds of the plot delineate the 7 different configurations in A2. 
+      The number of pre-RF blocks are an important setting driving station livetime configurations.
+      This figure does not include run configuration data from known bad runs as some have extreme values for special calibration runs.
+    }
+    \label{fig:configs}
+  \end{figure}
+
+  % This overflows the hbox
+  % \begin{table}
+  %   \centering
+  %   \begin{tabular}{|c|c|c|c|c|c|c|c|}
+  %     \hline
+  %     Run Configuration & Dates & Runs & Livetime [days] & Trigger Window [ns] & Pre-Readout Window [ns] & Hardware + Analysis Masks & Trigger Mask \\
+  %     \hline
+  %     1 & 2/18/13 - 2/12/14 & 0 - 3036 & 239.00 & 2 & Default (10) &  & D4BH \\
+  %     \hline
+  %   \end{tabular}
+  %   \caption{x}
+  %   \label{tab:}
+  % \end{table}
+  
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.99\textwidth,
+      alt={
+        A2 livetime configurations parameters.
+      }
+    ]{sections/5sa-cleaning/images/a2configs.png}
+    \caption{
+      Table with the driving characteristics of the 7 A2 livetime configurations. 
+    }
+    \label{tab:configs}
+  \end{figure}
   
 \section{Using the AraProc Analysis Pipeline}
 
-  AraProc is a python-based framework spearheaded by Dr Marco Muzio and Professor Brian Clark that reads in L1 ARA data and converts it into condensed L2 data. % Provide the link
+  AraProc\footnote{\url{https://github.com/ara-software/AraProc/tree/main}} is a python-based framework spearheaded by Marco Muzio and Brian Clark that reads in L1 ARA data and converts it into condensed L2 data.
   The root-formatted L1 data include raw waveforms that take up roughly 7 GB of space per full run. 
   The root-formatted L2 data is created using the L1 data but only includes simple metadata and analysis variables describing each event, so full runs of L2 data only take up roughly 6 MB of space. 
   The preexisting metadata saved includes the time of an event, the trigger type, and the detector configuration among other settings. 
@@ -59,7 +157,8 @@
   Other analysis variables include the SNR of the coherently summed waveform for an event, the average RMS of the waveforms, the impulsivity, and the spark power ratios. 
   Some of these analysis variables will be explained in more detail in the coming sections as they are used to employ various cuts. 
   The AraProc framework can be run on computing clusters so many runs may be processed in parallel. 
-  \todo{Showcase some of the analysis variables}
+
+  \subsection{Continuous Waveform Filtering}
   
 \section{Removing Spoiled Data}
 
@@ -233,8 +332,46 @@
     The signals from calibration pulsers are usually recorded with strong pulses, making the interferometric reconstruction of the calpulser event obvious. 
     However pulser signals can shift in such a way that secondary solutions for the reconstruction overtake the correct solution. 
     This gives rise to populations of reconstructed calibration pulser events that are called "mirrors". 
-    \missingfigure{calibration pulser mirror skymap and trace}
-    \missingfigure{phi vs theta for all CP events with annotations pointing out CP5, CP5 mirror, and CP6}
+  
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\textwidth,
+          alt={
+            16 panels, one for each channel in A2, displaying the recorded voltage as a function of time for this calibration pulser event.
+          }
+          ]{sections/5sa-cleaning/images/event_cp_station_2_run_19291_eventNo_6365_trace.pdf} 
+          % python plot_event.py --station_id 2 --run_number 19291 --event_number 6365 --data_type data
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\textwidth,
+          alt={
+            2-dimensional heat map for the correlation scores of a calibration pulser event with arriving from particular azimuth (y-axis) and elevation (x-axis) angles. 
+            The highest correlation score is near the marker for CP1, the expected location of one of A2's calibration pulsers.
+          }
+          ]{sections/5sa-cleaning/images/event_cp_station_2_run_19291_eventNo_6365_map_pulser_v.pdf} 
+          % python plot_skymap.py --station_id 2 --run_number 19291 --event_number 6365 --data_type data --map_type pulser_v
+      \end{subfigure}
+      \caption{Example of a calibration pulser event recorded by A2 in Run 19291 as Event 6365. The left figure shows the waveforms recorded in all 16 antennas and the right figure shows a reconstruction skymap that displays the event's correlation score with the ansatz of arriving from all points on the $4\pi$ sky, evenly binned in elevation and azimuth.}
+      \label{fig:noiseevent}
+    \end{figure}
+
+    \missingfigure{phi vs theta for all CP events with annotations pointing out CP5, CP5 mirror, and CP6. Something like \texttt{/home/abishop/ara/FiveStation/scripts/L2/plots/a2/cp\_cut/cp5\_brc\_nmc\_avgSNRv5\_2d\_reco\_result\_pulser\_v\_theta\_vs\_reco\_result\_pulser\_v\_phi\_cp.png}}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/a2cp5regions.png}
+      \caption{x}
+      \label{fig:cp_region_cartoon}
+    \end{figure}
     
     \begin{table}
       \centering
@@ -243,12 +380,31 @@
         Object Being Cut & $\theta (^{\circ})$ & $\Delta\theta (^{\circ})$ & $\phi (^{\circ})$ & $\Delta\phi (^{\circ})$ \\
         \hline
         CP 5V & -23.5 & 4.5 & -26.35 & 4.7 \\
-        CP 5V Mirror & 32.45 & 5.3 & -25.55 & 3.8 \\
-        % CP 5V Mirror & 32.45 & 5.3 & -42.1 & 3.75 \\
+        CP 5V Mirror 1 & 32.45 & 5.3 & -25.55 & 3.8 \\
+        CP 5V Mirror 2 & 32.45 & 5.3 & -42.1 & 3.75 \\
+        CP 5V Mirror 3 & 32.45 & 5.3 & -42.1 & 3.75 \\
         CP 6V & 4.5 & 5.95 & 62.9 & 6.25 \\
         \hline
       \end{tabular}
-      \caption{Untagged Calibration Pulser reconstruction regions for ARA2. These cuts were inspired by the works of Myoungchul Kim from Chiba University.}
+      \caption{Fitted calibration pulser reconstruction regions for ARA2.}
+      \label{tab:A2GC}
+    \end{table}
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{ | c | c |}
+        \hline
+        Run Range & Firing Calibration Pulser \\
+        \hline
+        0-1900 & 6 \\
+        1901-1934 & 5 \\
+        1935-7005 & 6 \\
+        7006 - 8097 & 5 \\
+        8098 - 9578 & 6 \\
+        9779 - 19826 & 5 \\
+        \hline
+      \end{tabular}
+      \caption{Run periods and which calibration pulser was active during those periods.}
       \label{tab:A2GC}
     \end{table}
     
@@ -256,7 +412,46 @@
     The gaussian kernel density equation was chosen by Brian Clark as the most appropriate for our data. 
     This allows us to model the tails of the reconstructed arrival directions to ensure no untagged calibration pulser events arise in our full data sample.
     
-    \missingfigure{CP fits for CP5, CP5M, and CP6}
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp5_brc-nmc-sec_fit_251210.png}
+      \caption{CP5 Fit}
+      \label{fig:cp5fit}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp5m1_brc-nmc-sec_fit_251210.png}
+      \caption{CP5 Mirror 1 Fit}
+      \label{fig:cp5m1fit}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp5m2_brc-nmc-sec_fit_251210.png}
+      \caption{CP5 Mirror 2 Fit}
+      \label{fig:cp5m2fit}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp6_brc-nmc-sec_fit_251210.png}
+      \caption{CP6 Fit}
+      \label{fig:cp6fit}
+    \end{figure}
+
     % Should I show a plot motivating calpulser leakage? Or just cite somebody else
 
   \subsection{Bad Configuration Cut}
@@ -279,6 +474,7 @@
         4 & 1 \\
         5 & 2 \\
         PA & 3 \\
+        \hline
       \end{tabular}
       \caption{Every ARA station's livetime configurations excluded from the analysis via the Bad Run Cut due to a lack of sufficient livetime. }
     \end{table}
