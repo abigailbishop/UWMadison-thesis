@@ -1,5 +1,13 @@
 \chapter{Radio Antennas in the Proposed IceCube-Gen2 Optical Volume}
 
+  IceCube is a neutrino detector at the South Pole that uses optical modules to search for neutrinos and is planning an expansion called IceCube-Gen2. 
+  IceCube looks for three main event types: tracks, cascades, and tau double cascades. 
+  Cascade events provide the best energy reconstruction and are typically used for determining the high energy neutrino flux but it is difficult to extract directional information from cascades, critical for multi-messenger astrophysics. 
+  Above 30~PeV, neutrino cascades in ice emit Askaryan radiation that can be used for direction reconstruction. 
+  In this study, we simulated neutrinos interacting in the IceCube-Gen2 volume where radio antennas are placed above every optical module. 
+  We show an example of an event and its reconstruction followed by the expected fraction of optically-observe neutrino events that will have substantial radio-frequency observations between 1 and 100~PeV.
+  This work was performed by Lu Lu, Albrecht Karle, and Ben Hokanson-Fasig at the University of Wisconsin Madison.
+
 \section{The IceCube Detector and Potential Expansions}
 
   IceCube has detected a diffuse cosmic neutrino flux in the energy range from 60~TeV to more than 10~PeV \cite{ICFlux1,ICFlux2,ICFlux3,ICFlux4}.  
@@ -15,7 +23,7 @@
   for each optical module.  
   In this energy range, Gen2 will over the time space of a decade, observe more than 50 neutrino induced cascade events  above 10 PeV. 
   Useful experiences exist from the deployment of AURA
-  (Askaryan Under Ice Radio Array, \cite{AURA} a prototype radio detector 
+  (Askaryan Under Ice Radio Array, \cite{AURA}) a prototype radio detector 
   that was co-deployed with IceCube.  
 
   Could the additional radio data improve Gen2-Optical measurements or help connect flux measurements between 3~PeV and 100~PeV?  
@@ -91,7 +99,10 @@
       ]{sections/gen2radio/images/ICRC2021_eventview_radio.png}  
       \label{fig:eventview_radio}
     \end{subfigure}
-    \caption{Image of the detector response by the Gen2-Optical detector and the hypothetical radio detector for a neutrino event that can be observed perfectly by both detectors. The size of each bubble corresponds to the strength of the received signal at the corresponding radio antenna or DOM, while the color corresponds to the time the signal peaked.}
+    \caption{
+      Image of the detector response by the Gen2-Optical detector and the hypothetical radio detector for a neutrino event that can be observed perfectly by both detectors. The size of each bubble corresponds to the strength of the received signal at the corresponding radio antenna or DOM, while the color corresponds to the time the signal peaked. 
+      Figures courtesy of Lu Lu.
+    }
     \label{fig:goldenEvent}
   \end{figure}
   
@@ -114,7 +125,9 @@
       The simulated optical and RF 
       waveforms are shown for the same neutrino event on the same timescale.  
       The optical sensor with the RF extension is located 
-      at a distance of 118.5\,m from the vertex.  In the right panel three waveforms are shown for a string at a distance of 350\,m.}
+      at a distance of 118.5\,m from the vertex.  In the right panel three waveforms are shown for a string at a distance of 350\,m. 
+      Optical waveform courtesy of Lu Lu.
+    }
     \label{fig:goldenEvent-waveforms}
   \end{figure}
 
@@ -175,7 +188,9 @@
         less than 1 degree. 
         The true position of the event is: zenith=$65^\circ$  and azimuth=$45^\circ$. 
         The resolution would significantly improve the Gen2 optical cascade reconstruction 
-        with a requirement of 10 degrees. }
+        with a requirement of 10 degrees. 
+        Figure courtesy of Lu Lu.
+      }
       \label{fig:goldenEventReco}
     \end{figure}
 
@@ -194,6 +209,7 @@
         ]{sections/gen2radio/images/ICRC2021_EventRate_10yrIceCube_HESEPEPE.pdf}     
         \caption{
           Number of Glashow hadronic, charged current and neutral current events from electron (anti)neutrinos selected by HESE \cite{ICFlux1} and PEPE \cite{ICFlux4} analyses assuming a single power law flux  of E$^{-2.49}$ for 10 years of IceCube livetime. Numbers are multiplied by ten to scale up to the Gen2 event rate (which is approximately 10 times larger in instrumented volume than IceCube). 
+          Figure courtesy of Lu Lu. 
         }
         \label{fig:nuRate-Gen2}
       \end{figure}
