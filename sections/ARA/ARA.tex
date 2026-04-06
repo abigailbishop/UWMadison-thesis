@@ -13,14 +13,48 @@ A combination of vertically polarized antennas (VPols) and horizontally polarize
 The birdcage VPols observe the electric field from neutrino cascades while the HPol quad-slot antennas observe the magnetic field. 
 Both types of antennas are shown in Figure~\ref{fig:Antenna-types}.
 
-\missingfigure{Hpol and Vpol antenna \label{fig:Antenna-types}}
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[
+      width=\textwidth,
+      alt={
+        x
+      }
+      ]{sections/ARA/images/} 
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[
+      width=\textwidth,
+      alt={
+        x
+      }
+      ]{sections/ARA/images/}
+  \end{subfigure}
+  \caption{Left, a horizontally polarized antenna. Right, a vertically polarized antenna.}
+  \label{fig:Antenna-types}
+\end{figure}
 
 The final design for the ARA stations was a square four-string format with 2 mixed pairs of VPols and HPols on each string. 
 The VPol were installed below the HPol because the VPol perform better than the HPol. 
 The separation between strings horizontally and pairs of antennas vertically are all 20 meters resulting in a cubic detector as shown in Figure~\ref{fig:ARA-station}.
 The station is deployed to a depth of 200 meters to balance cost and attainability with optimal observation. 
 
-\missingfigure{ARA station \label{fig:ARA-staiton}}
+\begin{figure}
+  \centering
+  \includegraphics[
+    width=\textwidth,
+    alt={
+      x
+    }
+    ]{sections/ARA/images/} 
+  \caption{An ARA Station}
+  \label{fig:fig:ARA-station}
+\end{figure}
+
 
 % Motivation for radio antennas and the stations
 By analyzing the timing delays of signals between different antennas, the location of the neutrino event can be calculated.
@@ -32,7 +66,18 @@ The layout of the five ARA stations is shown in Figure~\ref{fig:ARA-station-layo
 37 stations were planned initially but only 5 have been installed. 
 One reason is that the Gen2-Radio addition to the IceCube detector is expected to cover the ice in the space where ARA was originally planned for but hasn't been installed. 
 
-\missingfigure{ARA station layout \label{fig:ARA-station-layout}}
+\begin{figure}
+  \centering
+  \includegraphics[
+    width=\textwidth,
+    alt={
+      x
+    }
+    ]{sections/ARA/images/} 
+  \caption{ARA array-wide layout}
+  \label{fig:ARA-station-layout}
+\end{figure}
+
 
 % Would be fun to add something about the drills
 The first station was installed in December 2011, the second and third were installed in December 2012, and the fourth and fifth were installed in 2018. 
@@ -51,8 +96,6 @@ This string of 9 antennas is named the Phased Array and has generated a great su
 The Radio Neutrino Observatory of Greenland is one such experiment that uses a phased array to trigger and two "helper strings`` for reconstruction. % Check this and cite RNOG
 This design is also being considered for the radio component of IceCube-Gen2, the expansion of the lower-energy neutrino detector at the South Pole, IceCube. % Cite IceCube TR
 Figure~\ref{fig:ARA-station} shows ARA station 5 with its traditional four string design and its fifth Phased Array String. 
-
-\missingfigure{ARA Station \label{fig:ARA-station}}
 
 \section{Antenna and Electronics Design}
 
