@@ -306,4 +306,4 @@ TSWLatexianTemp*
 #*Notes.bib
 
 # Latex extension for VS Code
-.vscode/
+*.vscode/*
