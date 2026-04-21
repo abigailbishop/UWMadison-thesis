@@ -1,0 +1,228 @@
+\chapter{The Askaryan Radio Array}
+
+To have a good chance at observing UHE neutrinos, we need large volumes of dielectric material. 
+Sand and salt are viable media -- sand being plentiful in deserts and beaches while large salt depositions are scattered across the world -- but ice is a great candidate for a UHE neutrino search. 
+Earth has multiple glaciers with kilometers of depth and millions of square kilometers of surface area largely untouched by humans or other nature. 
+Some glaciers already have infrastructure to support research experiments as well, like Summit Station in Greenland and Amundsen-Scott South Pole Station in Antarctica. 
+The station at the South Pole was chosen for ARA due to successful history with radio measurements in ice through the RICE experiment. % cite RICE 
+
+\section{Station Design and Layout}
+
+%The first ARA detector was the Testbed. % add information about the testbed
+A combination of vertically polarized antennas (VPols) and horizontally polarized antennas (HPols) to both allow analyzers to estimate signal polarization but to also increase the parameter space of neutrino events that could be observed. 
+The birdcage VPols observe the electric field from neutrino cascades while the HPol quad-slot antennas observe the magnetic field. 
+Both types of antennas are shown in Figure~\ref{fig:Antenna-types}.
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[
+      width=0.3\textwidth,
+      alt={
+        x
+      }
+      ]{sections/ARA/images/ARA-Quadslot.png} 
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[
+      width=0.3\textwidth,
+      alt={
+        x
+      }
+      ]{sections/ARA/images/ARA-birdcage.png}
+  \end{subfigure}
+  \caption{Left, a horizontally polarized antenna. Right, a vertically polarized antenna. Photo courtesy of ARA NSF.}
+  % Photo from https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2994
+  \label{fig:Antenna-types}
+\end{figure}
+
+The final design for the ARA stations was a square four-string format with 2 mixed pairs of VPols and HPols on each string. 
+The VPol were installed below the HPol because the VPol perform better than the HPol. 
+The separation between strings horizontally and pairs of antennas vertically are all 20 meters resulting in a cubic detector as shown in Figure~\ref{fig:ARA-station}.
+The station is deployed to a depth of 200 meters to balance cost and attainability with optimal observation. 
+
+\begin{figure}
+  \centering
+  \includegraphics[
+    width=\textwidth,
+    alt={
+      x
+    }
+    ]{sections/ARA/images/ARADetector.png} 
+  \caption{An ARA Station}
+  \label{fig:fig:ARA-station}
+\end{figure}
+
+
+% Motivation for radio antennas and the stations
+By analyzing the timing delays of signals between different antennas, the location of the neutrino event can be calculated.
+By using vertically and horizontally polarized antennas, the polarization of the neutrino signal can be measured, allowing us to estimate the neutrino's direction of travel. 
+Lastly, by analyzing the power of the signal coupled with the location of an event and its direction of travel, the energy of an event can be approximated. 
+
+For ARA it was determined that building stations in a hexagonal grid with a spacing of 2 kilometers between stations was the right balance between neutrino detection, cost of equipment and installation, and the possibility to observe a single neutrino interaction with multiple detectors. % cite ARA instrumentation paper
+The layout of the five ARA stations is shown in Figure~\ref{fig:ARA-station-layout}. 
+37 stations were planned initially but only 5 have been installed. 
+One reason is that the Gen2-Radio addition to the IceCube detector is expected to cover the ice in the space where ARA was originally planned for but hasn't been installed. 
+
+\begin{figure}
+  \centering
+  \includegraphics[
+    width=0.8\textwidth,
+    alt={
+      x
+    }
+    ]{sections/ARA/images/ARAGeometry.png} 
+  \caption{ARA array-wide layout}
+  \label{fig:ARA-station-layout}
+\end{figure}
+
+
+% Would be fun to add something about the drills
+The first station was installed in December 2011, the second and third were installed in December 2012, and the fourth and fifth were installed in 2018. 
+To build each station, four holes were drilled into the ice in a roughly square shape so that 4 strings of antennas could be deployed. 
+The strings for the first station were only installed down to 70-85 meters because the drill couldn't drill any further but each station after was able to drill down to 185-200 meters deep. 
+At the bottom of each string is a pair of vertically and horizontally polarized antennas hoping to capture the polarization of a neutrino's Askaryan signal. 
+Roughly 20 meters above this pair is another pair of antennas. 
+This means that each station is composed of an approximately rectangular prism of radio antennas. 
+This design was chosen so that interferometry can be exploited to reconstruct neutrino events. 
+
+A clever way to get more out of interferometry is to put many radio antennas on a shorter baseline. \index{ARA Phased Array}
+If you place multiple radio antennas in a line with a short distance between them, the time differences between all combinations of two antennas can be summed together, lowering the threshold for detecting a neutrino interaction greatly. % cite 1504.08006
+This inspired ARA to add 7 vertically polarized antennas separated by only 1 meter to a special fifth hole on the fifth station. 
+Below these 7 antennas are two horizontally polarized antennas used to help with polarization and signal arrival zenith reconstruction, since vertically polarized antennas are fairly azimuthally symmetric. 
+This string of 9 antennas is named the Phased Array and has generated a great support, inspiring future designs of radio detectors. % cite Kaeli's thesis
+The Radio Neutrino Observatory of Greenland is one such experiment that uses a phased array to trigger and two "helper strings`` for reconstruction. % Check this and cite RNOG
+This design is also being considered for the radio component of IceCube-Gen2, the expansion of the lower-energy neutrino detector at the South Pole, IceCube. % Cite IceCube TR
+Figure~\ref{fig:ARA-station} shows ARA station 5 with its traditional four string design and its fifth Phased Array String. 
+
+\section{Antenna and Electronics Design}
+
+\subsection{ARA DAQ}
+
+Signal chain as shown in Figure~\ref{fig:ARA-signalchain}.
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.18\textwidth}
+    \centering
+    \includegraphics[
+      width=\textwidth,
+      alt={
+        x
+      }
+      ]{sections/ARA/images/downholeElectronics-1507.08991.png} 
+  \end{subfigure}
+  ~
+  \begin{subfigure}[t]{0.79\textwidth}
+    \centering
+    \includegraphics[
+      width=\textwidth,
+      alt={
+        x
+      }
+      ]{sections/ARA/images/surfaceElectronics-1507.08991.png}
+  \end{subfigure}
+  \caption{Left, the downhole electronics. Right, the DAQ electronics. Adapted from \cite{ara_a23_10mo}.}
+  \label{fig:ARA-signalchain}
+\end{figure}
+
+The original data acquisition board for ARA was an ICRR board which was installed on our first station, A1. % cite, learn more
+It was later upgraded to the ARA Triggering and Readout Interface (ATRI) board which was also used for the next four stations. 
+
+
+\subsection{Phased Array DAQ}
+
+
+\section{Operations Pipeline}
+
+  \subsection{Data Transfer Pipeline}
+  
+    Taking data, Jade, receiving data in the north
+  
+  \subsection{AWARE}
+  
+  \subsection{Data Processing}
+  
+    Processing data for analysis. Mostly PA on my side. 
+
+
+\section{Previous Analyses} 
+
+ARA has been releasing technical design and analysis papers for over a decade. A selection of studies are discussed in this section. 
+
+\subsection{Solar Flare Reconstruction} 
+Solar flares typically release large amounts of radio-wavelength radiation, making them a good source for calibrating the ARA detector. 
+On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, the Testbed \citep{ara_solarflare}. 
+2,000 events were found over these 70 minutes that were highly correlated with the location of the Sun, as shown in Figure~\ref{fig:ARAsolarflare}.
+The approximately 2 degree offset in reconstructed azimuth compared to expected azimuth is attributed to systematic uncertainties in the reconstruction algorithms that were used.
+This analysis not only demonstrated the Testbed's, and therefore the ARA detector's, reliability in reconstructing signals from distant sources, but having a source with a known location helps the collaboration tune and improve the accuracy of its analysis methods. 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=4.5in]{sections/ARA/images/ARAsolarflare.png}
+    \caption{
+        Reconstructed azimuthal angle of ARA events during a solar flare plotted as a function of time (blue to yellow heat map) plotted with the sun's azimuth for comparison (red line) \citep{ara_solarflare}.
+    }
+    \label{fig:ARAsolarflare}
+\end{figure}
+
+\subsection{Neutrino Search with 2 Detectors} 
+After 5 years of operation, the ARA collaboration carried out its first neutrino search. 
+Almost 2,200 days of combined livetime were analyzed from the second and third ARA station using a cut-based analysis\index{Cut-Based Analysis} \citep{ara_a23_10mo,ara_a23}. % The actual number is 2,162 days
+This type of analysis is built by defining a collection of criteria, called cuts, such that a neutrino event will pass every cut but a background event will fail at least one. 
+These criteria include detector and background-related qualifications that filter out events like known calibration pulsing events, events with software glitches, and events with known or assumed anthropogenic signals. 
+After these events are removed, cuts are applied to remove cosmic ray contamination. 
+Cosmic rays\index{Cosmic Rays} are expected to be more commonly observed in ARA and have similar signals to neutrinos, however cosmic rays have signal that comes entirely from fairly inclined directions as these events take place above the ice and sometimes also in the first few meters of the firn. 
+For example, this analysis applied a cut removing all events with a zenith less than 60$^{\circ}$ in A2 and 80$^{\circ}$ in A3. 
+This is a fairly harsh cut that removes "10-30\% of neutrinos" from simulated neutrino datasets \citep{ara_a23}, so improvements to this cut involving deliberate cosmic ray identification tools are an area of active development \citep{CRiniceARENA}. 
+After removing all background events that can be removed trivially, all remaining events are assumed to originate from thermal backgrounds or from real signal. 
+Signal is then identified by determining if an event's reconstruction confidence and signal power is strong enough, as shown in Figure~\ref{fig:ARA-A23-SignalCut}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.49\linewidth]{sections/ARA/images/ARA03_type3_snrMode1_nMinusCoherenceSNR_c_snr_outOfBand_logX_distinctColorsV3_rpr.pdf}
+    \includegraphics[width=0.49\linewidth]{sections/ARA/images/ARA03_type3_E18_snrMode1_nMinusCoherenceSNR_c_snr_outOfBand_extendedAxesRange_logX_distinctColorsV3_rpr.pdf}
+    \caption{Two-dimensional histogram containing each events' signal power (Root Power Ratio) on the X axis and reconstruction confidence ($C_{sky}$) on the Y axis \citep{ara_a23}. The left plot shows the distribution for thermal background events from 10\% of A3's dataset and the right shows the distribution for simulated neutrino events.}
+    \label{fig:ARA-A23-SignalCut}
+\end{figure}
+
+This analysis involved two pipelines with slightly different cuts and configurations. 
+All events that pass these cuts are assumed to be signal-like events, though they are scrutinized further to ensure all detections are neutrino events. 
+Neither pipeline found any neutrino-like events, though when all cuts are imposed on data except for the zenith cut, both found some interesting events. 
+One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic in origin).
+The second found 7 "near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
+At the time of publication, none of these surface events had been further analyzed to determine if they were cosmic ray events. 
+
+\subsection{Phased Array Search} 
+ARA's Phased Array (PA), which is connected to A5, has two main eras:
+The first is when the PA and A5 were both running and the second is when the Phased Array was running on it's own with 7 of the A5 Vpols connected to the PA Data AcQuisition board (DAQ) \index {ARA Phased Array}.
+The first mode ran from installation at the beginning of 2018 until the A5 DAQ suffered a fatal USB failure in October 2019. 
+At the start of 2019, before the USB failure, the output from one channel connected to the A5 DAQ was split so it could be read out in both the A5 and PA DAQs which has been useful for timing calibration. 
+An analysis was conducted on the 208.7 days of livetime in 2019 after the A5 channel output was split and before the A5 DAQ went down as any event triggered by the highly-sensitive PA is also readout by the A5 DAQ, who's larger baseline is advantageous for reconstructing events \citep{ara_pa_analysis}.
+A cut based analysis was used for this study as well, where cuts were manually chosen by the analyzer over 10\% of the data to eliminate events of anthropogenic, cosmic ray, faulty detector, and other non-thermal and non-signal origin. 
+After all cuts were chosen, tuned, and applied to 10\% of the data, all events in the 10\% sample that passed all cuts were assumed to be entirely composed of thermal background events. 
+Using these thermal background events and a database of simulated neutrino events, a Fischer Discriminant was trained to identify signal and thermal noise based events to use on the full 100\% dataset \citep{fisherDiscriminant}.
+
+%Results
+
+
+\subsection{Ice Studies} 
+
+% SPICE core
+% Hole closure
+\citep{ice2019}
+
+\subsection{Unofficial Cosmic Ray Searches}
+
+The ARA collaboration has identified many events in their dataset that resemble cosmic ray\index{Cosmic Ray} air showers, though none have been confirmed so far \citep{ara_a23}, \citep{ara_pa_analysis}.
+These events are labeled as such due to their impulsive nature, origin above the ice, and unlikeliness of being from anthropogenic sources. 
+To be observed by antennas up to 200 meters in depth, the cosmic rays must have energies greater than 10$^{16.5}$eV.
+If the energy of a cosmic ray air shower is high enough and inclined enough, part of the air shower core may enter the ice and initiate an in-ice particle cascade.
+This second cascade is similar in nature to the neutrino cascades ARA was designed for. 
+The cascade emits radio-wavelength Askaryan Radiation\index{Askaryan Radiation} that adds coherently along the Cherenkov Cone and can be observed by the ARA stations. 
+
+% Comments from A23 analysis
+% Events from Kaeli's analysis
+% Events from Uzair's analysis
