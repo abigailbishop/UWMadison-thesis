@@ -78,6 +78,16 @@
   If a pair of electron flavored leptons is generated, the outgoing electron or position immediately initiates an electromagnetic cascade. 
   If a pair of muon or tau leptons is generated, the outgoing taus, muons, and neutrinos continue to propagate.
 
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=\linewidth,
+      alt={}
+    ]{sections/introduction/images/}
+    \caption{Feinman diagrams of NC interaction, CC interaction}
+    \label{fig:}
+  \end{figure}
+
   These highly energetic cascades are usually a few meters long and a couple centimeters in width. 
   In these showers, there is a lot of pair production generating electrons and positrons. 
   For showers generated in dense dielectric media, many positrons annihilate with electrons in the orbitals of nearby atoms. 
@@ -94,12 +104,22 @@
   As most of the particles in a UHE cascade move near the speed of light, $v\approx c$, simplifying the equation.
   As Gurgen Askaryan first theorized this phenomenon, the production of radiation  created by the charge anisotropy of a particle cascade along the Cherenkov cone is called Askaryan Radiation~\citep{askaryan_radiation}. 
 
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=\linewidth,
+      alt={}
+    ]{sections/introduction/images/ara_a23_interaction_figure.pdf}
+    \caption{Particle cascade with Askaryan radiation \citep{ara_a23}}
+    \label{fig:}
+  \end{figure}
+
   Askaryan Radiation has a few important features of note.
   Ice is the dielectric medium used to monitor for UHE neutrino interactions in this thesis and the expected Askaryan Radiation is emitted in the radio-wavelengths 100~MHz-1~GHz, motivating the surveillance of ice with radio antennas. 
   Due to the long extent of UHE particle cascades, the Askaryan radiation exists in a narrow band around the Cherenkov cone. 
   If a radio antenna is near a UHE particle cascade but is not located on this cone, the Askaryan Radiation will be missed.
-  In fact the radiation begins to deteriorate if an antenna exists just a couple degrees off of the Cherenkov cone, as shown in Figure~\ref{fig:askaryancone} where signal on-cone is impulsive and strong but drops over 20 times when observed 1 degree away from the Cherenkov Cone and over 50 times when observed 2 degrees off-cone \citep{barwick_glaser_review}.
-  Another important feature of Askaryan Radiation is that it is polarized perpendicular to the Cherenkov cone, as shown in Figure~\ref{fig:askaryanradiationpolarization}. 
+  In fact the radiation begins to deteriorate if an antenna exists just a couple degrees off of the Cherenkov cone, as shown in Figure~\ref{fig:askaryancone} where signal on-cone is impulsive and strong but drops dramatically with each degree the viewing angle is away from the Askaryan cone \citep{barwick_glaser_review}.
+  Another important feature of Askaryan Radiation is that it is polarized perpendicular to the Cherenkov cone, as shown in Figure~\ref{fig:askaryan_radiation}. 
   If observers of Askaryan Radiation can reconstruct the radiation's polarization, the geometry of the Cherenkov Cone can be reconstructed, and the direction of the cascade (and therefore, the direction of the original UHE neutrino) can be reconstructed. 
 
   \begin{figure}
@@ -107,19 +127,9 @@
     \includegraphics[
       width=\linewidth,
       alt={}
-    ]{sections/introduction/images/askaryan_offcone_barwick_glaser.png}
-    \caption{Off cone \citep{barwick_glaser_review}}
-    \label{fig:offaskaryancone}
-  \end{figure}
-
-  \begin{figure}
-    \centering
-    \includegraphics[
-      width=\linewidth,
-      alt={}
-    ]{askaryanradiationpolarization}
-    \caption{Polarizaiton of Askaryan Radiation on the Cherenkov Cone}
-    \label{fig:askaryanradiationpolarization}
+    ]{sections/introduction/images/rnog_design_viewing_angles.png}
+    \caption{Off cone \citep{rnog_design}}
+    \label{fig:askaryancone}
   \end{figure}
 
   % Why have we seen more UHECRs than UHE neutrinos if, according to the flux plot, UHE neutrinos should be more populous than UHECRs? 
@@ -138,8 +148,8 @@
     \includegraphics[
       width=\linewidth,
       alt={}
-    ]{}
-    \caption{Attenuation length of radio wavelength radiation as a function of depth in glaciers located at Summit Station in Greenland, Moore's Bay near McMurdo Station in Antarctica, and at the South Pole.}
+    ]{sections/introduction/images/barwick_glaser_review_attenuation.pdf}
+    \caption{Attenuation length of radio wavelength radiation as a function of depth in glaciers located at Summit Station in Greenland, Moore's Bay near McMurdo Station in Antarctica, and at the South Pole~\citep{barwick_glaser_review}.}
     \label{fig:attenuation_glaciers}
   \end{figure}
 
@@ -147,23 +157,137 @@
   In Greenland, detectors are built onto and into the 3000~m thick glacier near Summit Station. 
   In Antarctica, detectors are built on the 500~m thick Ross Ice Shelf near McMurdo Base, launched on balloons from the Long Duration Balloon facility also near McMurdo Base, and installed onto and into the 2800~m thick glacier near South Pole Station. 
 
+  % Ice bending rays
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=\linewidth,
+      alt={}
+    ]{sections/introduction/images/ara_design_rays.pdf}
+    \caption{Ray bending in ice \citep{ara_design}}
+    \label{fig:}
+  \end{figure}
+
+  Glacial neutrino observatories most often use narrow radio antennas that fit inside holes carved in the ice with less than 0.4~m in diameter, LPDA's installed on or just below the surface of ice, and horn antennas mounted to weather balloons launched over Antarctica.
+
+
+  \begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/introduction/images/}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/introduction/images/}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/introduction/images/anita_i_horn.eps}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/introduction/images/rnog_design_lpda.png}
+    \end{subfigure}
+    \caption{Antennas: Bicone, quad slot, LPDA adapted from~\citep{rnog_design}, horn~\citep{anita_i}}
+    \label{fig:}
+  \end{figure}
+
   \subsection{In-Ice Direct Detection}
   
     The ARIANNA collaboration creates neutrino and cosmic ray detectors primarilly using antennas that can be deployed just below the surface of glaciers.
-    They've deployed a hexagonal array at Moore's Bay near McMurdo Station in 2014, and two prototype stations at the South Pole in 2017. % https://arxiv.org/pdf/1811.10661, 
+    They've deployed a hexagonal array at Moore's Bay near McMurdo Station in 2014, and two prototype stations at the South Pole in 2017, among others. % https://arxiv.org/pdf/1811.10661, 
     Moore's bay is surrounded by mountains, allowing it to search not only for neutrino interactions in ice but also tau leptons resulting from tau neutrino interactions in the surrounding mountains (so-called earth skimming neutrino detection, the main detection channel for detectors looking for neutrinos by monitoring for Askaryan radiation in air). 
     ARIANNA has published studies of cosmic ray showers and set upper limits on the UHE neutrino flux. % https://arxiv.org/pdf/1612.04473, https://arxiv.org/pdf/1410.7352
 
-    The Askaryan Radio Array (ARA) is a collection of 5 stations near the South Pole where 4 holes per station are drilled up to 200~m deep and outfitted with radio antennas. 
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/arianna_pilot_events.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/arianna_cr_layout.pdf}
+      \end{subfigure}
+      \caption{ARIANNA detection strategy~\citep{arianna_pilot}, ARIANNA hexagonal array \citep{arianna_cr}}
+      \label{fig:}
+    \end{figure}
+
+    The Askaryan Radio Array (ARA) is a collection of 5 stations spaced 2~km from each other near the South Pole where 4 holes per station are drilled up to 200~m deep and outfitted with radio antennas. 
     ARA's first station was installed in the 2011/12 Austral summer season, the next two stations were installed in the 2012/13 season, and the last two were installed in the 2017/18 season.
     ARA has published analyses of solar flares \citep{ara_solarflare}, neutrino searches in data taken by 3 stations \citep{ara_a23, ara_pa_analysis}, and the first detection of naturally produced Askaryan Radiation in ice using cosmic rays \citep{ara_cr}
     The last ARA station was outfitted with an extra phased array detector which densely packs antennas so that their signals can be combined in a way that improves the efficiency of detecting low power signals.
     ARA's dataset is the largest collection of in-ice neutrino interaction surveillance - exceptional for its extensive livetime and operations during periods of low background emissions. 
     The analysis and characterization of ARA data taken on all 5 stations from 2013 to 2023 is the focus of this thesis.
 
-    The Radio Neutrino Observatory of Greenland (RNO-G) combines inspiration from ARIANNA's surface components and ARA's in-ice phased array into a next generation hybrid detector. 
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/}
+      \end{subfigure}
+      \caption{ARA station, ARA layout}
+      \label{fig:}
+    \end{figure}
+
+    The Radio Neutrino Observatory of Greenland (RNO-G) combines inspiration from ARIANNA's surface components and ARA's in-ice phased array into next-generation hybrid detector spaced 1~km apart. 
     RNO-G installed 8 of the planned 35 stations between 2021 and 2023 so far.
     RNO-G has published analyses of airplane transit reconstruction, solar flare reconstruction, and a cosmic ray air shower search using only shallow antennas. 
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.38\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/rnog_design_station.jpg}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.58\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/rnog_neutrino_icrc25_map.png}
+      \end{subfigure}
+      \caption{RNOG station \citep{rnog_design}, RNOG layout \citep{rnog_neutrino_icrc25}}
+      \label{fig:}
+    \end{figure}
     
     The next generation in-ice UHE neutrino detector is the radio extension of IceCube-Gen2. 
     IceCube is an in-ice neutrino detector looking for Cherenkov light from neutrinos with energies less than $10^8$~GeV and finished construction in 2012.
@@ -178,7 +302,37 @@
     The gain in observation volume far outweighs the limited flight duration and has led to many successful flights and interesting results.
     The first experiment to mount radio antennas to a balloon was ANITA who operated 4 flights. % Cite ANITA
     Multiple flights reconstructed signals from events that appear to have come from the Earth at angles that neutrinos are not expected to arrive from due to Earth absorption of ultra-high energy neutrinos. % Cite ANITA Anomalous events
-    The ANITA flights have inspired the upcoming PUEO balloon which launched its first flight in 2025. % Cite Pueo
+    The ANITA flights have inspired the PUEO balloon which launched its first flight in 2025. % Cite Pueo
+
+    \begin{figure}
+      \centering
+      % \begin{subfigure}[t]{0.63\textwidth}
+      %   \centering
+      %   \includegraphics[
+      %     width=\linewidth,
+      %     alt={}
+      %   ]{sections/introduction/images/anita_iv_detector.png}
+      % \end{subfigure}
+      % ~
+      % \begin{subfigure}[t]{0.33\textwidth}
+      %   \centering
+      %   \includegraphics[
+      %     width=\linewidth,
+      %     alt={}
+      %   ]{sections/introduction/images/pueo_wp_detector.png}
+      % \end{subfigure}
+      \begin{subfigure}[t]{0.98\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/pueo_arena22_events.png}
+      \end{subfigure}
+      \caption{
+        % anita IV detector \citep{anita_iv}, pueo detector \citep{pueo_wp}, 
+        Balloon Detection Strategy \citep{pueo_arena22}}
+      \label{fig:}
+    \end{figure}
   
   \subsection{In-Ice RADAR Detection}
   
@@ -186,9 +340,34 @@
     This is the design of the Radar Echo Telescope (RET) which was deployed near Summit Station in Greenland after testing the detection method with the Stanford Linear Accelerator. % https://arxiv.org/abs/1910.12830
     A prototype RET station dedicated for cosmic ray detection was deployed in the summer of 2023 and consists of 
     \begin{itemize}
-      \item One RADAR phased array transmitting string consisting of 8 antennas deployed 10~m in the ice
+      \item One 8-antenna phased array transmitting string consisting centered 10~m in the ice
       \item 3 receiving strings 30~m from the transmitter and equidistant from each other and 
       \item 3 scintillator panels used to tag cosmic rays that begin their cascades in air before impacting the ice. % https://arxiv.org/pdf/2409.07511
     \end{itemize}
     A cosmic ray search through RET data taken in 2024 was still ongoing during the summer of 2025. % https://pos.sissa.it/501/257/
     A neutrino-focused RET detector is still under development but proposals include a transmitting antenna buried deep in the ice with receiver antennas deployed into 9 boreholes drilled along a circle 200~m from the transmitter. % https://pos.sissa.it/395/1195/
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/retcr_event.pdf}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/introduction/images/retcr_initialperformance_layout.pdf}
+      \end{subfigure}
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/introduction/images/retn-station.png}
+      \caption{RET Detection Strategy \citep{retcr} and RET-CR \citep{retcr_initialperformance} and RET-N \citep{retn}}
+      \label{fig:}
+    \end{figure}
