@@ -41,17 +41,6 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage{hyperref}
-\hypersetup{
-  pdftitle={Search for Neutrinos with Energy Greater than 10^16 eV Using All 5 Stations of the Askaryan Radio Array at the South Pole},
-  pdfauthor={Abigail Bishop},
-  pdfkeywords={Neutrino, Ultra-high energy, Askaryan, Radio},
-  colorlinks=true,
-  linkcolor=blue,
-  urlcolor=blue,
-  citecolor=black,
-  pdfdisplaydoctitle=true,
-}
 
 \usepackage{bookmark}
 \makeatletter
@@ -194,3 +183,23 @@
   math/alt/use,
   interwordspace=true,
 }
+
+\usepackage{tabularx}
+\usepackage{siunitx}
+
+\usepackage{hyperref}
+\hypersetup{
+  pdftitle={Search for Neutrinos with Energy Greater than 10^16 eV Using All 5 Stations of the Askaryan Radio Array at the South Pole},
+  pdfauthor={Abigail Bishop},
+  pdfkeywords={Neutrino, Ultra-high energy, Askaryan, Radio},
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=black,
+  pdfdisplaydoctitle=true,
+}
+\newcounter{Hfootnote}
+
+\newcommand{\arasim}{\texttt{AraSim}}
+\newcommand{\araroot}{\texttt{AraRoot}}
+\newcommand{\nuleptonsim}{\texttt{NuLeptonSim}}
