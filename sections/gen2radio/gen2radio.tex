@@ -44,8 +44,8 @@
 \section{Simulation Setup}
 
   The simulation package "Python for Radio Experiments" (PyREx)\footnote{Github: https://github.com/abigailbishop/pyrex} was used to simulate 40,000 neutrino events at select  energies ranging from 1~PeV to 10~EeV. 
-  Neutrino interactions are simulated using the CTW model described in \cite{CTW-interaction}.
-  The following neutrino properties are determined randomly according to the cosmogenic model: every flavor is equally possible and the probability that a particle is a neutrino (as opposed to an anti-neutrino) is 0.78, 0.61, and 0.61 for electron-, muon- and tau neutrino respectively \cite{Gandhi}. 
+  Neutrino interactions are simulated using the CTW model described in \cite{ctw-interaction}.
+  The following neutrino properties are determined randomly according to the cosmogenic model: every flavor is equally possible and the probability that a particle is a neutrino (as opposed to an anti-neutrino) is 0.78, 0.61, and 0.61 for electron-, muon- and tau neutrino respectively \cite{icecube_glashow}. 
   After interacting, the simulation propagates Askaryan signals to all antennas following the Alvarez-Muniz, Romero-Wolf, Zas parameterization then simulates their responses \cite{ARZ-signal}.
 
   The radio detector component is conceived such that 
@@ -57,7 +57,7 @@
   In the simulation 40,000 events are generated and simulated at select energies 
   using the radio-signal simulation software PyREx and the aforementioned parameters. Next, all events with 6~PeV, 10~PeV, 30~PeV, or 100~PeV of energy and located within 300 meters of IceCube-Gen2 boundary are isolated and processed using the optical-signal simulation software IceTray\footnote{Github: https://github.com/icecube/icetray/tree/gen2-optical-sim} ($\approx$ 6,000 events for each energy).
   We primarily investigate a mode of operation in which
-  the triggering would be provided entirely by the optical sensors. Thus, the Gen2 optical sensors would provide both the trigger for the readout and the readout channel for the RF signal. It would be realized as an additional channel to the 16 or 18 PMT channels in consideration for Gen2 \cite{ICRC_LOM}.  This trigger and readout would be quite straightforward to implement as the formation of the optical trigger is managed with the Gen2 optical trigger system.
+  the triggering would be provided entirely by the optical sensors. Thus, the Gen2 optical sensors would provide both the trigger for the readout and the readout channel for the RF signal. It would be realized as an additional channel to the 16 or 18 PMT channels in consideration for Gen2 \cite{icecube_gen2_lom}.  This trigger and readout would be quite straightforward to implement as the formation of the optical trigger is managed with the Gen2 optical trigger system.
   The readout decision is made at the DOM level and does not require a global event trigger formation. 
 
   Considerations of RF noise from nearby optical sensors will be ignored for this conceptual study, but would need to be considered if this topic is studied further. Based on previous measurements with the AURA detectors \cite{AURA}, it is assumed this would not be a major issue. 
