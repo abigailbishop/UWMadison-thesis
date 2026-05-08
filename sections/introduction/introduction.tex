@@ -80,12 +80,78 @@
 
   \begin{figure}
     \centering
-    \includegraphics[
-      width=\linewidth,
-      alt={}
-    ]{sections/introduction/images/}
-    \caption{Feinman diagrams of NC interaction, CC interaction}
-    \label{fig:}
+    \begin{tikzpicture}
+      \begin{feynman}
+        \vertex (a1) {\(\nu\)};
+        \vertex[right=2cm of a1] (a2);
+        \vertex[right=2cm of a2] (a3){\(\nu\)};
+    
+        \vertex[below=4em of a1] (b1) {\(q\)};
+        \vertex[right=2cm of b1] (b2);
+        \vertex[right=2cm of b2] (b3) {\(q\)};
+    
+        \vertex[below=1em of b1] (c1) {\(q\)};
+        \vertex[below=1em of b3] (c3) {\(q\)};
+    
+        \vertex[below=1em of c1] (d1) {\(q\)};
+        \vertex[below=1em of c3] (d3) {\(q\)};
+    
+        \diagram* {
+          {[edges=fermion]
+            (a1) -- (a2) -- (a3),
+            (b1) -- (b2) -- (b3),
+            (c1) -- (c3),
+            (d1) -- (d3),
+          },
+          (a2) -- [boson, edge label=\(Z\)] (b2),
+        };
+    
+        \draw [decoration={brace}, decorate] (d1.south west) -- (b1.north west)
+              node [pos=0.5, left] {\(\text{nuclei }\)};
+        \draw [decoration={brace}, decorate] (b3.north east) -- (d3.south east)
+              node [pos=0.5, right] {\(\text{ hadronic shower}\)};
+      \end{feynman}
+    \end{tikzpicture}
+    \caption{Neutral current diagram}
+    \label{fig:neutral_current}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}
+      \begin{feynman}
+        \vertex (a1) {\({\nu_{e, \mu, \tau}}\)};
+        \vertex[right=2cm of a1] (a2);
+        \vertex[right=2cm of a2] (a3){\({e, \mu, \tau}\)};
+    
+        \vertex[below=4em of a1] (b1) {\(q\)};
+        \vertex[right=2cm of b1] (b2);
+        \vertex[right=2cm of b2] (b3) {\(q\)};
+    
+        \vertex[below=1em of b1] (c1) {\(q\)};
+        \vertex[below=1em of b3] (c3) {\(q\)};
+    
+        \vertex[below=1em of c1] (d1) {\(q\)};
+        \vertex[below=1em of c3] (d3) {\(q\)};
+    
+        \diagram* {
+          {[edges=fermion]
+            (a1) -- (a2) -- (a3),
+            (b1) -- (b2) -- (b3),
+            (c1) -- (c3),
+            (d1) -- (d3),
+          },
+          (a2) -- [boson, edge label=\(W\)] (b2),
+        };
+    
+        \draw [decoration={brace}, decorate] (d1.south west) -- (b1.north west)
+              node [pos=0.5, left] {\(\text{nuclei }\)};
+        \draw [decoration={brace}, decorate] (b3.north east) -- (d3.south east)
+              node [pos=0.5, right] {\(\text{ hadronic shower}\)};
+      \end{feynman}
+    \end{tikzpicture}
+    \caption{Charged current diagram}
+    \label{fig:charged_current}
   \end{figure}
 
   These highly energetic cascades are usually a few meters long and a couple centimeters in width. 
@@ -177,17 +243,17 @@
     \begin{subfigure}[t]{0.48\textwidth}
       \centering
       \includegraphics[
-        width=\linewidth,
+        width=0.3\linewidth,
         alt={}
-      ]{sections/introduction/images/}
+      ]{sections/introduction/images/ARA-birdcage.png}
     \end{subfigure}
     ~
     \begin{subfigure}[t]{0.48\textwidth}
       \centering
       \includegraphics[
-        width=\linewidth,
+        width=0.3\linewidth,
         alt={}
-      ]{sections/introduction/images/}
+      ]{sections/introduction/images/ARA-Quadslot.png}
     \end{subfigure}
     \begin{subfigure}[t]{0.48\textwidth}
       \centering
@@ -200,12 +266,13 @@
     \begin{subfigure}[t]{0.48\textwidth}
       \centering
       \includegraphics[
-        width=\linewidth,
+        width=0.5\linewidth,
         alt={}
       ]{sections/introduction/images/rnog_design_lpda.png}
     \end{subfigure}
-    \caption{Antennas: Bicone, quad slot, LPDA adapted from~\citep{rnog_design}, horn~\citep{anita_i}}
-    \label{fig:}
+    \caption{Antennas: Bicone (NSF/ARA), quad slot (NSF/ARA), LPDA adapted from~\citep{rnog_design}, horn~\citep{anita_i}}
+    % Photo from https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2994
+    \label{fig:Antenna-types}
   \end{figure}
 
   \subsection{In-Ice Direct Detection}
@@ -250,7 +317,7 @@
         \includegraphics[
           width=\linewidth,
           alt={}
-        ]{sections/introduction/images/}
+        ]{sections/introduction/images/ARAStation.pdf}
       \end{subfigure}
       ~
       \begin{subfigure}[t]{0.48\textwidth}
@@ -258,10 +325,13 @@
         \includegraphics[
           width=\linewidth,
           alt={}
-        ]{sections/introduction/images/}
+        ]{sections/introduction/images/ARA.png}
       \end{subfigure}
-      \caption{ARA station, ARA layout}
-      \label{fig:}
+      \caption{
+        Left: ARA's station layout for the example of A5. Traditional stations have 4 holes drilled up to 200~m into the ice and instrumented with radio antennas up to 190~m. A5 additionally has the phased array (PA) detector string deployed in the center of the 4 outer strings, also to a depth of 190~m.
+        A1--A4 share this layout but do not have the central PA string. Additionally, A1 is deployed to a maximum depth of 80~m and A1--A3 have an installed lateral distance baseline of 14~m. 
+        Right: Map of the five ARA stations relative to the IceCube Neutrino Observatory and South Pole. }
+      \label{fig:ARA}
     \end{figure}
 
     The Radio Neutrino Observatory of Greenland (RNO-G) combines inspiration from ARIANNA's surface components and ARA's in-ice phased array into next-generation hybrid detector spaced 1~km apart. 
