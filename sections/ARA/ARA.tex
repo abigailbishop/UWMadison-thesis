@@ -1,102 +1,220 @@
 \chapter{The Askaryan Radio Array}
 
-To have a good chance at observing UHE neutrinos, we need large volumes of dielectric material. 
-Sand and salt are viable media -- sand being plentiful in deserts and beaches while large salt depositions are scattered across the world -- but ice is a great candidate for a UHE neutrino search. 
-Earth has multiple glaciers with kilometers of depth and millions of square kilometers of surface area largely untouched by humans or other nature. 
-Some glaciers already have infrastructure to support research experiments as well, like Summit Station in Greenland and Amundsen-Scott South Pole Station in Antarctica. 
-The station at the South Pole was chosen for ARA due to successful history with radio measurements in ice through the RICE experiment. % cite RICE 
+    As briefly discussed in Section~\ref{sec:iniceExperiments}, the ARA is an experiment searching for UHE neutrinos at the South Pole.
+    5 stations comprise the array where each station has at least 4 strings instrumented with radio antennas targeting Askaryan Radiation.
+    This chapter expands on ARA's design and layout, operations, and summarizes previous analyses. 
 
 \section{Station Design and Layout}
 
-%The first ARA detector was the Testbed. % add information about the testbed
-A combination of vertically polarized antennas (VPols) and horizontally polarized antennas (HPols) to both allow analyzers to estimate signal polarization but to also increase the parameter space of neutrino events that could be observed. 
-The birdcage VPols observe the electric field from neutrino cascades while the HPol quad-slot antennas observe the magnetic field. 
-Both types of antennas are shown in Figure~\ref{fig:Antenna-types}.
+    The station layout of ARA was shown in Fig.~\ref{fig:ARA}; the 5 stations were arranged on a hexagonal grid with 2~km spacing near the IceCube Neutrino Observatory and a couple kilometers from the South Pole. 
+    For ARA, it was determined that building stations in a hexagonal grid with a spacing of 2 kilometers between stations was the right balance between neutrino detection, cost of equipment and installation, and the possibility to observe a single neutrino interaction with multiple detectors~\citep{ara_design}.
 
-The final design for the ARA stations was a square four-string format with 2 mixed pairs of VPols and HPols on each string. 
-The VPol were installed below the HPol because the VPol perform better than the HPol. 
-The separation between strings horizontally and pairs of antennas vertically are all 20 meters resulting in a cubic detector as shown in Figure~\ref{fig:ARA}.
-The station is deployed to a depth of 200 meters to balance cost and attainability with optimal observation. 
+    \begin{table}
+        \centering
+        \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{1.5cm}||YYYY}
+          \textbf{\hspace{40pt}Station} & 
+          \textbf{\hspace{40pt}Installation Season} & 
+          \textbf{\hspace{40pt}Horizontal\hspace{10pt}Baseline\hspace{30pt}[m]} & 
+          \textbf{Top Antenna\hspace{10pt}Average Depth [m]} & 
+          \textbf{Bottom Antenna Average Depth [m]} \\
+          \hline 
+          \hline
+          A1 & 2011-12 & 14 & 58 & 76 \\
+          A2 & 2012-13 & 14 & 170 & 189 \\
+          A3 & 2012-13 & 14 & 172 & 191 \\
+          A4 & 2017-18 & 28 & 161 & 191 \\
+          A5 & 2017-18 & 32 & 158 & 188 
+        \end{tabularx}
+        \caption{
+            \label{tab:station_lattices}
+            Station lattice locations and installation years
+        }
+    \end{table}
 
+    Figure~\ref{fig:ARA} also showed an example of the A5 station.
+    Each ARA station is designed to be a rectangular lattice of pairs of horizontally and vertically polarized quadslot and bicone antennas, respectively.
+    This is done by drilling 4 holes in the ice arranged in a square and deploying two pairs of antennas into each hole, each pair separated in depth by 18-30~m. 
+    The square layout of the hole has a horizontal baseline of 14-32~m.
+    The specifics for each of the 5 stations is shown in Table~\ref{tab:station_lattices}. 
 
-% Motivation for radio antennas and the stations
-By analyzing the timing delays of signals between different antennas, the location of the neutrino event can be calculated.
-By using vertically and horizontally polarized antennas, the polarization of the neutrino signal can be measured, allowing us to estimate the neutrino's direction of travel. 
-Lastly, by analyzing the power of the signal coupled with the location of an event and its direction of travel, the energy of an event can be approximated. 
+    In the center of the 4 holes, A5 has a fifth hole drilled to 200~m and instrumented with 7 vertically polarized antennas packed between depths of 173~m and 180~m that use a beamforming trigger to better detect low-signal events.
+    This trigger method involves predetermining expected signal arrival delays between pairs of antennas, shifting observed signal according to these delays, and adding all shifted signal together. 
+    From thermal noise, the signal observed is random and will result in a summed waveform resembling a noise waveform.
+    Alternatively, an impulsive wavefront read out by multiple antennas will align after shifting all waveforms according to their time delays so the summation of signals from the waveform will add together and rise above the noise. 
+    This detector is called the Phased Array and has a dedicated data acquisition board and two horizontally polarized antennas placed below the 7 vertically polarized antennas to assist in event reconstruction.
 
-For ARA it was determined that building stations in a hexagonal grid with a spacing of 2 kilometers between stations was the right balance between neutrino detection, cost of equipment and installation, and the possibility to observe a single neutrino interaction with multiple detectors. % cite ARA instrumentation paper
-The layout of the five ARA stations is shown in Figure~\ref{fig:ARA}. 
-37 stations were planned initially but only 5 have been installed. 
-One reason is that the Gen2-Radio addition to the IceCube detector is expected to cover the ice in the space where ARA was originally planned for but hasn't been installed. 
+    Each station also has one or two additional strings with radio antennas, called Calibration Pulsers (CPs), that pulse roughly once per second. 
+    The stations trigger on these radio pulses naturally (i.e. detector readout is not forced but instead is only read out if detector trigger logic is satisfied) but are tagged as a CP event if the CP was firing at the time of event readout.
 
-% Would be fun to add something about the drills
-The first station was installed in December 2011, the second and third were installed in December 2012, and the fourth and fifth were installed in 2018. 
-To build each station, four holes were drilled into the ice in a roughly square shape so that 4 strings of antennas could be deployed. 
-The strings for the first station were only installed down to 70-85 meters because the drill couldn't drill any further but each station after was able to drill down to 185-200 meters deep. 
-At the bottom of each string is a pair of vertically and horizontally polarized antennas hoping to capture the polarization of a neutrino's Askaryan signal. 
-Roughly 20 meters above this pair is another pair of antennas. 
-This means that each station is composed of an approximately rectangular prism of radio antennas. 
-This design was chosen so that interferometry can be exploited to reconstruct neutrino events. 
+    All cables from each data taking and CP string are directed into a large, roughly 1~m by 2.5~m, box called a vault. 
+    The vault contains a network switch, a power box, a data acquisition (DAQ) box, Fiber Optic Amplification Modules that convert optical signals from each data taking string into electronics signals before they enter the DAQ box.
+    These vaults have shielding to protect the detector from triggering on electronics in the vault.
+    As roughly 28 centimeters of snow accumulates at the South Pole per year (mostly due to snow drift, not precipitation) \citep{sp_snow_accumulation}, these vaults become buried overtime.
+    Vault extensions (large empty wooden boxes with a ladder) can be installed over the existing vault to improve future accessibility. 
+    Figure~\ref{fig:a4vault} shows the electronics in the vault for Station A4 viewed from the edge of a vault extension.
 
-A clever way to get more out of interferometry is to put many radio antennas on a shorter baseline. \index{ARA Phased Array}
-If you place multiple radio antennas in a line with a short distance between them, the time differences between all combinations of two antennas can be summed together, lowering the threshold for detecting a neutrino interaction greatly. % cite 1504.08006
-This inspired ARA to add 7 vertically polarized antennas separated by only 1 meter to a special fifth hole on the fifth station. 
-Below these 7 antennas are two horizontally polarized antennas used to help with polarization and signal arrival zenith reconstruction, since vertically polarized antennas are fairly azimuthally symmetric. 
-This string of 9 antennas is named the Phased Array and has generated a great support, inspiring future designs of radio detectors. % cite Kaeli's thesis
-The Radio Neutrino Observatory of Greenland is one such experiment that uses a phased array to trigger and two "helper strings`` for reconstruction. % Check this and cite RNOG
-This design is also being considered for the radio component of IceCube-Gen2, the expansion of the lower-energy neutrino detector at the South Pole, IceCube. % Cite IceCube TR
-Figure~\ref{fig:ARA-station} shows ARA station 5 with its traditional four string design and its fifth Phased Array String. 
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/ARA/images/A4-Vault.png}
+      \caption{}
+      \label{fig:a4vault}
+    \end{figure}
 
-\section{Antenna and Electronics Design}
+    \subsection{Data Acquisition}
 
-\subsection{ARA DAQ}
+        \begin{figure}
+          \centering
+          \includegraphics[
+            width=\linewidth,
+            alt={}
+          ]{sections/ARA/images/A4-DAQbox.png}
+          \caption{}
+          \label{fig:a4daq}
+        \end{figure}
 
-Signal chain as shown in Figure~\ref{fig:ARA-signalchain}.
+        DAQ boxes are the nexus of station data taking and control. 
+        The sides of the boxes are about 1~cm thick, 10-40~cm along each side, and made of solid aluminum, for additional radio-frequency shielding.
+        Like the vault, there is a network switch, a power board, and ports that connect to each antenna and calibration pulser for the station. 
+        The main piece of electronics is called the ARA Triggering and Readout Interface (ATRI) board which includes a single-board-computer (SBC), an FPGA, and stacks of triggering and digitizing boards that connect to each antenna.
+        The predecessor to the ATRI board was the ICRR board and was used on A1 until the 2013-14 South Pole Season when it was replaced with an ATRI board.
+        The Phased Array instrument has a dedicated ``NuPhase'' DAQ setup comprised of two 8-channel boards an external SBC. 
+        A station's SBC is what technicians connect to when accessing each station. 
+        They contain scripts that program the FPGA for data taking and calibration pulsing, recording data, and packaging data for retrieval by processes on the Radproc computer.
+        ARA data is saved in batches, called ``runs'', over the course of 3 hours.
+        At a combined trigger rate (CP events, forced events, and RF events) of $\sim11$~Hz, each run contains roughly 100-120 thousand events. 
+        Between each run, the station will enter into a brief state of lower power consumption as data is not being taken and the calibration pulser is not firing. 
+        For, conservatively, the first minute of each run, as currents rise back to a nominal level, data taken by the detector is unusual and therefore typically removed from analyses. 
 
-\begin{figure}
-  \centering
-  \begin{subfigure}[t]{0.18\textwidth}
-    \centering
-    \includegraphics[
-      width=\textwidth,
-      alt={
-        x
-      }
-      ]{sections/ARA/images/downholeElectronics-1507.08991.png} 
-  \end{subfigure}
-  ~
-  \begin{subfigure}[t]{0.79\textwidth}
-    \centering
-    \includegraphics[
-      width=\textwidth,
-      alt={
-        x
-      }
-      ]{sections/ARA/images/surfaceElectronics-1507.08991.png}
-  \end{subfigure}
-  \caption{Left, the downhole electronics. Right, the DAQ electronics. Adapted from \cite{ara_a23_10mo}.}
-  \label{fig:ARA-signalchain}
-\end{figure}
+        The chip enabling connection of the FPGA with the ATRI is called the FX2.
+        This chip was installed on ATRI's used for stations A1-A5 between 2013 and 2018. 
+        The USB connection between the FX2 and the ATRI degrades overtime preventing the SBC to communicate with the FPGA, rendering the station unable to take data. 
+        Table~\ref{tab:station_daqboards} summarizes the types of DAQ boards, when they were in use, and other notes. 
+        This is an abbreviation of a Wikipedia page I started, \href{https://mediawiki.icecube.wisc.edu/ara/index.php/ARA_Station_Histories}{ARA Station Histories}, which summarizes topline updates and downtimes for each station since they were installed. 
+        This is not to be confused with the \href{https://mediawiki.icecube.wisc.edu/ara/index.php/Known_Station_Problems}{Known Station Problems} page, which contains notes about active and ongoing features of each station, a page typically consulted by those on monitoring shifts. 
 
-The original data acquisition board for ARA was an ICRR board which was installed on our first station, A1. % cite, learn more
-It was later upgraded to the ARA Triggering and Readout Interface (ATRI) board which was also used for the next four stations. 
+        \begin{table}
+            \centering
+            \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{2.5cm}Y}
+              \textbf{Station} & 
+              \textbf{Board Type} & 
+              \textbf{Lifetime} & 
+              \textbf{Note} \\
+              \hline 
+              A1 & ICRR & 2011-13 & \\
+              A1 & ATRI & 2013-26 & SBC Failure\\
+              A1 & ATRI & 2017-23 & Refurbished, FX2 failure\\
+              A2 & ATRI & 2013-21 & FX2 failure\\
+              A2 & ATRI & 2026 & Refurbished, reinstalled, hardware failure\\
+              A3 & ATRI & 2013-present & \\
+              A4 & ATRI & 2018-21 & FX2 failure\\
+              A4 & ATRI & 2016-present & Refurbished\\
+              A5 & ATRI & 2018-19 & FX2 failure \\
+              PA & NuPhase & 2018-present &
+            \end{tabularx}
+            \caption{
+                \label{tab:station_daqboards}
+                History of station DAQ boards.
+            }
+        \end{table}
 
+        For each antenna, an arriving signal is transformed from an electric field into a voltage trace according to the antenna's response function.
+        Deep in the borehole, the trace is passed through a notch filter that suppresses signal around 450~MHz, where most South Pole communications frequencies are set.
+        Next, the trace is amplified with a Low Noise Amplifier (LNA). 
+        Following this, the trace is converted into an optical signal and sent to the data acquisition box on the surface. 
+        In the data acquisition box, the signal is converted back to a voltage trace and then passed through band filters which suppress out of band noise. % Above 1GHz and below 1 MHz right?
+        The voltage is then split and passed simultaneously through a Triggering Daughter Array (TDA) and a Digitizing Daughter Array (DDA). 
+        Before entering the TDA, the traces pass through tunnel diodes that convert voltage into power. 
+        The TDA then analyzes if three antennas with the same polarization observed a signal with more than $\approx 6$ times the power of noise.
+        If this occurs, the signal that was simultaneously digitized by the DDA is saved to the local Single Board Computer (SBC).
+        This electronics chain is shown in Figure~\ref{fig:ARA-signalchain}.
+        Each TDA and DDA have four inputs and are arranged to take in signals from the four antennas on each string. 
+        Occasionally, the DDA will experience a power surge and amplify the signal in one string. 
+        We refer to these as spark events and they are typically removed from analyses. 
 
-\subsection{Phased Array DAQ}
+        \begin{figure}
+          \centering
+          \begin{subfigure}[t]{0.18\textwidth}
+            \centering
+            \includegraphics[
+              width=\textwidth,
+              alt={
+                x
+              }
+              ]{sections/ARA/images/downholeElectronics-1507.08991.png} 
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.79\textwidth}
+            \centering
+            \includegraphics[
+              width=\textwidth,
+              alt={
+                x
+              }
+              ]{sections/ARA/images/surfaceElectronics-1507.08991.png}
+          \end{subfigure}
+          \caption{Left, the downhole electronics. Right, the DAQ electronics. Adapted from \citep{ara_a23_10mo}.}
+          \label{fig:ARA-signalchain}
+        \end{figure}
 
+    \subsection{Phased Array Data Acquisition}
 
 \section{Operations Pipeline}
 
-  \subsection{Data Transfer Pipeline}
+    \subsection{Data Transfer Pipeline}
   
-    Taking data, Jade, receiving data in the north
-  
-  \subsection{AWARE}
-  
-  \subsection{Data Processing}
-  
-    Processing data for analysis. Mostly PA on my side. 
+        The data that is saved by each station is collected by the radio processing (Radproc) computer which is housed in the IceCube Laboratory (ICL). 
+        This data transfer and any other communications with the stations is conducted over fiber optic cable buried in the ice. 
+        These fiber optics cables pass through a series of patch panels to reach their destination. 
+        Starting at Radproc, ethernet signal is converted into optical signal and passed enters a patch panel in the ICL. 
+        The fiber optics cables exit the ICL and run down the West Tower into the West Tower Junction box, where the second patch panel is. 
+        Cables leaving the second patch panel are laid over 1~km and end at Wind Turbine 3 where they meet their third patch panel. 
+        Bundles of fiber optics cables are then run to stations A1, A2, and A3. 
+        At this point, 2 fiber optics cables in each bundle are connected to A1, A2, and A3 while the last 2 cables at A1 are directed into a switch directing signal to A4 and the last 2 cables at A2 being directed into a switch directing signal to A5. 
+        The last 2 kilometers of fiber optics cable laid connect A1 to A4 and A2 to A5. 
+        I compiled the mapping of all fibers from the ICL to ARA stations and the IceCube Surface Array into a spreadsheet that is available in \href{https://aradocs.wipac.wisc.edu/DocDB/DocumentDatabase}{ARA DocDB\#\#\#\#}. % todo not the real link
 
+        Note that, in January 2025, we discovered the fibers connecting the ICL patch panel port 19 and 20 to the West Tower Junction Box patch panel were reversed compared to documentation and has been updated in the aforementioned DocDB article. 
+        Handling of fibers in the West Tower Junction Box which connect the ICL to A3 via port 19 were handled unintentionally when installing the IceCube Surface Array extension. 
+        Impurities may have been introduced into these fibers and the field team recommends retermination of the wires in the West Tower Junction Box in a future field season to improve network connection to A3.
+
+        % Would be nice to have a diagram of the networking
+
+        ARA's power cabling follows a similar layout between the ICL and Wind Turbine 3. 
+        Stations A1 and A4 are connected to the same power supply in the ICL, similar to the networking setup, however A2, A3, and A5 have their own power supplies. 
+        A2 and A3 used to share a power supply but drew too much power when being turned on after the power supplies experienced a full shut down.
+
+        The Radproc computer in the ICL collects all the data from A1-A5 and the Phased Array then randomly selects $\approx 1\%$ of events that constitute our monitoring data. 
+        The monitoring data is put into a data drop box going ``north'' and the full data file is put into a data drop box going ``south''. 
+        These drop boxes are monitored by IceCube data specialists. 
+        The data in the ``north'' drop box is sent over satellite to the University of Wisconsin Madison (UW Madison) for processing and use in monitoring and operations. 
+        This data sample is automatically processed by an ARA Operations lead for use viewing event displays and station metadata (temperature, event rates, etc) on \href{http://aware.wipac.wisc.edu}{AWARE}.
+        The data in the ``south'' drop box is stored on hard drives that are accumulated and shipped at the end of each calendar year, which arrive at UW Madison in the spring and are uploaded to the IceCube data warehouse in late spring and early summer.
+  
+    \subsection{Data Processing}
+  
+        Data arriving on hard drives (also referred to as ``tapes'') is referred to as ``raw'' or ``L0'' data and typically takes a few weeks to be uploaded to the IceCube data warehouse after the hard drives physically arrive in Madison.
+
+        Once uploaded, L0 data is transformed into a ROOT~\citep{root} readable format by the ARA Mass Processing\footnote{
+          \href{https://github.com/AndrewShultz/AraMassProcessing}{https://github.com/AndrewShultz/AraMassProcessing}, written by Andrew Schultz.
+        } package  for data taken by A1-A5 data acquisition boards and by the NuPhase Rootification\footnote{
+          \href{https://github.com/vPhase/nuphase_rootification}{https://github.com/vPhase/nuphase\_rootification}, written by me, based on scripts by Kaeli Hughes and the \href{https://github.com/vPhase/nuphaseroot}{\texttt{NuPhaseRoot}} and \href{https://github.com/vPhase/libnuphase}{\texttt{libNuPhase}} packages which were created by Cosmin Deaconu. 
+          Note that the \texttt{NuPhase Rootification} package is in a private repository that cannot be viewed if one is not a member of the \href{https://github.com/vPhase}{\texttt{vPhase}} GitHub organization.
+        } package for PA data in a process called ``rootification''. 
+        Colleagues at the University of Nebraska Lincoln rootify A1-A5 data under the supervision of Ilya Kravchenko while I have rootified PA data with advice from Cosmin Deaconu and Marco Muzio. 
+
+        Some runs are too small and some are just weird and are noted as bad at this stage. 
+
+        After ARA data has been rootified, a series of tests are performed to assess that the data has been unpacked properly and all bad runs have been identified. 
+        
+        After data has been rootified, data is split into two samples: a full 100\% sample and a smaller 10\% sample\footnote{
+            The smaller A1-A5 sample is technically reduced to a 9.5\% sample, but we typically round this to 10\% when referring to it.
+        }. 
+        Data analyses are typically built on the 10\% data sample then applied to the 100\% sample, as a blinding strategy. 
+        For an experiment looking for rare data in an electromagnetic frequency band that strongly overlaps with anthropogenic backgrounds (e.g. snowmobiles, radios, airplanes, weather balloons, etc) that can appear unexpectedly at times, building an analysis on only 10\% of the data has proven risky. 
+        For example, unprecedented backgrounds have survived to final event selection and other analyses have removed excessive number of events to avoid surviving backgrounds, both reducing an analysis' impact. 
 
 \section{Previous Analyses} 
 
