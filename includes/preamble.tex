@@ -42,6 +42,10 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 
+% For Feynman Diagrams
+\usepackage{tikz}
+\usepackage[compat=1.1.0]{tikz-feynman}
+
 \usepackage{bookmark}
 \makeatletter
 \patchcmd{\@chapter}{%
@@ -162,6 +166,8 @@
 \fi
 \prebibhook
   \begin{bibitemlist}{#1}}{\end{bibitemlist}\postbibhook}
+
+\setcitestyle{square}
 \newcommand{\prd}{Physical Review D}
 
 \AtBeginDocument{%
@@ -186,6 +192,9 @@
 
 \usepackage{tabularx}
 \usepackage{siunitx}
+\usepackage{array}
+\usepackage{booktabs}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 \usepackage{hyperref}
 \hypersetup{
