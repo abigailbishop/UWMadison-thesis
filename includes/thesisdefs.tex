@@ -38,14 +38,6 @@
 \newcommand{\dissertation}{\gdef\@doctype{A dissertation}}
 \newcommand{\department}[1]{\gdef\@department{(#1)}}
 
-\provideenvironment{titlepage}{}{}
-\renewenvironment{titlepage}
- {
-  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
-  \else \newpage \fi \thispagestyle{empty}
- }{\if@restonecol\twocolumn \else \newpage \fi
-}
-
 \gdef\@degree{Doctor of Philosophy}
 \gdef\@doctype{A dissertation}
 
@@ -80,8 +72,9 @@
       UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlemedskip]
       \@date
     \end{center}
-    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
-    \hspace*{-0.7in}The dissertation is approved by the following members of the 
+    \vspace{1.5in}
+    \hspace*{-0.2in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
+    \hspace*{-0.2in}The dissertation is approved by the following members of the 
     Final Oral Committee:\\
     \@committee
   \end{titlepage}
