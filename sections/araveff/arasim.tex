@@ -129,17 +129,17 @@
             of an exponential:
 
             \begin{align}
-                n(z) = n_\mathrm{ice} - (n_\mathrm{ice}-n_\mathrm{firn}) e^{-z/\Lambda}~,
+                n(z) = n_{\symrm{ice}} - (n_{\symrm{ice}}-n_{\symrm{firn}}) e^{-z/\Lambda}~,
             \end{align}
             %%
-            where $n_\mathrm{ice}$ and $n_\mathrm{firn}$ are the ice's refractive indices in bulk and firn regions, respectively, and $\Lambda$ is the length scale of the transition between these two regions.
+            where $n_{\symrm{ice}}$ and $n_{\symrm{firn}}$ are the ice's refractive indices in bulk and firn regions, respectively, and $\Lambda$ is the length scale of the transition between these two regions.
             Other functional forms for $n(z)$ are available in the literature (e.g.~\cite{ice_ara}), but are not currently supported.
 
-            The values for $n_\mathrm{ice}$, $n_\mathrm{firn}$, and $\Lambda$
+            The values for $n_{\symrm{ice}}$, $n_{\symrm{firn}}$, and $\Lambda$
             must be derived from data.
             Several are available in \arasim{}, including those from the RICE experiment~\cite{ice_rice} and
             previous ARA studies~\cite{ara_a23, ara_pa_analysis}.
-            For this paper, we adopted the model used in~\cite{ara_pa_analysis} with $n_\mathrm{ice} = 1.780$, $n_\mathrm{firn} = 1.326$, and $\Lambda = 0.0202^{-1}$~m~$\simeq 49.505$~m.
+            For this paper, we adopted the model used in~\cite{ara_pa_analysis} with $n_{\symrm{ice}} = 1.780$, $n_{\symrm{firn}} = 1.326$, and $\Lambda = 0.0202^{-1}$~m~$\simeq 49.505$~m.
 
             Because the index of refraction depends on depth,
             Snell's law dictates that light paths follow curved, rather than rectilinear trajectories.
@@ -177,14 +177,14 @@
             Given an ice temperature, the attenuation length at three reference frequencies is modeled via a quadratic polynomial in temperature:
 
         \begin{align}\label{eq:reference_attenuation_lengths}
-                \ln\left(\frac{1~\text{m}}{\lambda_\mathrm{att}(f_i,t)}\right) = \alpha_i t^2 + \beta_i t + \gamma_i~,
+                \ln\left(\frac{1~\text{m}}{\lambda_{\symrm{att}}(f_i,t)}\right) = \alpha_i t^2 + \beta_i t + \gamma_i~,
             \end{align}
             %%
             where the coefficients, given in Table~\ref{tab:attenuation_length_coefficients}, were obtained by fitting data from~\cite{bogorodsky2012radioglaciology}.
             The final attenuation length is then obtained by linearly interpolating in log-frequency space between these reference frequencies:
 
             \begin{align}
-                \ln\left(\frac{1~\text{m}}{\lambda_\mathrm{att}(f)}\right) =~ &\ln\left(\frac{1~\text{m}}{\lambda_\mathrm{att}(f_i)}\right) \nonumber \\ &+ \frac{\ln(f/f_i)}{\ln(f_{i+1}/f_i)} \ln\left(\frac{\lambda_\mathrm{att}(f_i)}{\lambda_\mathrm{att}(f_{i+1})}\right) ~,
+                \ln\left(\frac{1~\text{m}}{\lambda_{\symrm{att}}(f)}\right) =~ &\ln\left(\frac{1~\text{m}}{\lambda_{\symrm{att}}(f_i)}\right) \nonumber \\ &+ \frac{\ln(f/f_i)}{\ln(f_{i+1}/f_i)} \ln\left(\frac{\lambda_{\symrm{att}}(f_i)}{\lambda_{\symrm{att}}(f_{i+1})}\right) ~,
             \end{align}
             %%
             where $i$ is such that $f_i \leq f < f_{i+1}$ and the dependence on temperature and depth has been suppressed for simplicity.
@@ -207,11 +207,11 @@
             To calculate the total attenuation factor experienced by a ray, \arasim{} calculates the product of attenuation factors in small steps along the ray path
 
             \begin{align}
-                f_\mathrm{att}(f) = \prod_i \exp\left(-\frac{L_i}{\lambda_\mathrm{att}(f,z_i)}\right)~,
+                f_{\symrm{att}}(f) = \prod_i \exp\left(-\frac{L_i}{\lambda_{\symrm{att}}(f,z_i)}\right)~,
             \end{align}
             %%
             where $L_i$ is the length of the $i$th ray step and $z_i$ is the average depth in that step.
-            This factor is then applied as $E_\mathrm{rec}(f) = f_\mathrm{att}(f) E_\mathrm{emit}(f)$, where $E_\mathrm{rec}$ is the frequency-space electric field amplitude arriving at the antenna and $E_\mathrm{emit}$ is its amplitude at the emission point.
+            This factor is then applied as $E_{\symrm{rec}}(f) = f_{\symrm{att}}(f) E_{\symrm{emit}}(f)$, where $E_{\symrm{rec}}$ is the frequency-space electric field amplitude arriving at the antenna and $E_{\symrm{emit}}$ is its amplitude at the emission point.
 
             \subsubsection{Birefringence}
             
@@ -282,16 +282,16 @@
         For example, for a VPol antenna this would be $\mathbf{h}_{\textrm eff} = |\mathbf{h}_{\textrm eff}| \hat{\theta}$.
         The corresponding frequency-domain voltage at the antenna can then be written as
         \begin{equation}
-        V_\mathrm{ant}(f) = \mathbf{E}(f) \cdot \mathbf{h}_{\textrm eff}(f,\theta,\phi)\, e^{i\Phi_\mathrm{ant}(f,\theta,\phi)},
+        V_{\symrm{ant}}(f) = \mathbf{E}(f) \cdot \mathbf{h}_{\textrm eff}(f,\theta,\phi)\, e^{i\Phi_{\symrm{ant}}(f,\theta,\phi)},
         \end{equation}
-        where $\mathbf{E}(f)$ is the incident electric-field and $\Phi_\mathrm{ant}(f,\theta,\phi)$ is the antenna phase.
+        where $\mathbf{E}(f)$ is the incident electric-field and $\Phi_{\symrm{ant}}(f,\theta,\phi)$ is the antenna phase.
 
         For the gain of the antenna, \arasim{} supports several antenna-response model types, including models derived from electromagnetic simulations, from in-situ measurements, and anechoic chamber measurements.
         Separate responses are used for the bottom VPol, top VPol, and HPol antennas.
         For each antenna type, \arasim{} uses a realized gain
         $G_r(f,\theta,\phi)$
         and phase
-        $\Phi_\mathrm{ant}(f,\theta,\phi)$,
+        $\Phi_{\symrm{ant}}(f,\theta,\phi)$,
         where $f$ is the signal frequency and $(\theta,\phi)$ specifies the signal arrival direction in the antenna coordinate system.
         
         For this work, we use anechoic chamber measurements of ARA antenna responses taken at the University of Kansas~\cite{KU-antennas}.
@@ -305,7 +305,7 @@
         
         The antenna model also includes information of impedance-mismatch of the antenna and its load through the standing-wave ratio (SWR), which is converted into a transmission coefficient and separately incorporated into the detector response:
         \begin{equation}
-        \Gamma = \frac{\mathrm{SWR}-1}{\mathrm{SWR}+1},
+        \Gamma = \frac{\symrm{SWR}-1}{\symrm{SWR}+1},
         \qquad
         T = \sqrt{1-\Gamma^2},
         \end{equation}
@@ -315,14 +315,14 @@
 
         After the antenna, \arasim{} models the response
         of the detector's amplifiers and filters.
-        Similar to the antenna response, the detector electronics response is described through a frequency-dependent electronics gain $G_\mathrm{elec}(f)$
+        Similar to the antenna response, the detector electronics response is described through a frequency-dependent electronics gain $G_{\symrm{elec}}(f)$
         and phase
-        $\phi_\mathrm{elec}(f)$.
+        $\phi_{\symrm{elec}}(f)$.
         \arasim{} supports either simulated electronics response models (e.g.\ \texttt{Qucs} simulations of the system) or in-situ, station- and configuration-dependent responses extracted from forced trigger data,\footnote{ARA stations use a supplementary $1$~Hz ``forced trigger'' to monitor the ambient background environment.} as shown in Figure~\ref{fig:gain_model}.
 
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/gain_model_A3_C1.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/gain_model_A3_C1.pdf}
                 \caption{
                     \label{fig:gain_model}
                     Comparison between (linear) gain models of the system response in \arasim{}, as a function of frequency.
@@ -340,11 +340,11 @@
         where $G_{\textrm elec}(f)$ and $\phi_{\textrm elec}(f)$ are the frequency-dependent electronics gain and phase response for the corresponding channel.
 
         To determine the in-situ gain model, forced trigger waveforms are Fourier transformed to obtain the measured voltage spectrum for each station, configuration, and channel.
-        This measured spectrum, $H_{\mathrm{meas}}(f)$, contains the thermal noise entering through the antenna convolved with the electronics gain.
-        The expected thermal contribution at the antenna, $H_{\mathrm{theory}}(f)$, is calculated from the antenna transmission coefficient and total noise temperature.
+        This measured spectrum, $H_{\symrm{meas}}(f)$, contains the thermal noise entering through the antenna convolved with the electronics gain.
+        The expected thermal contribution at the antenna, $H_{\symrm{theory}}(f)$, is calculated from the antenna transmission coefficient and total noise temperature.
         The electronics gain model is then obtained by dividing the measured spectrum by the expected thermal spectrum,
         \begin{equation}
-            G_{\mathrm{elec}}(f) = \frac{H_{\mathrm{meas}}(f)}{H_{\mathrm{theory}}(f)}.
+            G_{\symrm{elec}}(f) = \frac{H_{\symrm{meas}}(f)}{H_{\symrm{theory}}(f)}.
         \end{equation}
         %%
         \arasim{} recalculates the gain model to ensure it is consistent with the user-selected noise model (discussed in the following section) and antenna gain model.
@@ -384,9 +384,9 @@
         In \arasim{}, the voltage waveform in each channel after the electronics response $V_{elec}(t)$ is first passed through a model of the tunnel diode, which acts as a power integrator.
         The diode output can be written as
         \begin{equation}
-        D_i(t) = |V_{\mathrm{elec}, i}(t)|^2 * h_{\textrm diode}(t),
+        D_i(t) = |V_{\symrm{elec}, i}(t)|^2 * h_{\textrm diode}(t),
         \end{equation}
-        where $V_{\mathrm{elect}, i}(t)$ denotes the voltage waveform in channel $i$, $h_{\textrm diode}(t)$ is the tunnel-diode response function, and $*$ denotes a convolution.
+        where $V_{\symrm{elect}, i}(t)$ denotes the voltage waveform in channel $i$, $h_{\textrm diode}(t)$ is the tunnel-diode response function, and $*$ denotes a convolution.
         A channel is considered to have triggered when the diode output exceeds a threshold $
         D_i(t) > D_{\textrm th}$.
         
@@ -398,19 +398,19 @@
 
         For the phased array station, the trigger is designed to improve sensitivity to low-amplitude signals using coherent beamforming.
         In a beamformed trigger, signals from $N$ closely spaced antennas are delayed and summed so that a plane wave arriving from a given direction adds coherently.
-        For a coherent signal, the summed amplitude scales as $N$, while the RMS of incoherent thermal noise scales as $\sqrt{N}$, so that the $\mathrm{SNR} \propto \sqrt{N}$.
+        For a coherent signal, the summed amplitude scales as $N$, while the RMS of incoherent thermal noise scales as $\sqrt{N}$, so that the $\symrm{SNR} \propto \sqrt{N}$.
 
         In \arasim{}, this trigger is represented through a trigger efficiency-based proxy rather than a full hardware-level simulation of beamforming.
         The simulation calculates the signal-only SNR in a short window in a reference VPol channel, chosen in the current implementation to be the top-most VPol antenna.
 
-        This SNR is converted to the equivalent SNR for a signal arriving from the direction of the local calibration pulser, $\theta_\mathrm{CP}$.
-        This is done by scaling the measured SNR by the ratio of the PA's $50\%$ trigger efficiency SNR to signals from $\theta_\mathrm{CP}$ to that from the signal arrival direction $\theta$,
+        This SNR is converted to the equivalent SNR for a signal arriving from the direction of the local calibration pulser, $\theta_{\symrm{CP}}$.
+        This is done by scaling the measured SNR by the ratio of the PA's $50\%$ trigger efficiency SNR to signals from $\theta_{\symrm{CP}}$ to that from the signal arrival direction $\theta$,
         %%
         \begin{equation}
-        {\textrm SNR}_{\textrm eff} = {\textrm SNR}_{\textrm meas}\, \frac{{\textrm SNR}_{50\%}(\theta_\mathrm{CP})}{{\textrm SNR}_{50\%}(\theta)},
+        {\textrm SNR}_{\textrm eff} = {\textrm SNR}_{\textrm meas}\, \frac{{\textrm SNR}_{50\%}(\theta_{\symrm{CP}})}{{\textrm SNR}_{50\%}(\theta)},
         \end{equation}
         %%
-        where ${\textrm SNR}_{50\%}(\theta_\mathrm{CP})=2$ and ${\textrm SNR}_{50\%}(\theta)$ is the angular-response described in~\cite{ara_pa_design}.
+        where ${\textrm SNR}_{50\%}(\theta_{\symrm{CP}})=2$ and ${\textrm SNR}_{50\%}(\theta)$ is the angular-response described in~\cite{ara_pa_design}.
         The resulting effective SNR is mapped onto a trigger-efficiency curve $ \epsilon_{\textrm PA}({\textrm SNR}_{\textrm eff})$, determined from measurements.
         The PA then triggers randomly with a probability equal to $\epsilon_{\textrm PA}({\textrm SNR}_{\textrm eff})$.
 
