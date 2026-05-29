@@ -47,9 +47,6 @@
 \newenvironment{hanglist}{\begin{enumerate}}{\end{enumerate}}%
 }
 
-\usepackage{unicode-math}
-\setmathfont{Latin Modern Math} 
-
 % For Feynman Diagrams
 \usepackage{tikz}
 \usepackage[compat=1.1.0]{tikz-feynman}
@@ -127,19 +124,6 @@
 \setcitestyle{square}
 \newcommand{\prd}{Physical Review D}
 
-\AtBeginDocument{%
-  \@ifpackageloaded{natbib}{%
-    \apptocmd{\endthebibliography}{\vskip-\lastskip\postbibhook}{}{}%
-    \@ifpackagewith{natbib}{sectionbib}{%
-      \renewcommand{\bibsection}{\@memb@bsec}}%
-      {\renewcommand{\bibsection}{\@memb@bchap}}}%
-  {}
-  \@ifpackagewith{chapterbib}{sectionbib}{%
-    \renewcommand{\sectionbib}[2]{}
-    \renewcommand{\bibsection}{\@memb@bsec}}{}
-}
-\makeatother
-
 \usepackage{tagpdf}
 \tagpdfsetup{
   activate-all,
@@ -165,6 +149,9 @@
   pdfdisplaydoctitle=true,
 }
 \newcounter{Hfootnote}
+
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math} 
 
 \newcommand{\arasim}{\texttt{AraSim}}
 \newcommand{\araroot}{\texttt{AraRoot}}
