@@ -40,7 +40,7 @@
           The size of the cylinder depends on the primary neutrino's energy,\footnote{
               We approximate stations as independent (i.e.\ they have zero overlap in their triggered neutrinos) for primary neutrino energies $\leq 10^{17.0}$~eV.
               We therefore use smaller fiducial cylinders (centered on each station) at these energies to improve the computational efficiency of simulations.
-              Specifically, we use the following cylinder parameters for simulations of primary neutrinos with discrete energies: $E_\nu = 10^{16}$~eV, $r=1.5$~km, $h=0.75$~km; $E_\nu = 10^{16.5}$~eV, $r=3.0$~km, $h=1.5$~km; and $E_\nu = 10^{17}$~eV, $r=5.0$~km, $h=2.0$~km.
+              Specifically, we use the following cylinder parameters for simulations of primary neutrinos with discrete energies: $E_{\nu} = 10^{16}$~eV, $r=1.5$~km, $h=0.75$~km; $E_\nu = 10^{16.5}$~eV, $r=3.0$~km, $h=1.5$~km; and $E_\nu = 10^{17}$~eV, $r=5.0$~km, $h=2.0$~km.
               These parameters were chosen to minimize the size of the fiducial volume while still fully encompassing each station's detection volume.
               \label{fn:lowEsims}
           } but for energies greater than $10^{17}$~eV, the cylinder has a $15$~km radius and $3$~km height.
@@ -51,7 +51,8 @@
           A diagram of the geometry used is shown in Fig.~\ref{fig:event_gen_diagram}.
 
           \begin{figure}
-              \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/nls_earth.pdf}
+              \centering
+              \includegraphics[width=0.75\linewidth]{sections/araveff/images/veffPaper/nls_earth.pdf}
               \caption{
                   \label{fig:event_gen_diagram}
                   Diagram of the \nuleptonsim{} event generation geometry.Neutrinos are thrown towards points uniformly sampled in the fiducial volume $V_{\text{fid}}$.
@@ -67,11 +68,11 @@
           To model the Antarctic glacial ice, the Earth is enveloped by a 3~km thick shell of ice with a uniform density of $0.92$~g/cm$^3$.
           Individual neutrino interaction distances and interaction types are sampled according to the neutrino-nucleon cross section of Ref.~\cite{ctw-interaction}, while cascade and secondary particle energies are determined using inelasticity tables from the CTEQ5 parton distribution~\cite{cteq5}.
           Secondary particle interactions are calculated using parameterized differential cross sections.
-          Particle propagation stops when particles exit the fiducial volume or when their energy drops below $E_\mathrm{th} = \min(10~\text{PeV}, E_\nu/10)$.
+          Particle propagation stops when particles exit the fiducial volume or when their energy drops below $E_{\text{th}} = \text{min}(10~\text{PeV}, E_\nu/10)$.
           This energy threshold was chosen to minimize computation time while retaining all particles that contribute to ARA's sensitivity.
           
           Each primary neutrino is assigned a unique tracking ID that is inherited by all particles resulting from interactions that the primary neutrino and its secondary particles undergo.
-          Any interaction that occurs in the fiducial volume with $E \geq E_\mathrm{th}$ is recorded by saving: the primary neutrino's tracking ID, flavor, and energy along with interaction-specific information, including the initiating particle flavor \& propagation direction, interaction vertex location, interaction type \& inelasticity, and shower type.
+          Any interaction that occurs in the fiducial volume with $E \geq E_{\symrm{th}}$ is recorded by saving: the primary neutrino's tracking ID, flavor, and energy along with interaction-specific information, including the initiating particle flavor \& propagation direction, interaction vertex location, interaction type \& inelasticity, and shower type.
           This information for each interaction in the fiducial volume constitutes the event library passed to \arasim{}.
           Event libraries are generated for both the primary-only case (i.e., considering only neutrinos whose first interaction is in the fiducial volume and ignoring any further interactions of the neutrino or its secondaries) and the complete primary-and-secondary case to study the effects of including secondary particle interactions.
 
@@ -80,7 +81,7 @@
           Only primary neutrinos that result in interaction vertices within this fiducial volume are represented in the (biased) sample simulated by \arasim{}, while all other primary neutrinos are ``rejected'' from this sample.
           This bias is later corrected via Monte Carlo weighting.
           
-          In addition to event library generation, \nuleptonsim{} is also used to calculate the solid angle-averaged probability, $\langle p_\mathrm{acc}\rangle$, for a primary neutrino to produce at least one interaction in the fiducial volume.
+          In addition to event library generation, \nuleptonsim{} is also used to calculate the solid angle-averaged probability, $\langle p_{\symrm{acc}}\rangle$, for a primary neutrino to produce at least one interaction in the fiducial volume.
           This is calculated via dedicated auxiliary simulations for each neutrino flavor, charge, and energy.
 
 \section{Calculating Effective Volume, Effective Area, Sensitivity, and Event Rates}
@@ -96,22 +97,22 @@
   This event sample is generated via a rejection sampling using \texttt{NuLeptonSim}, as described in Section~\ref{sec:NLS}, and then simulated through  \texttt{AraSim} to determine the trigger outcome of each event.
   Within this framework, the Monte Carlo estimator for the acceptance is given by
   \begin{align}\label{eq:acceptance}
-      \mathcal{A}(E) = \frac{1}{N} \sum_i^{N_\mathrm{trig}} w_i~,
+      \mathcal{A}(E) = \frac{1}{N} \sum_i^{N_{\symrm{trig}}} w_i~,
   \end{align}
   %%
-  where $N$ is the number of events in the event library passed to \texttt{AraSim} (N.B.: this is not the same as the total number of primary neutrinos simulated by \texttt{NuLeptonSim}), $N_\mathrm{trig}$ is the number of triggering primary neutrino interactions, and $w_i$ is the weight of the $i$-th event.
+  where $N$ is the number of events in the event library passed to \texttt{AraSim} (N.B.: this is not the same as the total number of primary neutrinos simulated by \texttt{NuLeptonSim}), $N_{\symrm{trig}}$ is the number of triggering primary neutrino interactions, and $w_i$ is the weight of the $i$-th event.
   The weights for events are calculated with
   \begin{align}\label{eq:weights}
-      w_i = \frac{4\pi V_\mathrm{fid} \langle p_\mathrm{acc} \rangle}{L_i}~,
+      w_i = \frac{4\pi V_{\symrm{fid}} \langle p_{\symrm{acc}} \rangle}{L_i}~,
   \end{align}
   %%
-  where $V_\mathrm{fid}$ is the fiducial volume, $\langle p_\mathrm{acc} \rangle$ is the solid-angle averaged probability for a primary to produce an interaction vertex in the fiducial volume (i.e. to be accepted in the rejection sampling scheme), and $L_i$ is the length of the chord through the fiducial volume along which the $i$-th primary neutrino propagates.
+  where $V_{\symrm{fid}}$ is the fiducial volume, $\langle p_{\symrm{acc} }\rangle$ is the solid-angle averaged probability for a primary to produce an interaction vertex in the fiducial volume (i.e. to be accepted in the rejection sampling scheme), and $L_i$ is the length of the chord through the fiducial volume along which the $i$-th primary neutrino propagates.
   The numerator in Eq.~\eqref{eq:weights} corresponds to the normalization factor of the sampling distribution passed to \texttt{AraSim}, while the denominator corrects for the over-representation of primary particle interactions along chords that have longer path lengths through the fiducial volume.
   This calculation is performed array-wide, so a vertex produced by a given primary is only counted once, even if it produces multiple triggers across the array.
 
   %Transforming Aeff to Sensitivity
   To determine the trigger-level sensitivity of the array, we first determine its total array-wide exposure.
-  In the following discussion, we assume a flavor ratio of $\nu_e:\nu_\mu:\nu_\tau = 1:1:1$ and a neutrino-to-antineutrino ratio of $\nu : \bar{\nu} = 1:1$.
+  In the following discussion, we assume a flavor ratio of $\nu_e:\nu_{\mu}:\nu_{\tau} = 1:1:1$ and a neutrino-to-antineutrino ratio of $\nu : \bar{\nu} = 1:1$.
   Because the array operated in multiple configurations over time with changing trigger thresholds and livetimes, the acceptance in Eq.~\eqref{eq:acceptance} is generally time-dependent.
   We therefore define the trigger-level, flavor-averaged (over all 6 types of neutrinos) exposure as
   %%
@@ -125,9 +126,9 @@
   Given the total flavor-averaged exposure in Eq.~\eqref{eq:exposure_trigger}, we can construct an upper limit on the differential energy flux of diffuse neutrinos.
   We evaluate the all-flavor diffuse neutrino energy flux upper limit in decade-wide bins, assuming an $E^{-1}$ spectrum within the bin as
   \begin{align}
-      \phi^\mathrm{UL}_{\nu+\bar{\nu}}(E_i) = \frac{N_\mathrm{UL}}{\ln(10) E_i \mathcal{E}(E_i)}~,
+      \phi^{\symrm{UL}}_{\nu+\bar{\nu}}(E_i) = \frac{N_{\symrm{UL}}}{\ln(10) E_i \mathcal{E}(E_i)}~,
   \end{align}
-  where $N_\mathrm{UL}=2.44$ is the background-free $90\%$~confidence level upper limit on the true number of neutrinos for zero observed events under the Feldman Cousins construction~\cite{feldman_cousins}, and $E_i$ is the logarithmic center of the constrained energy bin.
+  where $N_{\symrm{UL}}=2.44$ is the background-free $90\%$~confidence level upper limit on the true number of neutrinos for zero observed events under the Feldman Cousins construction~\cite{feldman_cousins}, and $E_i$ is the logarithmic center of the constrained energy bin.
   This trigger-level differential upper limit represents the maximum achievable sensitivity of the detector.
 
   To mimic the sensitivity of an idealized neutrino search, we perform a toy analysis to determine the flavor-averaged exposure.
@@ -185,7 +186,7 @@
     \begin{figure}
       \centering
       \includegraphics[
-        width=4.25in,
+        width=\linewidth,
         alt={x}
       ]{sections/araveff/images/icrc23/plots-event_topologies}
       \caption{
@@ -220,71 +221,61 @@
     \end{enumerate}
 
     \begin{figure}
-    
-      \hspace{0.015\textwidth}
-      \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-        \includegraphics[
-          width=2.5in,
-          alt={x}
-        ]{sections/araveff/images/icrc23/plots-1s3a6p-general-Aeffs-prim}
-        \caption{
-          Effective Area of all events involving an initial neutrino cascade (in black) compared to previous ARA initial cascade results (in red) \cite{ara_a23_10mo}.
-          The blue lines correspond to the effective area for different flavors of neutrinos.
-        }
-        \label{fig:EAbyflavor}
-      \end{subfigure}
-      \hspace{0.035\textwidth}
-      \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-        \includegraphics[
-          width=2.5in,
-          alt={x}
-        ]{sections/araveff/images/icrc23/plots-1s3a6p-general-Aeffs-byNTriggered-all_flavor-LOFalse}
-        \caption{
-          Percent of effective area composed by events where $only$ an initial cascade trigger (in blue) and events where two or more cascades from the same event trigger (gray lines) one or more ARA stations.
-        }
-        \label{fig:EAbyNTriggers}
-      \end{subfigure}
-      
-      \hspace{0.015\textwidth}
-      \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-        \includegraphics[
-          width=2.5in,
-          alt={x}
-        ]{sections/araveff/images/icrc23/plots-1s3a6p-general-Aeffs-allParticle}
-        \caption{
-          Percent of the Effective Area made up of: 
-            all events including an initial cascade trigger (in blue, including events where cascades from an outgoing lepton triggered as well); 
-            events where only cascades from taus, muons, and outgoing neutrinos trigger (in yellow);
-            events where only outgoing neutrinos triggered (in green, all data points are between 0.5\% and 0.9\%).
-        }
-        \label{fig:EAbyparticles}
-      \end{subfigure}
-      \hspace{0.035\textwidth}
-      \begin{subfigure}[t]{0.45\textwidth}
-        \centering
-        \includegraphics[
-          width=2.5in,
-          alt={x}
-        ]{sections/araveff/images/icrc23/plots-1s3a6p-coincident-Aeffs-percentAeffTot-all_flavor}
-        \caption{
-          Percent of total ARA effective area from: 
-            all multi-station events (in black), 
-            initial neutrino cascades (in blue), 
-            a single muon or tau cascade (from a track or decay) triggering multiple stations (in solid yellow), 
-            multiple muon and tau cascades triggering different stations (in dash-dot yellow), 
-            multiple particles from the same event triggering different stations (in dotted yellow), 
-            and outgoing neutrinos (in green).
-        }
-        \label{fig:coinbreakdown-allflavor}
-      \end{subfigure}
+      \centering
+      \includegraphics[
+        width=0.6\linewidth,
+        alt={x}
+      ]{sections/araveff/images/icrc23/plots-1s3a6p-general-Aeffs-prim}
       \caption{
-        ARA Effective Area with comparison to previous data and breakdowns by flavor, number of triggers per event, types of particles with triggering cascades, and types and abundance of events that trigger more than one station.
-        The yellow curves in the bottom two plots reflect scenarios illustrated in Figure~\ref{fig:eventtopos}.
+        Effective Area of all events involving an initial neutrino cascade (in black) compared to previous ARA initial cascade results (in red) \cite{ara_a23_10mo}.
+        The blue lines correspond to the effective area for different flavors of neutrinos.
       }
-      \label{fig:veffs}
+      \label{fig:EAbyflavor}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.6\linewidth,
+        alt={x}
+      ]{sections/araveff/images/icrc23/plots-1s3a6p-general-Aeffs-byNTriggered-all_flavor-LOFalse}
+      \caption{
+        Percent of effective area composed by events where $only$ an initial cascade trigger (in blue) and events where two or more cascades from the same event trigger (gray lines) one or more ARA stations.
+      }
+      \label{fig:EAbyNTriggers}
+    \end{figure}
+    
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.6\linewidth,
+        alt={x}
+      ]{sections/araveff/images/icrc23/plots-1s3a6p-general-Aeffs-allParticle}
+      \caption{
+        Percent of the Effective Area made up of: 
+          all events including an initial cascade trigger (in blue, including events where cascades from an outgoing lepton triggered as well); 
+          events where only cascades from taus, muons, and outgoing neutrinos trigger (in yellow);
+          events where only outgoing neutrinos triggered (in green, all data points are between 0.5\% and 0.9\%).
+      }
+      \label{fig:EAbyparticles}
+    \end{figure}
+    
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.6\linewidth,
+        alt={x}
+      ]{sections/araveff/images/icrc23/plots-1s3a6p-coincident-Aeffs-percentAeffTot-all_flavor}
+      \caption{
+        Percent of total ARA effective area from: 
+          all multi-station events (in black), 
+          initial neutrino cascades (in blue), 
+          a single muon or tau cascade (from a track or decay) triggering multiple stations (in solid yellow), 
+          multiple muon and tau cascades triggering different stations (in dash-dot yellow), 
+          multiple particles from the same event triggering different stations (in dotted yellow), 
+          and outgoing neutrinos (in green).
+      }
+      \label{fig:coinbreakdown-allflavor}
     \end{figure}
 
     In the case of both tracks and decays, the tau or muon can originate inside or outside of our array's triggering region, so long as any cascades created exist within the triggering region.
@@ -327,9 +318,8 @@
     %(or 1 event in 100 station-years).
 
     \begin{figure}
-      \hspace{0.15\textwidth}
       \includegraphics[
-        width=3.75in,
+        width=\linewidth,
         alt={x}
       ]{sections/araveff/images/icrc23/plots-221028-nutau-1e10-2928701-side_000-trimmed}
       \caption{
@@ -352,10 +342,10 @@
   Not only do these arrays have more stations, but they also have next generation station hardware and designs that could allow for further increased likelihood for observing unique events.
 
   \begin{center}
-    \begin{minipage}{0.45\textwidth}
+    \begin{minipage}{0.53\textwidth}
       \vspace{0.2in}
       \includegraphics[
-        width=2.45in,
+        width=\linewidth,
         alt={x}
       ]{sections/araveff/images/icrc23/plots-1s3a6p-eventrates}
       \label{fig:eventrates}
@@ -400,7 +390,7 @@
         Recently, the KM3NeT Collaboration observed the first UHE neutrino candidate with an energy of $220_{-110}^{+570}$~PeV~\cite{km3net_neutrino}.
         Robust measurements of the UHE neutrino flux will enable these particles to play an important role in multimessenger astronomy, alongside cosmic rays, gamma rays, and gravitational waves.
         
-        A flux of UHE neutrinos is expected to be produced by ultra-high energy cosmic rays (UHECRs; $E_\mathrm{CR}\ge 10^{18}$~eV).
+        A flux of UHE neutrinos is expected to be produced by ultra-high energy cosmic rays (UHECRs; $E_{\symrm{CR}}\ge 10^{18}$~eV).
         Both photohadronic and hadronic interactions of UHECRs inside their sources can produce what are commonly referred to as astrophysical neutrinos.
         Similarly, photohadronic interactions with the cosmic microwave background~\cite{gzk-gk,gzk-z} and extragalactic background light during extragalactic propagation produce cosmogenic neutrinos.
         In this way, measurements or constraints on the UHE neutrino flux provide a direct probe into the UHECRs and properties of their sources.
@@ -540,7 +530,7 @@
             
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/station_3_veff_config_6_run_None_eventNo_522_14_trace.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/station_3_veff_config_6_run_None_eventNo_522_14_trace.pdf}
                 \caption{ 
                     \label{fig:waveform}
                     Simulated voltage trace of one channel on station A3 containing multiple pulses from primary and secondary interactions.
@@ -572,7 +562,7 @@
             
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/noise_model_A3_C1.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/noise_model_A3_C1.pdf}
                 \caption{
                     \label{fig:noise_model}
                     Comparison of noise models in \arasim{}
@@ -584,7 +574,7 @@
             
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/pa-noise-comparison.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/pa-noise-comparison.pdf}
                 \caption{
                     \label{fig:noise_comp}
                     Signal-to-noise ratio (SNR) averaged over all VPol channels for simulated noise (blue) and real noise-like (green) events in configuration 4 of the Phased Array detector.}
@@ -614,26 +604,26 @@
             Within this framework, the Monte Carlo estimator for the acceptance is given by
 
             \begin{align}\label{eq:acceptance}
-                \mathcal{A}(E) = \frac{1}{N} \sum_i^{N_\mathrm{trig}} w_i~,
+                \mathcal{A}(E) = \frac{1}{N} \sum_i^{N_{\symrm{trig}}} w_i~,
             \end{align}
             %%
-            where $N$ is the number of unique primary neutrino events in the event library passed to \arasim{} (N.B.\ this is not the same as the total number of primary neutrinos simulated by \nuleptonsim{}), $N_\mathrm{trig}$ is the number of triggering primary neutrino interactions, and $w_i$ is the weight of the $i$th triggered event.\footnote{
+            where $N$ is the number of unique primary neutrino events in the event library passed to \arasim{} (N.B.\ this is not the same as the total number of primary neutrinos simulated by \nuleptonsim{}), $N_{\symrm{trig}}$ is the number of triggering primary neutrino interactions, and $w_i$ is the weight of the $i$th triggered event.\footnote{
               At $E\leq 10^{17}$~eV, stations are approximated as independent.
               Therefore, their acceptances are calculated individually and then summed to find the array-wide acceptance.
             } 
             The weights for events are calculated as
             
             \begin{align}\label{eq:weights}
-                w_i = \frac{4\pi V_\mathrm{fid} \langle p_\mathrm{acc} \rangle}{L_i}~,
+                w_i = \frac{4\pi V_{\symrm{fid}} \langle p_{\symrm{acc}} \rangle}{L_i}~,
             \end{align}
             %%
-            where $V_\mathrm{fid}$ is the fiducial volume, $\langle p_\mathrm{acc} \rangle$ is the solid angle-averaged probability for a primary to produce an interaction vertex in the fiducial volume (i.e.
+            where $V_{\symrm{fid}}$ is the fiducial volume, $\langle p_{\symrm{acc}} \rangle$ is the solid angle-averaged probability for a primary to produce an interaction vertex in the fiducial volume (i.e.
             to be accepted in the rejection sampling scheme), and $L_i$ is the length of the chord through the fiducial volume along which particles from the $i$th primary neutrino propagate.
             Consequently, $w_i$ has units of area times solid angle.
             The numerator in Eq.~\eqref{eq:weights} corresponds to the normalization factor of the sampling distribution passed to \arasim{}, while the denominator corrects for the over-representation of primary particle interactions along chords that have longer path lengths through the fiducial volume.
             
             To determine the trigger-level sensitivity of the array, we first determine its total array-wide exposure.
-            In the following discussion, we assume a flavor ratio of $\nu_e:\nu_\mu:\nu_\tau = 1:1:1$ and a neutrino-to-antineutrino ratio of $\nu : \bar{\nu} = 1:1$.
+            In the following discussion, we assume a flavor ratio of $\nu_e:\nu_{\mu}:\nu_{\tau} = 1:1:1$ and a neutrino-to-antineutrino ratio of $\nu : \bar{\nu} = 1:1$.
             Because the array operated in multiple configurations over time with changing trigger thresholds and livetimes, the acceptance in Eq.~\eqref{eq:acceptance} is generally time-dependent.
             We therefore define the trigger-level, flavor-averaged (over all 6 types of neutrinos) exposure as
             %%
@@ -647,9 +637,9 @@
             Given the total flavor-averaged exposure in Eq.~\eqref{eq:exposure_trigger}, we can construct an upper limit on the differential flux of diffuse neutrinos.
             We evaluate the all-flavor diffuse neutrino flux upper limit in decade-wide bins, assuming an $E^{-1}$ spectrum within the bin as
             \begin{align}
-                \phi^\mathrm{UL}_{\nu+\bar{\nu}}(E_0) = \frac{N_\mathrm{UL}}{\ln(10) E_0 \mathcal{E}(E_0)}~,
+                \phi^{\symrm{UL}}_{\nu+\bar{\nu}}(E_0) = \frac{N_{\symrm{UL}}}{\ln(10) E_0 \mathcal{E}(E_0)}~,
             \end{align}
-            where $N_\mathrm{UL}=2.44$ is the background-free $90\%$~confidence level (CL) upper limit on the true average number of neutrinos for zero observed events under the Feldman Cousins construction~\cite{feldman_cousins}, and $E_0$ is the logarithmic center of the constrained energy bin.
+            where $N_{\symrm{UL}}=2.44$ is the background-free $90\%$~confidence level (CL) upper limit on the true average number of neutrinos for zero observed events under the Feldman Cousins construction~\cite{feldman_cousins}, and $E_0$ is the logarithmic center of the constrained energy bin.
             This trigger-level differential upper limit represents the maximum achievable sensitivity of the detector.
 
             To mimic the sensitivity of a simplified neutrino search, we perform a toy event selection on the simulated neutrino events to determine the analysis-level exposure.
@@ -661,8 +651,8 @@
                 The event selection is applied to the straight-line (elevation) angle from the sphere's center to the reconstructed vertex position.
                 The TIR angle reported in the text is the receipt angle at the sphere's center, which is then transformed into a reconstructed vertex position via ray tracing from the center to its edge.
                 The straight-line angle to the ray-traced intersection is then used as the selection threshold.
-              } corresponding to roughly $\theta \leq \theta_\mathrm{TIR} - 5^\circ \simeq 50^\circ$.
-              The $5^\circ$ buffer is added to account for errors in angular reconstruction.
+              } corresponding to roughly $\theta \leq \theta_{\symrm{TIR}} - 5^\circ \simeq 50^{\circ}$.
+              The $5^{\circ}$ buffer is added to account for errors in angular reconstruction.
               We expect that this is the deepest angle that horizontal rays from the surface could arrive from and thus drives this cut.
             \end{itemize}
         
@@ -685,7 +675,7 @@
 
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_all_single_station_veff.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_all_single_station_veff.pdf}
                 \caption{
                     \label{fig:veffperstation}
                     The trigger-level acceptance averaged over all 6 neutrino types and averaged over the livetime of the full array (black) compared to the analysis-level IceCube acceptance (blue)~\cite{icecube_search-ehe}.
@@ -712,7 +702,7 @@
             
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/flavor_veff.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/flavor_veff.pdf}
                 \caption{
                     \label{fig:veffbyflavor}
                     Top panel: trigger-level acceptance of ARA to neutrinos (solid lines) and anti-neutrinos (dashed lines).
@@ -729,7 +719,7 @@
             
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_5sa_e2Sensitivity_astrocosmo.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_5sa_e2Sensitivity_astrocosmo.pdf}
                 \caption{
                     \label{fig:sensitivity}
                     Array-wide sensitivity of ARA as characterized by $90\%$ CL upper limits.
@@ -764,7 +754,7 @@
 
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_secondaries_contributions.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_secondaries_contributions.pdf}
                 \caption{
                     \label{fig:secondaries_contribution}
                     Fraction of events contributed by secondary particle interactions at trigger-level.
@@ -780,7 +770,7 @@
             The share of events that generate multistation triggers increases with energy, reaching more than $35\%$ of all triggers at $10^{21}$~eV.
             This underscores that multistation triggers are not uncommon at high energies.
             
-            \subsection{Comparison to Previous Results\label{app:comp}} 
+    \subsection{Comparison to Previous Results\label{app:comp}} 
 
         In Fig.~\ref{fig:comp}, we show the acceptance (averaged over all configurations' livetimes) for station A2 and the PA calculated in this work compared to previously published results.
         The enhancement of the acceptance at high energies is due to contributions from secondary interactions, which were not included in previous studies.
@@ -788,7 +778,7 @@
         
         \begin{figure}[h!]
             \centering
-            \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_comparison_a2_pa.pdf}
+            \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_comparison_a2_pa.pdf}
             \caption{Trigger-level acceptance of A2 and PA calculated in this work compared to results presented for A2 in Ref.~\cite{ara_a23} and PA in Ref.~\cite{ara_pa_analysis}, converted into an acceptance.} 
             \label{fig:comp}
         \end{figure}
@@ -796,16 +786,16 @@
     \subsection{Angular Sensitivity\label{app:zenith_acceptance}}
 
         We calculate the average effective area across bins in elevation angle to characterize ARA's sensitivity to neutrinos arriving from different directions.
-        Since the acceptance is the integral of the effective area $A_\mathrm{eff}(\theta)$ over solid angle, we calculate the average effective area over an elevation angle range $[\theta_\mathrm{lo}, \theta_\mathrm{hi}]$ as
+        Since the acceptance is the integral of the effective area $A_{\symrm{eff}}(\theta)$ over solid angle, we calculate the average effective area over an elevation angle range $[\theta_{\symrm{lo}}, \theta_{\symrm{hi}}]$ as
 
         \begin{align}
-            A_\mathrm{eff}(\theta_\mathrm{lo}, \theta_\mathrm{hi}) = \frac{\Delta \mathcal{A}}{\Delta\Omega}~,
+            A_{\symrm{eff}}(\theta_{\symrm{lo}}, \theta_{\symrm{hi}}) = \frac{\Delta \mathcal{A}}{\Delta\Omega}~,
         \end{align}
         %%
-        where $\Delta\Omega = 2\pi ( \sin\theta_\mathrm{hi} - \sin\theta_\mathrm{lo})$ is the solid angle subtended by the bin\footnote{Sine appears in the calculation of solid angle since $\theta$ is an elevation angle, rather than a zenith angle.} and
+        where $\Delta\Omega = 2\pi ( \sin\theta_{\symrm{hi}} - \sin\theta_{\symrm{lo}})$ is the solid angle subtended by the bin\footnote{Sine appears in the calculation of solid angle since $\theta$ is an elevation angle, rather than a zenith angle.} and
 
         \begin{align}
-            \Delta\mathcal{A} = \frac{1}{N} \sum_i^{N_\mathrm{trig}} w_i \delta_{\theta_i \in [\theta_\mathrm{lo}, \theta_\mathrm{hi}]}~,
+            \Delta\mathcal{A} = \frac{1}{N} \sum_i^{N_{\symrm{trig}}} w_i \delta_{\theta_i \in [\theta_{\symrm{lo}}, \theta_{\symrm{hi}}]}~,
         \end{align}
         %%
         where $\theta_i$ is the arrival angle in elevation of event $i$ and $w_i$ is given by \eqref{eq:weights}.
@@ -819,7 +809,7 @@
         
         \begin{figure}
             \centering
-            \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/aeff_vs_zenith.pdf}
+            \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/aeff_vs_zenith.pdf}
             \caption{
                 Trigger-level effective area of ARA as a function of neutrino arrival direction in terms of elevation angle.
                 The effective area is averaged across the indicated elevation range of the bin.
@@ -835,7 +825,7 @@
             For favorable geometries, a series of primary and secondary interactions can generate multiple pulses in a single event readout.
             Each interaction potentially contributes up to two pulses, one from the ``direct'' ray path and one from the ``refracted'' ray path.
             These events can produce complicated voltage traces, such as the one shown in Fig.~\ref{fig:waveform}, which contains $5$~pulses from primary and secondary interactions.
-            To understand their prevalence, we quantify the percentage of events that are multi-pulse by scanning all the channel waveforms of each event for pulses with $\mathrm{SNR} \geq 5$.
+            To understand their prevalence, we quantify the percentage of events that are multi-pulse by scanning all the channel waveforms of each event for pulses with $\symrm{SNR} \geq 5$.
             The root mean square (RMS) voltage of each channel was taken from pure thermal noise simulations for this purpose, since multi-pulse traces can bias the estimation of the noise RMS.
             Additionally, an isolation condition is enforced by combining above-threshold pulse windows separated by less than $40$~ns, measured from the end of one window to the beginning of the next, to account for post-pulse ring-down structure.
             After merging, the peak position of a pulse is defined as the location of the maximum waveform amplitude within the merged window.
@@ -852,7 +842,7 @@
 
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_multistation.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_multistation.pdf}
                 \caption{
                     \label{fig:multistation}
                     Fraction of events at trigger-level that generate triggers in only one station (blue) and in two or more stations (purple).
@@ -862,13 +852,13 @@
             
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/A3_config6_representative_peak_fractions_vs_energy_weighted.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/A3_config6_representative_peak_fractions_vs_energy_weighted.pdf}
                 \caption{
                     \label{fig:pulses_percentage}
                     The fraction of events at trigger-level with one pulse (blue), two pulses (green), or greater than two pulses (purple) in their waveforms, for the example of A3 in configuration 6.
                     One or two pulses in a waveform are possible from a single interaction, but more than two require pulses from at least two interactions to be present in the waveform.
                     Details of the estimation can be found in the text.
-                    Note that the values of the lines at a particular energy need not sum to $100\%$, since pulses must have $\mathrm{SNR} \geq 5$ to be included in this estimation.
+                    Note that the values of the lines at a particular energy need not sum to $100\%$, since pulses must have $\symrm{SNR} \geq 5$ to be included in this estimation.
                 }
             \end{figure}
 
@@ -894,7 +884,7 @@
 
             \begin{figure}
                 \centering
-                \includegraphics[width=\linewidth]{sections/araveff/images/veffPaper/single_multistation_efficiency.pdf}
+                \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/single_multistation_efficiency.pdf}
                 \caption{
                     \label{fig:single_multistation_efficiency}
                     Signal efficiency (i.e.\ fraction of triggered neutrino events that pass the toy event selection described in Section~\ref{sec:veffpaper_calculations}) for events that triggered a single station compared to those that triggered multiple stations across the array
