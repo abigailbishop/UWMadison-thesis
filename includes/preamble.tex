@@ -16,7 +16,7 @@
 
 %% You should use natbib
 \IfFileExists{natbib.sty}{%
-\usepackage{natbib}%
+\usepackage[authoryear,round]{natbib}%
 }{}
 
 %% You probably need appendix, if you want appendices
@@ -24,9 +24,19 @@
 \usepackage{appendix}%
 }{}
 
+% Page Setup
+\usepackage[width=156mm,top=35mm,bottom=25.4mm,bindingoffset=0mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\pagestyle{fancyplain}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{15pt}
+
 %% the spacing in memoir is weird, you'll need to use this
-\DisemulatePackage{setspace}
-\usepackage[onehalfspacing]{setspace}
+% \DisemulatePackage{setspace}
+% \usepackage[onehalfspacing]{setspace}
 
 \IfFileExists{enumitem.sty}{%
 \usepackage[loadonly]{enumitem}[2007/06/30]%
@@ -37,10 +47,12 @@
 \newenvironment{hanglist}{\begin{enumerate}}{\end{enumerate}}%
 }
 
-%% Comment out any of these that you don't want
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{amsthm}
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math} 
+
+% For Feynman Diagrams
+\usepackage{tikz}
+\usepackage[compat=1.1.0]{tikz-feynman}
 
 \usepackage{bookmark}
 \makeatletter
@@ -102,57 +114,6 @@
 \usepackage{imakeidx}
 \makeindex
 
-{\theoremstyle{plain}
-\newtheorem{thm}{Theorem}[chapter]
-\newtheorem{cor}[thm]{Corollary}
-\newtheorem{define}[thm]{Definition}
-\newtheorem{exmpl}[thm]{Example}
-}
-{\theoremstyle{remark}
-\newtheorem{rmk}[thm]{Remark}
-}
-
-\newtheoremstyle{customsty1}
-{3pt}%
-{3pt}%
-{}%
-{}%
-{\bfseries}%
-{:}%
-{.5em}%
-{}%
-
-{\theoremstyle{customsty1}
-}
-
-\makechapterstyle{deposit}{%
-  \renewcommand{\chapterheadstart}{}
-  \renewcommand{\printchaptername}{}
-  \renewcommand{\chapternamenum}{}
-  \renewcommand{\printchapternum}{\parbox{2em}{\MakeLowercase{\Large\scshape\thechapter{}}} }
-  \renewcommand{\afterchapternum}{}
-  \renewcommand{\printchaptertitle}[1]{%
-  \raggedright\Large\scshape\MakeLowercase{##1}}
-  \renewcommand{\afterchaptertitle}{%
-  \vskip\onelineskip \hrule\vskip\onelineskip}
-}
-
-\makepagestyle{deposit}
-
-\makeatletter
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
-\makeevenfoot{deposit}{}{}{}
-\makeoddfoot{deposit}{}{}{}
-\makeevenhead{deposit}{\thepage}{}{}
-\makeoddhead{deposit}{}{}{\thepage}
-\makeatother
-
-\copypagestyle{chapter}{plain}
-\makeoddfoot{chapter}{}{}{}
-\makeevenhead{chapter}{\thepage}{}{}
-\makeoddhead{chapter}{}{}{\thepage}
-
 \makeatletter
 \newenvironment{wb-bib}[1]{%
   \chapter*{references}
@@ -163,19 +124,6 @@
 \prebibhook
   \begin{bibitemlist}{#1}}{\end{bibitemlist}\postbibhook}
 \newcommand{\prd}{Physical Review D}
-
-\AtBeginDocument{%
-  \@ifpackageloaded{natbib}{%
-    \apptocmd{\endthebibliography}{\vskip-\lastskip\postbibhook}{}{}%
-    \@ifpackagewith{natbib}{sectionbib}{%
-      \renewcommand{\bibsection}{\@memb@bsec}}%
-      {\renewcommand{\bibsection}{\@memb@bchap}}}%
-  {}
-  \@ifpackagewith{chapterbib}{sectionbib}{%
-    \renewcommand{\sectionbib}[2]{}
-    \renewcommand{\bibsection}{\@memb@bsec}}{}
-}
-\makeatother
 
 \usepackage{tagpdf}
 \tagpdfsetup{
@@ -199,6 +147,9 @@
   pdfdisplaydoctitle=true,
 }
 \newcounter{Hfootnote}
+
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math} 
 
 \newcommand{\arasim}{\texttt{AraSim}}
 \newcommand{\araroot}{\texttt{AraRoot}}
