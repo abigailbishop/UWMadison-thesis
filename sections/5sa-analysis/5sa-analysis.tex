@@ -13,7 +13,7 @@
   In this analysis, the ultimate signal and background discrimination is performed using a Linear Discriminant Analysis (LDA).
   Previous analyses have used the Fisher Discriminant or a cut in the 2 dimensional distribution of event correlation against signal strength. 
   An LDA is a generalization of Fisher Discriminants and, if only using two variables, performs similarly to separating signal and background by drawing a line in the 2 dimensional histogram of event correlation versus signal strength. 
-  LDAs, for each event, will take a collection of analysis variables and combine them linearly into a single number by multiplying the array of variables for each event against a matrix that's been optimized for signal-background separation using a training set. 
+  LDAs, for each event, will take an array of analysis variables and combine them linearly into a single number by multiplying the variables for each event against a matrix that's been optimized for signal-background separation using a training set. 
   The transformation matrix additionally will downweight variables such that multiple, highly correlated observational metrics are not overrepresented. 
   This analysis uses 19 variables summarized in Table~\ref{tab:LDAvars}, a signal dataset composed of simulated neutrino events following an $E^{-2}$ spectrum, and a background dataset composed of all events from each station's cleaned 10\% burn sample.   
   
@@ -61,12 +61,6 @@
       \label{fig:ldafit}
   \end{figure}
 
-\section{Optimization}
-
-  After the LDA transformation matrices are set, we feed the thermal background LDA model and the surface event elevation models for each station-configuration into an algorithm that determines the best LDA cut and Zenith cut for each array wide configuration. 
-  As there are 50 array wide configurations comprised of 140 instances of our stations and 6 instruments to set zenith cuts for, this algorithm is optimizing a 146-dimension puzzle. 
-  The optimized A2 zenith cut is $10.31^{\circ}$ in elevation and LDA cuts are in Table~\ref{tab:ldacuts}. Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. Said another way, if one station-configuration has an LDA cut of 1.2 and another has a cut at 1.4, this does not simply imply the former is better than the latter. 
-
   \begin{figure}
     \centering
     \includegraphics[
@@ -76,6 +70,13 @@
     \caption{LDA distribution of the thermal-like background events from A2 configuration 7 fitted to an expoential.}
     \label{fig:backgroundfit_10pct}
   \end{figure}
+
+  Once the LDA transformation matrix is optimized to separate thermal-like background events from neutrino events, we calculate the LDA score for all events and plot them grouped by background and signal as show in Fig.~\ref{fig:ldafit}. 
+  In this figure one can see that thermal-like background events have lower LDA values than signal events and the upper edge of the background event distribution decays exponentially. 
+  We fit this upper tail of the background event LDA distribution and use it in the upcoming array-wide optimization. 
+  An example of this fit is shown in Fig.~\ref{fig:backgroundfit_10pct} for A2 configuration 7. 
+
+  We assess the integrity of the background tail fit via pseudoexperiments.
 
   \begin{figure}
     \centering
@@ -92,12 +93,74 @@
     \label{tab:ldacuts}
   \end{table}
 
+\section{Optimization \label{sec:optimization}}
+
+  After the LDA transformation matrices are set, we feed the thermal background LDA model and the surface event elevation models for each station-configuration into an algorithm that determines the best LDA cut and Zenith cut for each array wide configuration. 
+  As there are 50 array wide configurations comprised of 140 instances of our stations and 6 instruments to set zenith cuts for, this algorithm is optimizing a 146-dimension puzzle. 
+  The optimized A2 zenith cut is $10.31^{\circ}$ in elevation and LDA cuts are in Table~\ref{tab:ldacuts}. Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. Said another way, if one station-configuration has an LDA cut of 1.2 and another has a cut at 1.4, this does not simply imply the former is better than the latter. 
+
 \section{Post-Unblinding Analysis}
+
+  Running the analysis pipeline over the full 100\% data and viewing the results for the first time is commonly referred to as "opening the box". 
+  After opening the box we investigate any events that pass the analysis and construct our analysis' sensitivity to UHE neutrinos.
+  But, before we open the box, we ensure that the surface background elevation model and the thermal background LDA model constructed with the 10\% dataset and used to establish the final zenith and LDA cuts are compatible with the 100\% data. 
+  There is also one final cut that removes events that occur, array-wide, within 5 seconds and 5.8 hours of each other to remove lingering temporally-clustered events.
+
+  \subsection{Surface Cut Cross Checks}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=\textwidth,
+          alt={}
+      ]{sections/5sa-analysis/images/a2_100pct_surfacecheck_zenithdist.png}
+      \caption{100\% background distribution for A2 surface event dataset.}
+      \label{fig:backgroundcheck_zenith_dist}
+    \end{figure}
+
+    The first post-unblinding check is to build a surface event dataset and model as described in Section~\ref{sec:zc_slc} using the 100\% datasets then compare it to the model built with the 10\% data. 
+    The distribution of event elevations in the surface dataset built with 100\% data is shown in Fig.~\ref{fig:backgroundcheck_zenith_dist} which shows strong visual agreement between the model built on the 10\% and the 100\% datasets. 
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=0.75\textwidth,
+          alt={}
+      ]{sections/5sa-analysis/images/a2_100pct_surfacecheck_outliers.png}
+      \caption{Distribution of events from the full 100\% dataset with reconstructed elevations less than the lowest bin in the 10\% dataset plotted by their reconstructed elevation and \texttt{mindepth\_v}.}
+      \label{fig:backgroundcheck_zenith_outliers}
+    \end{figure}
+
+    The \texttt{mindepth\_v}\index{\texttt{L2 Variable: mindepth\_v}} and reconstructed elevations of events in the 100\% dataset that reconstruct below $20^{\circ}$, the lowest bin in the 10\% dataset, are shown in Fig.~\ref{fig:backgroundcheck_zenith_outliers}. 
+    The \texttt{mindepth\_v} parameter describes the minimum depth (converted from elevation) where the correlation score of an event's reconstruction is at least 60\% of the full reconstruction's maximum correlation score. 
+    Higher values of \texttt{mindepth\_v} indicate higher probabilities that an event originated from near and above the surface of the ice, where our data sample is largely contaminated by anthropogenic backgrounds and cosmic ray events.
+    This plot was created to ensure that none of these events in the 100\% surface data set with a reconstructed zenith less than $20^{\circ}$ were likely to have originated in the ice where we are searching for neutrinos. 
+    Figure~\ref{fig:backgroundcheck_zenith_outliers} shows that all events had a \texttt{mindepth\_v} of -1.7~m - meaning there is a strong possibility these events all originated above a depth of 1.7~m in the ice and likely originated in the surface, exactly as we want for this dataset. 
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=\textwidth,
+          alt={}
+      ]{sections/5sa-analysis/images/a2_100pct_surfacecheck_toys.png}
+      \caption{Distribution of pseudoexperiments of the A2 surface background model.}
+      \label{fig:backgroundcheck_zenith_toys}
+    \end{figure}
+
+    In addition to verifying the surface background models built on the 10\% and 100\% samples are similar visually and ensuring all outliers originated from the surface, we ran pseudoexperiments. 
+    This is shown in Fig.\ref{fig:backgroundcheck_zenith_toys}.
+    \todo{say more}
+
+    \todo{I should say something about the plan for if a model failed the check and discuss an example if we have one}
 
   \subsection{Thermal Background Cross Checks}
 
-    The first post-unblinding check is ensuring that the thermal distribution of LDA values in the 100\% dataset is comparable to the fit made with 10\% sample that was used to set the LDA cut threshold. 
-    This is done by plotting the distribution of 100\% data below the LDA cut value, as shown in Figure~\ref{fig:thermalcheck}
+    Verifying the thermal background LDA model is performed similarly to the surface background elevation model. 
+    We ensure that the thermal distribution of LDA values in the 100\% dataset is comparable to the fit made with 10\% sample that was used to set the LDA cut threshold. 
+    First, we plot the distribution of LDA values for thermal-like events in the 100\% data below the LDA cut value established in the optimization procedure defined in Section~\ref{sec:optimization}, as shown in Fig.~\ref{fig:backgroundcheck_a2c3} and Fig.~\ref{fig:backgroundcheck_a2c4} for configurations 3 and 4 of A2, respectively. 
+    The pseudoexperiments are run next and if the observed log-likelihood is an outlier to the distribution of log-likelihoods of the pseudoexperiments then the background model is flagged and assessed.
+    This happened for both configurations 3 and 4 of A2 as shown in Fig.~\ref{fig:backgroundcheck_a2c3_toys} and Fig.~\ref{fig:backgroundcheck_a2c4_toys}, respectively.
+    % How did we pick the outliers that we showed? 
 
     \pagebreak
 
@@ -142,7 +205,7 @@
           alt={}
       ]{sections/5sa-analysis/images/a2c4_100pct_lda_backgroundfit.png}
       \caption{100\% background distribution for A2 configuration 4.}
-      \label{fig:backgroundcheck_a2c3}
+      \label{fig:backgroundcheck_a2c4}
     \end{figure}
 
     \begin{figure}
@@ -173,8 +236,6 @@
     For configuration 3, we identified runs that had unstable firmware (6558-6569) and restabilization after a power fail (7100) reported that should have been in the bad run and found that all remaining events would have been cut by the Low Reconstruction Confidence Cut described in Section~\ref{sec:lrcc} if they had been more signal-like.
     All outliers in the configuration 4 background lda model similarly would have been removed by the Low Reconstruction Confidence Cut if they had been more signal-like. 
     These outliers were therefore deemed inconsequential and, after adding those runs to the bad run log, the 100\% background fit to configurations 3 and 4 were deemed to be compatible with the 10\% fits. 
-
-  \subsection{Surface Cut Cross Checks}
 
   \subsection{Isolation Condition}
 
