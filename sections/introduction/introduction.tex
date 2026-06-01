@@ -30,6 +30,64 @@
 
   \begin{figure}
     \centering
+    \begin{tikzpicture}
+      \begin{feynman}
+        \vertex (a) {\(p+\gamma_{CMB}\)};
+        \vertex[right=2.5cm of a] (b) {\(\Delta^{\star}\)};
+        \vertex[right=2cm of b] (c2);
+    
+        \vertex[above=1em of c2] (c1) {\(p+\pi^0\)};
+        \vertex[below=1em of c2] (c3) {\(p+\pi^+\)};
+    
+        \diagram* {
+          {[edges=fermion]
+            (a) -- (b),
+            (b) -- (c1),
+            (b) -- (c3),
+          },
+        };
+      \end{feynman}
+    \end{tikzpicture}
+    \caption{GZK Mechanism}
+    \label{fey:gzk}
+  \end{figure}
+
+  \begin{figure}
+    \centering   
+    \begin{subfigure}[t]{0.4\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{feynman}
+          \vertex (a) {\(\pi^+\)};
+          \vertex[right=2.5cm of a] (b) {\(\mu+\nu_{\mu}\)};
+          \diagram* {
+            {[edges=fermion]
+              (a) -- (b),
+            },
+          };
+        \end{feynman}
+      \end{tikzpicture} 
+    \end{subfigure}
+    \begin{subfigure}[t]{0.4\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{feynman}
+          \vertex (a) {\(\pi^0\)};
+          \vertex[right=2cm of a] (b) {\(2\gamma\)};
+          \diagram* {
+            {[edges=fermion]
+              (a) -- (b),
+            },
+          };
+        \end{feynman}
+      \end{tikzpicture} 
+    \end{subfigure}
+    \caption{Most common pion decay channels}
+    \label{fey:piondecay}
+  \end{figure}
+
+  \begin{figure}
+    \centering
     \includegraphics[
       width=\textwidth,
       alt={}
@@ -113,7 +171,7 @@
       \end{feynman}
     \end{tikzpicture}
     \caption{Neutral current diagram}
-    \label{fig:neutral_current}
+    \label{fey:neutral_current}
   \end{figure}
 
   \begin{figure}
@@ -151,7 +209,7 @@
       \end{feynman}
     \end{tikzpicture}
     \caption{Charged current diagram}
-    \label{fig:charged_current}
+    \label{fey:charged_current}
   \end{figure}
 
   These highly energetic cascades are usually a few meters long and a couple centimeters in width. 
