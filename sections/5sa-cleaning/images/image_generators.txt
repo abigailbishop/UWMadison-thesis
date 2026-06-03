@@ -19,6 +19,21 @@ python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVE
 python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
 python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
 
+# CP Event
+STATION=2
+RUN=19291
+EVENT=6365
+python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVENT --data_type data
+python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
+python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
+
+# RF Event
+STATION=2
+RUN=19291
+EVENT=6366
+python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVENT --data_type data
+python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
+python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
 
 # First minute from a run (this was not very telling)
 python
