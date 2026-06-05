@@ -8,7 +8,7 @@
   We outline a plan for how to assess any remaining passing events, in case they are due to unforseen backgrounds not present in the 100\% sample. 
   Lastly we use the expected background rates and number of passing events to establish an upper limit on the flux of UHE neutrinos. 
 
-\section{Linear Discriminant Analysis}
+\section{Linear Discriminant Analysis \label{sec:lda}}
 
   In this analysis, the ultimate signal and background discrimination is performed using a Linear Discriminant Analysis (LDA).
   Previous analyses have used the Fisher Discriminant or a cut in the 2 dimensional distribution of event correlation against signal strength. 
@@ -67,16 +67,31 @@
         width=0.75\textwidth,
         alt={}
     ]{sections/5sa-analysis/images/a2c7_100pct_lda_backgroundfit.png}
-    \caption{LDA distribution of the thermal-like background events from A2 configuration 7 fitted to an expoential.}
+    \caption{LDA distribution of the thermal-like background events from A2 configuration 7 fitted to an exponential.}
     \label{fig:backgroundfit_10pct}
   \end{figure}
 
   Once the LDA transformation matrix is optimized to separate thermal-like background events from neutrino events, we calculate the LDA score for all events and plot them grouped by background and signal as show in Fig.~\ref{fig:ldafit}. 
   In this figure one can see that thermal-like background events have lower LDA values than signal events and the upper edge of the background event distribution decays exponentially. 
-  We fit this upper tail of the background event LDA distribution and use it in the upcoming array-wide optimization. 
+  We fit this upper tail of the background event LDA distribution to an exponential
+  \begin{equation}
+    f(x) = A e^{-B (x-x_{\text{min}})}
+    \label{eq:backgroundfit_exp}
+  \end{equation}
+  and use it in the upcoming array-wide optimization. 
+  In this context, $x$ is the central LDA value of the bin, $x_{\text{min}}$ is the LDA value above which the fitting is performed, and $A$ and $B$ are fit parameters. 
   An example of this fit is shown in Fig.~\ref{fig:backgroundfit_10pct} for A2 configuration 7. 
 
-  We assess the integrity of the background tail fit via pseudoexperiments.
+  We assess the integrity of the background tail fit via pseudoexperiments\index{Pseudoexperiment}.
+  These pseudoexperiments use Poisson statistics to re-sample the LDA distribution shown in Fig.~\ref{fig:backgroundfit_10pct} according to a modified tail fit that has been subjected to Gaussian fluctuations.
+  Variations in the model fit parameters characterize systematic uncertainties on the background model while re-sampling the LDA distribution characterizes statistical uncertainties. 
+  Enumerated, this procedure is as follows: 
+  \begin{enumerate}
+    \item The parameters $A$ and $B$ in Eq.~\ref{eq:backgroundfit_exp} of the exponential tail model fit to real thermal background LDA values are re-sampled according to Gaussian fluctuations, obtaining a "temporary" tail model. The fit error for $A$ and $B$ in the real thermal background model define the Gaussian widths. 
+    \item For each bin in the LDA distribution, the temporary tail model is integrated over the bin to obtain a number of counts in the bin. This number of counts is then re-sampled following Poisson statistics.
+    \item The log-likelihood of this re-sampled LDA distribution is calculated with respect to the original thermal background model.
+    \item The above three steps are repeated ten thousand times and a distribution of log-likelihoods is plotted as shown in Fig.~\ref{fig:backgroundfit_10pct_toys}. The log-likelihood of the real observed distribution is also calculated with respect to the original thermal background model and plotted. The fraction of toys with a log-likelihood greater than the observed log-likelihood (the p-value) is reported. 
+  \end{enumerate}
 
   \begin{figure}
     \centering
@@ -84,8 +99,8 @@
         width=0.75\textwidth,
         alt={}
     ]{sections/5sa-analysis/images/a2c7_100pct_lda_backgroundfit_toys.png}
-    \caption{Distribution of log-likelihood for background pseudoexperiments of the 100\% background model on A2 configuration 7 data.}
-    \label{fig:ldaoptimized}
+    \caption{Distribution of log-likelihoods comparing background pseudoexperiments to the background model on observed 100\% A2 configuration 7 data.}
+    \label{fig:backgroundfit_10pct_toys}
   \end{figure}
 
   \begin{table}
@@ -95,7 +110,7 @@
 
 \section{Optimization \label{sec:optimization}}
 
-  After the LDA transformation matrices are set, we feed the thermal background LDA model and the surface event elevation models for each station-configuration into an algorithm that determines the best LDA cut and Zenith cut for each array wide configuration. 
+  After the thermal background LDA model and the surface event elevation models for each station-configuration are set, we feed them both into an algorithm that determines the best LDA cut and zenith cut for each array wide configuration. 
   As there are 50 array wide configurations comprised of 140 instances of our stations and 6 instruments to set zenith cuts for, this algorithm is optimizing a 146-dimension puzzle. 
   The optimized A2 zenith cut is $10.31^{\circ}$ in elevation and LDA cuts are in Table~\ref{tab:ldacuts}. Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. Said another way, if one station-configuration has an LDA cut of 1.2 and another has a cut at 1.4, this does not simply imply the former is better than the latter. 
 
