@@ -244,7 +244,7 @@
       \label{fig:spr}
     \end{figure}
 
-  \subsection{Anomalous Channel Cut}
+  \subsection{Anomalous Channel Cut \label{sec:acc}}
     
     \begin{figure}
       \centering
@@ -364,7 +364,7 @@
   After all erroneously digitized events are removed, events that include backgrounds we do not want to misclassify as neutrino signals must be removed. 
   This includes mis-tagged calibration pulser events, runs with known anthropogenic backgrounds, and potential cosmic ray events. 
 
-  \subsection{Geometry Cut}
+  \subsection{Geometry Cut \label{sec:gc}}
   
     The geometry cut is programmed to catch calibration pulser events that are not tagged as calibration pulser events. 
     % State how often this happens
@@ -591,12 +591,19 @@
     Once events with sufficient signal and correlation scores are identified, the time of each event is used to determine temporal clustering. 
     The largest time window, $t$ used to assemble spatio-temporal clusters is also different on each station, but for A2 it is 60~s. 
     Lastly the reconstructed azimuth and elevation are used to identify clusters in space. 
-    The solid angle in which events must reside to be removed from this cut scales in size with $\log(t)$, meaning a shorter $t$ will correspond to larger clusters and vice versa as
+    The solid angle in which events must reside to be removed from this cut scales as an inverse power law related to $\log(t)$, meaning a shorter $t$ will correspond to larger clusters and vice versa.
     \begin{equation}
-      \Omega = e^{ 4 \pi t  }
+      \ln(\Omega_w )= \frac{\ln(4\pi \times (180/\pi)^2)}{\ln(31536000)} \ln(t_w) + \ln((\pi/180)^2)
       \label{eq:stc_angularsize}
     \end{equation}
     where $t$ is at least 1 second and at most 1 year.
+    Another way this equation has been explained to me is
+    \begin{equation}
+      \ln(\Omega_w )= \frac{\ln(\text{whole sky})}{\ln(\text{seconds in a year})} \ln(t_w) + \ln(\text{one square degree})
+      \label{eq:stc_angularsize_jargon}
+    \end{equation}
+    which characterizes a line in $\ln-\ln$ space with a negative slope relating $\Omega_w$ and $t_w$. 
+    This relation has been defined such that a $t_w=1$~s corresponds to $\Omega_w=4\pi$~sterradian and a $t_w=1$~yr corresponds to $\Omega_w=1$~square degree. 
 
   \subsection{Zenith Cut and Surface-Like Cut \label{sec:zc_slc}}
   
