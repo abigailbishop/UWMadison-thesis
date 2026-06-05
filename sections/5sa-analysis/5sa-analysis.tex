@@ -162,11 +162,9 @@
       \label{fig:backgroundcheck_zenith_toys}
     \end{figure}
 
-    In addition to verifying the surface background models built on the 10\% and 100\% samples are similar visually and ensuring all outliers originated from the surface, we ran pseudoexperiments. 
-    This is shown in Fig.\ref{fig:backgroundcheck_zenith_toys}.
-    \todo{say more}
-
-    \todo{I should say something about the plan for if a model failed the check and discuss an example if we have one}
+    In addition to verifying the surface background models built on the 10\% and 100\% samples are similar visually and ensuring all outliers originated from the surface, we ran pseudoexperiments following a similar procedure used in Section~\ref{sec:optimization}. 
+    The distribution of psuedoexperiments in relation to the observed log-likelihood with respect to the surface background model is shown in Fig.\ref{fig:backgroundcheck_zenith_toys}.
+    This model passed our check as the p-vale was greater than 0.05, as did the models for all other stations. 
 
   \subsection{Thermal Background Cross Checks}
 
@@ -278,28 +276,142 @@
 
     \subsection{Full Plan}
 
+      For any events that pass all analysis cuts, our goal is to analyze all analysis variables for the events before consulting the waveform and reconstruction skymap - preserving analysis blindness as long as possible. 
+      Some examples of first stage analyses include analyzing the time each event occured, the reconstructed azimuth and zenith of events, conducting a KS test for azimuth randomness, and consulting analysis variables associated with the Spark Event and Anomalous Channel detector glitch cuts. 
+      If more information is needed, we will then consult the event waveforms, spectra, and reconstruction skymaps. 
+      We expect that the only events that pass the analysis will be neutrino candidates or unanticipated glitches or background populations (e.g new continuous wave contamination).
+      If a group of events passes the analysis and are determined to be inconsistent with expectation of neutrino events but can be removed in a principled fashion, we will employ a new cut and the events will not be included in the upcoming Feldman Cousins factor calculation that determines the upper limit set by the analysis. 
+      Any remaining events will be assessed for neutrino-ness using a k-nearest neighbors algorithm. % How is this different from an LDA? why didn't we use this instead of the LDA?
+      If any events are more consistent with background than expected neutrino events, we will update our background estimate if the Poisson p-vale to observe such an upward fluctuation is greater than $3\sigma$.
+
     \subsection{Results}
 
-      The results of the analysis on the 100\% revealed just a single passing event taken by the PA. 
+      The results of the analysis on the 100\% revealed a single passing event taken by the PA. 
       As only one event was found, no events were cut by the time isolation cut. 
+      After analyzing the event, we determined that it was a glitch that has been observed on stations A1-A5 and has a dedicated cut to remove these events, but we did not anticipate that these kinds of events would be observed by the PA as it has a different data acquisition board. 
+      We expanded the cut applied to A1-A5 to remove the event and are not including this event in the Feldman Cousins upper limit calculation.
+      The rest of this section details the study of this event following the prescription outlined in the previous section. 
+
+      \begin{figure}
+        \centering
+        \includegraphics[
+          width=0.7\linewidth,
+          alt={}
+        ]{sections/5sa-analysis/images/passing_lda_parun767.png}
+        \caption{LDA distribution of events in PA run 767 including. The event that passed the analysis is the outlier with an LDA score of 2.43.}
+        \label{fig:passing_LDA}
+      \end{figure}
+
+      The passing event's LDA score was 2.43 and was a significant outlier to the rest of the events in the run as shown in Figure~\ref{fig:passing_LDA}.
       Some analysis variables of the PA event are presented in Table~\ref{tab:paevent} but the full suite is provided in Appendix~\ref{app:passingevent}. 
-      This event saturated the PA DAQ when it was recorded, had an SNR of 12.(x) in the VPols and 11.(x) in the HPols. 
-      Both the reconstruction algorithm and visual analysis of the event strongly suggest an up-traveling signal originating in the ice. 
-      %The waveforms, besides being saturated, appear to have a typical noise level and the impulse signature is not unusual. 
-      Around the same time as this event, however, A4 and A5 observed events with a similar vpol SNR of 12.() and 12.() respectively and an hpol SNR of 12.() and 12.() respectively. 
-      It is unusual that the HPol SNR of the A5 event is largely different from the HPol SNR of the event recorded by the colocated PA. 
-      The A5 event’s recorded time also suggests it occurred 8 minutes before the PA event, though after correlating Radiosonde weather balloon signatures in both stations, it appears the A5 station clock was 461 seconds early, 8 minutes. 
+      This event was taken on April 4, 2018 at 06:01:17 UTC, saturated the PA DAQ when it was recorded, had an SNR of 12.5 in the VPols, and 11.8 in the HPols. 
+      The event reconstructs to an elevation of $-35^{\circ}$ and, from the \texttt{mindepth\_v}, indicates that the highest elevation with a reconstruction correlation score that is 60\% of the maximum lies at an elevation of $-27.6^{\circ}$.
+      This strongly implies that the observed radiation originated within the ice.
+
+      \begin{figure}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/5sa-analysis/images/passingevent_a5waveform.png}
+        \caption{The voltage versus time traces in each A5 antenna for event 64066 of Run 2899, the A5 event corresponding to the PA event that passed the analysis.}
+        \label{fig:passing_a5waveform}
+      \end{figure}
+
+      The PA station is colocated with the A5 station and an A5 event was recorded just before\footnote{When the PA triggers, event readout is forced on A5 and flagged with a dedicated event type. However, A5's trigger is faster than the PA trigger meaning if both stations observe the same event, A5 will readout the event before the PA and the events will need to be connected in analysis.}. 
+      The A5 event was removed from the analysis by the Anomalous Channel Cut. 
+      As this event was removed from the analysis, we allowed ourselves to consult the waveforms of this A5 event.
+      Figure~\ref{fig:passing_a5waveform} shows a power surge in channels 0, 4, and 12 and impulsive signatures on strings 2, 3 and 4. 
+      This behavior is consistent with the A4 event we designed the Anomalous Channel Cut\index{Cut, Anomalous Channel} around in Section~\ref{sec:acc}.
+
+      Before plotting the event we also looked for events in stations A1-A4 that occurred at the same time. 
+      We found no events in A1-A3 and one event in A4. 
+      This A4 event was the same event from the 10\% burn sample that motivated the creation of the Anomalous Channel cut, shown in Figure~\ref{fig:a4outlier} demonstrating the same behavior as the A5 event shown in Figure~\ref{fig:passing_a5waveform}: one string has multiple antenna waveforms demonstrating power surges and impulsive signatures on the remaining strings.
+      Due to the coincidence of the A4, A5, and PA events we searched for explanations in ARA monitoring logs, IceCube activities, activation of the radio pulsers at the top of the IceCube volume, South Pole Station activities, and natural phenomena (e.g. earthquakes, solar activity, etc).
+      We did not find any events that could explain the A4, A5, and PA events with our current understanding. 
+
+      \begin{figure}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/5sa-analysis/images/passing_pawaveform.png}
+        \caption{Bandpassed}
+        \label{fig:passing_pawaveform}
+      \end{figure}
+
+      At this point we felt ready to unblind ourselves to the PA passing event. 
+      One of our reviewers recommended that we write a list of observables we anticipated checking for when we looked at the event. 
+      Our list was as follows: 
+      \begin{itemize}
+        \item Do all waveforms have a pulse?
+        \item Do the spectra resemble Askaryan radiation?
+        \item Are all waveforms similar?
+        \item Do any channels have waveforms similar to channels 0, 4, 12 in the coincidence A5 event?
+      \end{itemize}
+      The waveform for the PA passing event is shown in Fig.~\ref{fig:passing_pawaveform}. 
+      Immediately we see that each waveform has a clear pulse, they all look similar, and none resemble channels 0, 4, and 12 in the A5 passing event.
+      The PA waveforms all looked similar to the waveforms observed by A5 strings 2, 3, and 4 - resembling calibration pulsers like the one shown in Figure~\ref{fig:noiseevent}. 
+      However, the A5 event did not reconstruct into the region where calibration pulsers lie.
+
+      \comment{I could show the PA event's spectrum and compare it to a calibration pulser but I'd need to ask Marco to generate it for me.}
+
+      \begin{figure}
+        \centering
+        \includegraphics[
+          width=\linewidth,
+          alt={}
+        ]{sections/5sa-analysis/images/passingevent_a5reco.png}
+        \caption{
+          Reconstruction of the A5 event that occured at the same time as the PA passing event. 
+          The hit-time based reconstruction, AraVertex, and the interferometric reconstruction both estimate the event comes from within $20^{\circ}$ of A5 channels 4 and 12. 
+        }
+        \label{fig:passing_a5reco}
+      \end{figure}
+
+      At this stage, we added the locations of A5 and PA antennas to the reconstruction skymaps as shown in Fig~\ref{fig:passing_a5reco} and found that AraVertex reconstructed the event within $20^{\circ}$ of channels 4 and 12. 
+      The same was observed when we plotted the skymap of correlation scores for the A5 event's reconstruction using a map radius equal to the distance between A5 channel 4 and the station center - the best interferometric reconstruction is $20^{\circ}$ away from the location of channel 4 and 12. 
+      We repeated this exercise for the A4 event shown in Fig.~\ref{fig:a4outlier} and found the event reconstructed on top of channels 6 and 14, the same channels exhibiting power surge behavior.
+      The \cite{ara_a23} analysis conducted by Brian Clark and Ming-Yuan Lu also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut.
+
+      When we designed the Anomalous Channel Cut, we were unsure what the observed impulsive signatures on the strings without the power surge were, but would not classify these events as neutrino observations given the inexplicable power surge in some channels. 
+      We had assumed that the power surge happens on the data acquisition board which is housed at the surface, but as the impulsive events resemble calibration pulsers by eye, we considered that the power surge occurred on the string itself near the antennas. 
+      With evidence that the power surge is happening near the downhole antennas and not on the data acquisition board itself, we assessed the downhole electronics of our stations.
+      Our updated theory behind events removed by the Spark Event Cut and the Anomalous Channel Cut is that the low noise amplifiers connected to and located next to each antenna are the device experiencing a power surge, which can push power into the connected antenna, causing the antennas to temporally and spontaneously pulse radio waves like the calibration pulsers do.
+      Motivated by this new understanding of our detector, we employ a cut that removes PA events within 0.05 seconds of A5 events that are cut by the Spark Event or the Anomalous Channel cut.
+      219 A5 events were removed by these cuts, leading to a decrease in PA livetime of 21.9 seconds. 
+      With the A1-A5 Anomalous Channel cut expanded to exclude nearby PA events, this event is removed and will therefore not be included in the Feldman Cousins upper limit calculation.
+
+      We have not found an explanation for why the A4 event occurred at the same time as PA event which passed the analysis (and the corresponding A5 event).
+      Over the whole array and livetime, the number of events removed by the Spark Event and Anomalous Channel cut is 13 for A1, 150 for A2, 90 for A3, 202 for A4, and 219 for A5. 
+      Of these events, there were at most 3 coincident events across stations so we expect the simultaneous A4 and A5+PA spark events was a rare occurrence.
   
 \section{Results from Analyzing the Full Data Sample}
 
-    Upper limit or other. 
-
     \begin{figure}
         \centering
-        % \includegraphics[
-        %     width=0.75\textwidth,
-        %     alt={}
-        % ]{sections/5sa-analysis/images/}
+        \includegraphics[
+            width=0.75\textwidth,
+            alt={}
+        ]{sections/5sa-analysis/images/5sa_e2Sensitivity_astrocosmo-5SA.pdf}
         \caption{Sensitivity achieved by the Five Station Analysis.}
         \label{fig:5sa_sensitivity}
     \end{figure}
+
+    The final upper limit of this analysis is established using the simulations defined in Section~\ref{sec:arasim_veff} and Eq.~\ref{eq:phi_ul}. 
+    The \cite{feldman_cousins} 90\% confidence level upper limit on this analysis evaluates to 2.44 as the number of observed events is 0 and the expected number of backgrounds is 0.13.
+    The upper limit is shown as the bold line in Fig.~\ref{fig:5sa_sensitivity}, with the analysis' Single Event Sensitivity (SES) and trigger level upper limit. 
+    This establishment of an upper limit frames our null observation as an under-fluctuation of the true flux of neutrinos in each energy bin following an $E^{-1}$ spectrum.
+    We establish 90\% confidence when stating that the true rate of neutrinos in each energy bin could be up to 2.44, according to the Feldman Cousins formulation.
+    The SES represents the highest flux required to observe at least 1 event in each energy bin.
+    The number of events we predict exist in our sample after all cuts have been applied is given in Tab.~\ref{tab:5sa_eventrates}.
+    Our result midly contradicts the flux and neutrino model given by \cite{km3net_neutrino} and \cite{flux-muzio}. \comment{do I need to be quantitative?}
+
+    \begin{table}
+      \centering
+      \begin{tabular}{|c|}
+        x
+      \end{tabular}
+      \caption{Expected number of neutrino events in this analysis sample according to a collection of flux models.}
+      \label{tab:5sa_eventrates}
+    \end{table}
