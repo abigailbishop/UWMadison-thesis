@@ -2,14 +2,15 @@
 
   \comment{Am I missing citations in this paragraph or is it alright that they all come in the following section?}
 
-  The IceCube Neutrino Observatory\index{IceCube} detects neutrinos using optical modules to capture Cherenkov light emitted in the glacier at the South Pole.
+  The IceCube Neutrino Observatory\index{IceCube} detects neutrinos using optical modules to capture Cherenkov light emitted in the glacier at the South Pole~\citep{icecube_search-ehe}.
   IceCube looks for three main event types: tracks, cascades, and tau double cascades. 
-  Cascade events provide the best energy reconstruction but it is difficult to extract directional information from cascades, information critical for multi-messenger studies. 
+  Cascade events provide the best energy reconstruction but the angular reconstruction of these events has a typical resolution of $\sim 10^{\circ}$.
+  Enhancing the resolution of angular reconstruction for cascades is critical to connect these events to their astrophysical sources. 
   Above 30~PeV, neutrino cascades in ice emit Askaryan radiation that can be used for direction reconstruction. 
-  Currently, an expansion called IceCube Gen2 is being planned that would install thousands of optical modules over 8~km$^3$ of volume surrounding IceCube.
-  In this study, we assessed improvements in reconstruction by simulating IceCube Gen2 with radio antennas placed above every optical module. 
+  Currently, an expansion called IceCube-Gen2 is being planned that would install thousands of optical modules over 8~km$^3$ of volume surrounding IceCube~\citep{icecube_gen2}.
+  In this study, we assess improvements in reconstruction by simulating IceCube-Gen2 with radio antennas placed above every optical module~\citep{icecube_gen2_infill}. 
   We show an example of an event and its reconstruction followed by the expected fraction of optically-observe neutrino events that will have substantial radio-frequency observations between 1 and 100~PeV.
-  This work was performed by Lu Lu, Albrecht Karle, and Ben Hokanson-Fasig at the University of Wisconsin Madison.
+  This work was performed by myself, Lu Lu, Albrecht Karle, and Ben Hokanson-Fasig at the University of Wisconsin Madison.
 
 \section{The IceCube Detector and Potential Expansions}
 
@@ -19,21 +20,21 @@
   The Gen2-Radio array is designed using insights from previous radio neutrino experiments such as RICE \citep{rice}, ANITA \citep{anita_iv}, ARA \citep{ara_design, ara_a23}, ARIANNA \citep{arianna_testbed, arianna_pilot}, and RNOG (currently in construction in Greenland) \citep{rnog_design}.
   %Experiments like the Gen2 radio array and ARA take advantage of far-reaching radio neutrino signals by spreading their detector antennas hundreds of meters apart and burying them a frugal 200 meters in ice. 
   The Gen2-Radio array will achieve a sensitivity of the cosmic neutrino flux at high energies (>30~PeV) by more than an order of magnitude of what would be imaginable with an optical array.  
-  Here, we are investigating the possibility to enhance the performance of 
+  Here, we investigate the possibility to enhance the performance of 
   the Gen2 optical array in the range from a few PeV to above 100 PeV
   by co-deploying radio antennas together with the optical sensors, one antenna 
   for each optical module.  
-  In this energy range, Gen2 will over the time space of a decade, observe more than 50 neutrino induced cascade events  above 10 PeV. 
-  Useful experiences exist from the deployment of AURA
+  In this energy range, Gen2 will over the span of a decade, observe more than 50 neutrino induced cascade events  above 10 PeV. 
+  Lessons learned from the deployment of AURA
   (Askaryan Under Ice Radio Array, \citep{aura}) a prototype radio detector 
-  that was co-deployed with IceCube.  
+  that was co-deployed with IceCube will be beneficial to the development of IceCube-Gen2.
 
   Could the additional radio data improve Gen2-Optical measurements or help connect flux measurements between 3~PeV and 100~PeV?  
   The considered radio component is not a stand alone detector for detecting ultrahigh energy neutrinos.  It primarily would be an augmentation of optical array
   which would provide all triggering.  
 
   The results indicate that a substantial amount of instrumentation would be required. Initial considerations suggest that the implementation in the Gen2 architecture would be quite straightforward.  The basic configuration is that
-  one antenna would be hooked up with every optical module.  
+  one antenna would be paired up with every optical module.  
   The instrumentation showcased here is not planned for Gen2, however the reader may find characteristics of such a configuration, 
   studied here for the first time, to be intriguing.  
 
@@ -46,18 +47,19 @@
 \section{Simulation Setup}
 
   The simulation package ``Python for Radio Experiments" (PyREx)\footnote{Github: https://github.com/abigailbishop/pyrex} was used to simulate 40,000 neutrino events at select  energies ranging from 1~PeV to 10~EeV. 
-  Neutrino interactions are simulated using the CTW model described in \citep{ctw-interaction}.
-  The following neutrino properties are determined randomly according to the cosmogenic model: every flavor is equally possible and the probability that a particle is a neutrino (as opposed to an anti-neutrino) is 0.78, 0.61, and 0.61 for electron-, muon- and tau neutrino respectively \citep{icecube_glashow}. 
+  Neutrino interactions are simulated using the model described in \citet{ctw-interaction}.
+  The following neutrino properties are determined randomly according to the cosmogenic model: every flavor is equally possible and the probability that a particle is a neutrino (as opposed to an anti-neutrino) is 0.78, 0.61, and 0.61 for electron-, muon- and tau neutrinos respectively \citep{icecube_glashow}. 
   After interacting, the simulation propagates Askaryan signals to all antennas following the Alvarez-Muniz, Romero-Wolf, Zas parameterization then simulates their responses \citep{ARZ-signal}.
 
-  The radio detector component is conceived such that 
-  that every optical sensor on the string, there is one radio antenna associated 
+  The radio detector component is conceived such that every optical sensor on the string, there is one radio antenna associated 
   with that sensor and located 8\,m above it.
   Thus, a simulation was performed with 9760 ARA-style vertically polarized (Vpol) radio antennas located on the 120 Gen2 Strings, 80 per string, between 1350 and 2600 meters below the Antarctic ice's surface.  The simulation assumed a vertical spacing of antennas is 17~m and the spacing between strings is $\approx$~240~m.  
-  The technical implementation would be such that every multi-PMT optical sensor would feature one additional readout channel that would connect an envelope detector to the antenna, which is located 7~m above the DOM in the null of the antenna. 
+  The technical implementation would be such that every multi-PMT optical sensor would feature one additional readout channel that would connect an envelope detector to the antenna, which is located 7~m above the DOM in the null of the antenna\footnote{\comment{
+    I was asked what an ``envelope detector'' and what the ``null of the antenna'' mean. I think an envelope detector is referring to how signal in the radio antenna would be read out by trigger logic on the DOM. I think the null refers to the blind spot of the DOM.
+  }}. 
   
   In the simulation 40,000 events are generated and simulated at select energies 
-  using the radio-signal simulation software PyREx and the aforementioned parameters. Next, all events with 6~PeV, 10~PeV, 30~PeV, or 100~PeV of energy and located within 300 meters of IceCube-Gen2 boundary are isolated and processed using the optical-signal simulation software IceTray\footnote{Github: https://github.com/icecube/icetray/tree/gen2-optical-sim} ($\approx$ 6,000 events for each energy).
+  using the radio-signal simulation software PyREx and the aforementioned parameters. Next, all events with exactly 6~PeV, 10~PeV, 30~PeV, or 100~PeV of energy and located within 300 meters of IceCube-Gen2 boundary are isolated and processed using the optical-signal simulation software IceTray\footnote{Github: https://github.com/icecube/icetray/tree/gen2-optical-sim} ($\approx$ 6,000 events for each energy).
   We primarily investigate a mode of operation in which
   the triggering would be provided entirely by the optical sensors. Thus, the Gen2 optical sensors would provide both the trigger for the readout and the readout channel for the RF signal. It would be realized as an additional channel to the 16 or 18 PMT channels in consideration for Gen2 \citep{icecube_gen2_lom}.  This trigger and readout would be quite straightforward to implement as the formation of the optical trigger is managed with the Gen2 optical trigger system.
   The readout decision is made at the DOM level and does not require a global event trigger formation. 
@@ -66,9 +68,10 @@
 
 \section{Optical-Radio Hybrid Events}
 
-  Radio waves travel essentially unscattered in ice, unlike the optical signal.
-  Therefore the radio signals could substantially improve angular reconstruction of events, especially for cascade-like events where the angular resolution of the optical detector is more limited. In some cases, it could also add substantial information to events with the vertex outside of the array. 
-  The primary energy range of events in consideration is from a few PeV to 100~PeV - events with bright optical signals in the optical detector.
+  Radio waves travel essentially unscattered in ice, unlike optical signals.
+  Therefore the radio signals could substantially improve angular reconstruction of events, especially for cascade-like events where the angular resolution of the optical detector is more limited. 
+  In some cases, this can add substantial information to events with the vertex outside of the array. 
+  The primary energy range of events in consideration is from a few PeV to 100~PeV - events with bright signals in the optical detector.
 
   To investigate a possible coincident detection of radio and optical signals, we start with the detailed examination of an event of 30~PeV energy and travelling downwards at a zenith angle of 65 degrees. 
   The event is simulated in both PyREx and IceCube's Gen2-Optical IceTray simulation to simulate both the radio and the optical response. 
@@ -162,8 +165,8 @@
     distance from the vertex as a weight in this procedure.
     For example, here we used only the waveform with the largest amplitude
     in Figure \ref{fig:goldenEvent-waveforms}. 
-    An obvious improvement would be fit the amplitude profile of the Askaryan cone, 
-    or simply take some weighted average as a measure of the RF Cherenkov cone.  
+    One improvement would be to fit the amplitude profile of the Askaryan cone, 
+    or take some weighted average as a measure of the RF Cherenkov cone.  
     For an event like the one investigated a resolution of a fraction of a degree
     is well conceivable.
 
@@ -185,7 +188,7 @@
         \label{fig:goldenEventReco-zoomedin}
       \end{subfigure}
       \caption{
-        A simple event reconstruction leads to one contour for every antenna signal.  Here the solutions for the brightest antenna signal on each string is shown. The intersection indicates the solution.
+        A simple event reconstruction leads to one contour for every antenna signal.  Here the solutions for the brightest antenna signal on each string is shown. The intersection indicates the solution and is denoted by a star.
         The close-up in the right panel indicates a convex hull of the intersections, which may be considered as an estimate of the uncertainty of 
         less than 1 degree. 
         The true position of the event is: zenith=$65^\circ$  and azimuth=$45^\circ$. 
@@ -221,7 +224,7 @@
       In this figure, we assume and effective volume for detection cascade events to be 10
       times that of IceCube, in line with the ratio of the instrumented volumes of Gen2 and IceCube.
       For a livetime of 10 years 
-      we obtain a total of 70 cascade events in the neutrino energy range from 5~PeV to 100~PeV, which includes an important contribution of 54 events from the Glashow resonance.
+      we obtain a total of 70 cascade events in the neutrino energy range from 5~PeV to 100~PeV, which includes a contribution of 54 events from the Glashow resonance.
       This channel is especially intriguing, as it will 
       provide an ensemble of electron antineutrinos at sub-degree resolution. 
       We then ask the question, what is the fraction of events that is seen in the optical that will also be seen in RF.
@@ -231,8 +234,8 @@
       One could imagine to use antennas more optimized for the purpose and taking 
       advantage of the larger hole size.  A gain in effective height 
       of the antenna of a factor of 2 or 3 seems plausible.  This is in part
-      the reason why we show results with several thresholds, including 2 and 1 sigma on 2 antennas.  
-      For illustration we show the effective volume for three threshold settings
+      the reason why we show results with several thresholds, including 2 and 1 $\sigma$ on 2 antennas.  
+      For illustration, we show the effective volume for three threshold settings
       in the RF. 
   
       Table~\ref{tab:trigger} shows the estimated fraction of events that also record an RF signal,
@@ -266,7 +269,7 @@
           \hline
         \end{tabular}
         \caption{The  fraction of contained events with RF content are shown.  
-        The requirement for the RF channel is at least 2 sigma on 2 antennas. }
+        The requirement for the RF channel is at least 2 $\sigma$ on 2 antennas. }
         \label{tab:trigger}
       \end{table}
 
