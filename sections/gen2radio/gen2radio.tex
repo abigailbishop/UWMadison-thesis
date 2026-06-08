@@ -1,29 +1,31 @@
-\chapter{Radio Antennas in the Proposed IceCube-Gen2 Optical Volume}
+\chapter{Radio Antennas in the Proposed IceCube-Gen2 Optical Volume \label{chap:gen2_infill}}
 
-  IceCube is a neutrino detector at the South Pole that uses optical modules to search for neutrinos and is planning an expansion called IceCube-Gen2. 
+  \comment{Am I missing citations in this paragraph or is it alright that they all come in the following section?}
+
+  The IceCube Neutrino Observatory\index{IceCube} detects neutrinos using optical modules to capture Cherenkov light emitted in the glacier at the South Pole.
   IceCube looks for three main event types: tracks, cascades, and tau double cascades. 
-  Cascade events provide the best energy reconstruction and are typically used for determining the high energy neutrino flux but it is difficult to extract directional information from cascades, critical for multi-messenger astrophysics. 
+  Cascade events provide the best energy reconstruction but it is difficult to extract directional information from cascades, information critical for multi-messenger studies. 
   Above 30~PeV, neutrino cascades in ice emit Askaryan radiation that can be used for direction reconstruction. 
-  In this study, we simulated neutrinos interacting in the IceCube-Gen2 volume where radio antennas are placed above every optical module. 
+  Currently, an expansion called IceCube Gen2 is being planned that would install thousands of optical modules over 8~km$^3$ of volume surrounding IceCube.
+  In this study, we assessed improvements in reconstruction by simulating IceCube Gen2 with radio antennas placed above every optical module. 
   We show an example of an event and its reconstruction followed by the expected fraction of optically-observe neutrino events that will have substantial radio-frequency observations between 1 and 100~PeV.
   This work was performed by Lu Lu, Albrecht Karle, and Ben Hokanson-Fasig at the University of Wisconsin Madison.
 
 \section{The IceCube Detector and Potential Expansions}
 
-  IceCube has detected a diffuse cosmic neutrino flux in the energy range from 60~TeV to more than 10~PeV \cite{icecube_search_2013,icecube_search_2016tracks,icecube_search_2020cascades,icecube_search_glashow}.  
+  The IceCube Neutrino Observatory has detected a diffuse cosmic neutrino flux in the energy range from 60~TeV to more than 10~PeV \citep{icecube_search_2013,icecube_search_2016tracks,icecube_search_2020cascades,icecube_search_glashow, icecube_search-ehe}.  
   IceCube-Gen2 will substantially improve the event rates especially for cascade events. 
-  IceCube-Gen2 will include a deep optical array of about 8 km$^3$ instrumented volume and the Gen2-Radio array for high energy (>30~PeV) neutrino observations \cite{icecube_gen2}. 
-  The Gen2-Radio array is designed using insights from previous radio neutrino experiments such as RICE \cite{rice}, ANITA \cite{anita_iv}, ARA \cite{ara_design, ara_a23}, ARIANNA \cite{arianna_testbed, arianna_pilot}, and RNOG (currently in construction in Greenland) \cite{rnog_design}.
+  IceCube-Gen2 will include a deep optical array of about 8 km$^3$ instrumented volume and the Gen2-Radio array for high energy (>30~PeV)\footnote{\comment{This was what was written in the Gen2 Optical infill radio proceeding, but this thesis describes UHE as $\geq 10^{17}$. Is this confusing/inconsistent?}} neutrino observations \citep{icecube_gen2}. 
+  The Gen2-Radio array is designed using insights from previous radio neutrino experiments such as RICE \citep{rice}, ANITA \citep{anita_iv}, ARA \citep{ara_design, ara_a23}, ARIANNA \citep{arianna_testbed, arianna_pilot}, and RNOG (currently in construction in Greenland) \citep{rnog_design}.
   %Experiments like the Gen2 radio array and ARA take advantage of far-reaching radio neutrino signals by spreading their detector antennas hundreds of meters apart and burying them a frugal 200 meters in ice. 
-  The Gen2-radio array will achieve a sensitivity at high energies (above 30 PeV)
-  cosmic neutrino flux by more than an order of magnitude of what would be imaginable with an optical array.  
+  The Gen2-Radio array will achieve a sensitivity of the cosmic neutrino flux at high energies (>30~PeV) by more than an order of magnitude of what would be imaginable with an optical array.  
   Here, we are investigating the possibility to enhance the performance of 
   the Gen2 optical array in the range from a few PeV to above 100 PeV
   by co-deploying radio antennas together with the optical sensors, one antenna 
   for each optical module.  
   In this energy range, Gen2 will over the time space of a decade, observe more than 50 neutrino induced cascade events  above 10 PeV. 
   Useful experiences exist from the deployment of AURA
-  (Askaryan Under Ice Radio Array, \cite{aura}) a prototype radio detector 
+  (Askaryan Under Ice Radio Array, \citep{aura}) a prototype radio detector 
   that was co-deployed with IceCube.  
 
   Could the additional radio data improve Gen2-Optical measurements or help connect flux measurements between 3~PeV and 100~PeV?  
@@ -35,18 +37,18 @@
   The instrumentation showcased here is not planned for Gen2, however the reader may find characteristics of such a configuration, 
   studied here for the first time, to be intriguing.  
 
-\section{Motivation to Combine Optical and Radio Neutrino Observations}
+% \section{Motivation to Combine Optical and Radio Neutrino Observations}
   
-  OSU results about coincident events, Felix's simulation about coincident events
-  Angular reconstruction of cascades
-  Low cost
+%   OSU results about coincident events, Felix's simulation about coincident events
+%   Angular reconstruction of cascades
+%   Low cost
 
 \section{Simulation Setup}
 
-  The simulation package "Python for Radio Experiments" (PyREx)\footnote{Github: https://github.com/abigailbishop/pyrex} was used to simulate 40,000 neutrino events at select  energies ranging from 1~PeV to 10~EeV. 
-  Neutrino interactions are simulated using the CTW model described in \cite{ctw-interaction}.
-  The following neutrino properties are determined randomly according to the cosmogenic model: every flavor is equally possible and the probability that a particle is a neutrino (as opposed to an anti-neutrino) is 0.78, 0.61, and 0.61 for electron-, muon- and tau neutrino respectively \cite{icecube_glashow}. 
-  After interacting, the simulation propagates Askaryan signals to all antennas following the Alvarez-Muniz, Romero-Wolf, Zas parameterization then simulates their responses \cite{ARZ-signal}.
+  The simulation package ``Python for Radio Experiments" (PyREx)\footnote{Github: https://github.com/abigailbishop/pyrex} was used to simulate 40,000 neutrino events at select  energies ranging from 1~PeV to 10~EeV. 
+  Neutrino interactions are simulated using the CTW model described in \citep{ctw-interaction}.
+  The following neutrino properties are determined randomly according to the cosmogenic model: every flavor is equally possible and the probability that a particle is a neutrino (as opposed to an anti-neutrino) is 0.78, 0.61, and 0.61 for electron-, muon- and tau neutrino respectively \citep{icecube_glashow}. 
+  After interacting, the simulation propagates Askaryan signals to all antennas following the Alvarez-Muniz, Romero-Wolf, Zas parameterization then simulates their responses \citep{ARZ-signal}.
 
   The radio detector component is conceived such that 
   that every optical sensor on the string, there is one radio antenna associated 
@@ -57,10 +59,10 @@
   In the simulation 40,000 events are generated and simulated at select energies 
   using the radio-signal simulation software PyREx and the aforementioned parameters. Next, all events with 6~PeV, 10~PeV, 30~PeV, or 100~PeV of energy and located within 300 meters of IceCube-Gen2 boundary are isolated and processed using the optical-signal simulation software IceTray\footnote{Github: https://github.com/icecube/icetray/tree/gen2-optical-sim} ($\approx$ 6,000 events for each energy).
   We primarily investigate a mode of operation in which
-  the triggering would be provided entirely by the optical sensors. Thus, the Gen2 optical sensors would provide both the trigger for the readout and the readout channel for the RF signal. It would be realized as an additional channel to the 16 or 18 PMT channels in consideration for Gen2 \cite{icecube_gen2_lom}.  This trigger and readout would be quite straightforward to implement as the formation of the optical trigger is managed with the Gen2 optical trigger system.
+  the triggering would be provided entirely by the optical sensors. Thus, the Gen2 optical sensors would provide both the trigger for the readout and the readout channel for the RF signal. It would be realized as an additional channel to the 16 or 18 PMT channels in consideration for Gen2 \citep{icecube_gen2_lom}.  This trigger and readout would be quite straightforward to implement as the formation of the optical trigger is managed with the Gen2 optical trigger system.
   The readout decision is made at the DOM level and does not require a global event trigger formation. 
 
-  Considerations of RF noise from nearby optical sensors will be ignored for this conceptual study, but would need to be considered if this topic is studied further. Based on previous measurements with the AURA detectors \cite{aura}, it is assumed this would not be a major issue. 
+  Considerations of RF noise from nearby optical sensors will be ignored for this conceptual study, but would need to be considered if this topic is studied further. Based on previous measurements with the AURA detectors \citep{aura}, it is assumed this would not be a major issue. 
 
 \section{Optical-Radio Hybrid Events}
 
@@ -208,14 +210,14 @@
           alt={x}
         ]{sections/gen2radio/images/ICRC2021_EventRate_10yrIceCube_HESEPEPE.pdf}     
         \caption{
-          Number of Glashow hadronic, charged current and neutral current events from electron (anti)neutrinos selected by HESE \cite{icecube_search_2013} and PEPE \cite{icecube_search_glashow} analyses assuming a single power law flux  of E$^{-2.49}$ for 10 years of IceCube livetime. Numbers are multiplied by ten to scale up to the Gen2 event rate (which is approximately 10 times larger in instrumented volume than IceCube). 
+          Number of Glashow hadronic, charged current and neutral current events from electron (anti)neutrinos selected by HESE \citep{icecube_search_2013} and PEPE \citep{icecube_search_glashow} analyses assuming a single power law flux  of E$^{-2.49}$ for 10 years of IceCube livetime. Numbers are multiplied by ten to scale up to the Gen2 event rate (which is approximately 10 times larger in instrumented volume than IceCube). 
           Figure courtesy of Lu Lu. 
         }
         \label{fig:nuRate-Gen2}
       \end{figure}
 
       Figure \ref{fig:nuRate-Gen2} shows event rates for an injected
-      IceCube neutrino flux of E$^{-2.49}$ using high energy starting event (HESE) \cite{icecube_search_2013} and PeV energy partially contained events (PEPE) data \cite{icecube_search_glashow}.  
+      IceCube neutrino flux of E$^{-2.49}$ using high energy starting event (HESE) \citep{icecube_search_2013} and PeV energy partially contained events (PEPE) data \citep{icecube_search_glashow}.  
       In this figure, we assume and effective volume for detection cascade events to be 10
       times that of IceCube, in line with the ratio of the instrumented volumes of Gen2 and IceCube.
       For a livetime of 10 years 
@@ -274,7 +276,7 @@
       and primarily at shallower depth above 1500~m where the coldest ice is located. 
       An initial estimate indicates that the effective volume at very high energies (> 1~EeV) would be substantially larger.  
       Such an approach would be intriguing but the technical realization 
-      would be a sizeable project, despite the "free" boreholes.  
+      would be a sizeable project, despite the ``free" boreholes.  
 
 \section{Summary}
 
