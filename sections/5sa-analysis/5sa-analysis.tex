@@ -3,9 +3,9 @@
   After reducing our 10\% data to a predominantly thermal-like collection of events, we are ready to construct an analysis that separates potential signal from our thermal-like background. 
   This is done by training a Linear Discriminant Analysis (LDA) algorithm on each station-configuration.
   This LDA transforms 19 L2 analysis variables per event into one number that is low for background events and high for simulated neutrino events. 
-  The distribution of LDA values for thermal-like events is modeled and passed, along with the model of surface-like events identified in Section~\ref{sec:zc_slc}, to an optimization algorithm that identifies the best LDA cut for each station-configuration in the context of each arraywide configuration and the best zenith cut for the 6 instruments. 
+  The distribution of LDA values for thermal-like events is modeled and passed, along with the model of surface-like events identified in Section~\ref{sec:zc_slc}, to an optimization algorithm that identifies the best LDA cut for each station-configuration in the context of each arraywide configuration and the best Zenith Cut for the 6 instruments. 
 
-  Once the LDA cut (discriminating signal from background) and the zenith cut (rejecting cosmic rays and unparameterized anthropogenic noise) are optimized based on the 10\% sample and simulated neutrino events, the analysis is applied to the 100\% dataset. 
+  Once the LDA cut (discriminating signal from background) and the Zenith Cut (rejecting cosmic rays and unparameterized anthropogenic noise) are optimized based on the 10\% sample and simulated neutrino events, the analysis is applied to the 100\% dataset. 
   Any events that survive all analysis cuts (cleaning and LDA) are then passed through an isolation condition that removes any events that occurred between 5 seconds and 5.8 hours of each other, as we don't expect to find multiple neutrino events in close succession, except events that observe multiple particles or cascades (muon and tau tracks of stochastic losses and a tau decay), like those quantified in Fig.~\ref{fig:secondaries_contribution}. 
   We outline a plan for how to assess any remaining (``passing'') events, in case they are due to unforseen backgrounds not present in the 10\% sample. 
   Lastly, we use the expected background rates and the number of passing events to establish an upper limit on the flux of UHE neutrinos. 
@@ -109,14 +109,15 @@
 
 \section{Optimization \label{sec:optimization}}
 
-  After the thermal background LDA model determined in Section~\ref{sec:lda} and the surface event elevation models determined in Section~\ref{sec:zc_slc} for each station-configuration are set, we feed them both into an algorithm that determines the best LDA cut and zenith cut for each array wide configuration. 
+  After the thermal background LDA model determined in Section~\ref{sec:lda} and the surface event elevation models determined in Section~\ref{sec:zc_slc} for each station-configuration are set, we feed them both into an algorithm that determines the best LDA cut and Zenith Cut for each array wide configuration. 
   An array-wide configuration is defined by the combination of active stations (in their respective station livetime configuration) over time periods of at least 1 week. 
   There are 50 total array-wide combinations and they are shown in Fig.~\ref{fig:ARA_configurations}.
-  These 50 array wide configurations are comprised of 140 instances of our stations and as we have 6 instruments to set zenith cuts for, this optimization algorithm is solving a 146-dimension puzzle. 
-  The optimized A2 zenith cut is $10.31^{\circ}$ in elevation and LDA cuts are in Table~\ref{tab:ldacuts}. Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. Said another way, if one station-configuration has an LDA cut of 1.2 and another has a cut at 1.4, this does not simply imply the former is better than the latter. 
+  These 50 array wide configurations are comprised of 140 instances of our stations and as we have 6 instruments to set Zenith Cuts for, this optimization algorithm is solving a 146-dimension puzzle. 
+  The optimized A2 Zenith Cut is set to an elevation angle of $10.31^{\circ}$ and the LDA cuts are in Table~\ref{tab:ldacuts}. Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. Said another way, if one station-configuration has an LDA cut of 1.2 and another has a cut at 1.4, this does not simply imply the former is better than the latter. 
 
   \begin{table}
     \centering
+    \caption{}
     \label{tab:ldacuts}
   \end{table}
 
@@ -124,7 +125,7 @@
 
   Running the analysis pipeline over the full 100\% data and viewing which events survived all cuts for the first time is commonly referred to as ``opening the box". 
   After opening the box we investigate any events that pass the analysis and construct our analysis' sensitivity to UHE neutrinos.
-  But, before we open the box, we ensure that the surface background elevation model and the thermal background LDA model constructed with the 10\% dataset and used to establish the final zenith and LDA cuts are compatible with the 100\% data. 
+  But, before we open the box, we ensure that the surface background elevation model and the thermal background LDA model constructed with the 10\% dataset and used to establish the final Zenith and LDA Cuts are compatible with the 100\% data. 
   There is also one final cut to remove any array-wide temporal clusters of events which removes events that occur array-wide called the Time Isolation Cut.
 
   \subsection{Surface Cut Cross Checks}
@@ -155,7 +156,7 @@
     The 2 dimensional distribution of \texttt{mindepth\_v}\index{\texttt{L2 Variable: mindepth\_v}} and reconstructed elevations for events in the 100\% dataset that reconstruct below $20^{\circ}$, the lowest bin in the 10\% dataset, is shown in Fig.~\ref{fig:backgroundcheck_zenith_outliers}. 
     The \texttt{mindepth\_v} parameter describes the minimum depth (converted from elevation angle) where the correlation score of an event's reconstruction is at least 60\% of the full reconstruction's maximum correlation score. 
     Higher values of \texttt{mindepth\_v} indicate higher probabilities that an event originated from near and above the surface of the ice, where our data sample is largely contaminated by anthropogenic backgrounds and cosmic ray events.
-    This plot was created to ensure that none of these events in the 100\% surface data set with a reconstructed zenith less than $20^{\circ}$ were likely to have originated in the ice where we are searching for neutrinos. 
+    This plot was created to ensure that none of these events in the 100\% surface data set with a reconstructed elevation less than $20^{\circ}$ were likely to have originated in the ice where we are searching for neutrinos. 
     Figure~\ref{fig:backgroundcheck_zenith_outliers} shows that all of these events had a \texttt{mindepth\_v} of at least -1.7~m - meaning these events all had a high probability of originating near or above the surface and do not invalidate our background model.
 
     \begin{figure}
@@ -262,7 +263,7 @@
   \subsection{Time Isolation Cut}
 
     As neutrinos are expected to be rare, it is even rarer that neutrinos would occur within a short time window. 
-    To avoid collections of temporally clustered, unanticipated, neutrino-like background events from passing this analysis, we enforce an Isolation Cut to remove events that pass all cuts but occur within a short time window. 
+    To avoid collections of temporally clustered, unanticipated, neutrino-like background events from passing this analysis, we enforce a Time Isolation Cut to remove events that pass all cuts but occur within a short time window. 
     This time window was determined via a toy Monte Carlo simulation which sampled a number of neutrino events from a Poisson distribution with a mean of 15 and randomly distributed these events over the 10.6 year livetime covered by this analysis. 
     The time between consecutive events was calculated for all trials and plotted in Figure~\ref{fig:isolation_condition}.
     The time window used to determine the time window that had less than 0.001\% probability of removing neutrinos from our sample determined our time window of 5.8 hours.
@@ -284,7 +285,7 @@
   \subsection{Study of Passing Events}
 
       For any events that pass all analysis cuts, our goal is to analyze all analysis variables for the events before consulting the waveform and reconstruction skymap - preserving analysis ``blindness'' as long as possible. 
-      Some examples of first stage analyses include analyzing the time each event occurred, the reconstructed azimuth and zenith of events, conducting a KS test for azimuthal randomness, and consulting analysis variables associated with the Spark Event Cut and Anomalous Channel Cut which identify glitches. 
+      Some examples of first stage analyses include analyzing the time each event occurred, the reconstructed azimuth and elevation of events, conducting a KS test for azimuthal randomness, and consulting analysis variables associated with the Spark Event Cut and Anomalous Channel Cut which identify glitches. 
       If more information is needed, we will then consult the event waveforms, spectra, and reconstruction skymaps. 
       We expect that the only events that pass the analysis will be neutrino candidates, unanticipated glitches, or unexpected background populations (e.g. new continuous wave contamination).
       If a group of events passes the analysis and are subsequently determined to be inconsistent a new class of backgrounds and can be removed in a principled fashion, we will employ a new cut and the events will not be included in the upcoming Feldman Cousins factor calculation that determines the upper limit set by the analysis. 
@@ -351,7 +352,7 @@
 
       Before plotting the event we also looked for events in stations A1-A4 that occurred at the same time. 
       We found no events in A1-A3 and one event in A4. 
-      This A4 event was the same event from the 10\% burn sample that motivated the creation of the Anomalous Channel cut. 
+      This A4 event was the same event from the 10\% sample that motivated the creation of the Anomalous Channel cut. 
       The A4 event is shown in Figure~\ref{fig:a4outlier} demonstrating the same behavior as the A5 event shown in Figure~\ref{fig:passing_a5waveform}- one string has multiple antenna waveforms demonstrating power surges and impulsive signatures on the remaining strings.
       Due to the temporal coincidence of the A4, A5, and PA events, we searched for causes of these events in ARA monitoring logs, IceCube activities, activation of the radio pulsers at the top of the IceCube volume, South Pole Station activities, and natural phenomena (e.g. earthquakes, solar activity, etc).
       We did not find any activities or occurences that could explain the A4, A5, and PA events with our current understanding. 
@@ -399,7 +400,7 @@
       This showed that the AraVertex algorithm reconstructed the A5 event within $20^{\circ}$ of channels 4 and 12. 
       The same effect was observed when we plotted the skymap of correlation scores for the A5 event's interferometric reconstruction using a map radius equal to the distance between A5 channel 4 and the station center - the best interferometric reconstruction is $20^{\circ}$ away from the location of channel 4 and 12. 
       We repeated this exercise for the A4 event shown in Fig.~\ref{fig:a4outlier} and found the event reconstructed where channels 6 and 14 are, the same channels exhibiting power surge behavior.
-      The \cite{ara_a23} analysis conducted by Brian Clark and Ming-Yuan Lu also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut\footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
+      The \citep{ara_a23} analysis also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut\footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
 
       When we designed the Anomalous Channel Cut, we were unsure what the observed impulsive signatures on the strings without the power surge were, but would not classify these events as neutrino observations given the inexplicable power surge in some channels. 
       We had assumed that the power surge happens on the data acquisition board which is housed in the vault at the surface, but as the impulsive events resemble coherent radio emission, we considered that the power surge occurred on the string itself near the antennas. 
@@ -416,6 +417,31 @@
   
 \section{Results from Analyzing the Full Data Sample \label{sec:5sa_results}}
 
+    The \citet{feldman_cousins} 90\% confidence level upper limit factor relies on the number of observed events (0, for this analysis) and the number of expected backgrounds. 
+    We modeled backgrounds for the Geometry Cut, the Zenith Cut, and the LDA Cut.
+    As discussed in Section~\ref{sec:gc}, the windows used in the Geometry Cut were defined where the number of expected events past the cut per window was $2\times10^{-5}$ for the 10\% sample, meaning $2\times10^{-4}$ for the 100\% sample. 
+    Multiplied this by our expected misfire rate of $10^{-4}$ for each station to get an expected background leakage of $2\times 10^{-8}$ events per window.  
+    For both the Zenith Cut and LDA Cut, the number of expected background events is an output from the optimization performed in Section~\ref{sec:optimization}. 
+    The number of background events per station and array-wide are presented in Table~\ref{tab:backgrounds}.
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=\linewidth,
+        alt={}
+      ]{sections/5sa-analysis/images/Background-Leakage.pdf}
+      \caption{}
+      \label{tab:backgrounds}
+    \end{figure}
+
+    The final upper limit of this analysis is established using the simulations defined in Section~\ref{sec:veff_calc} and Eq.~\ref{eq:phi_UL}. 
+    The \citet{feldman_cousins} 90\% confidence level upper limit factor on this analysis evaluates to 2.44 as the number of observed events is 0 and the expected number of backgrounds is 0.13.
+    The upper limit is shown as the bold line in Fig.~\ref{fig:5sa_sensitivity}, with the analysis' Single Event Sensitivity (SES) and trigger level upper limit. 
+    % We establish 90\% confidence when stating that the true rate of neutrinos in each energy bin could be up to 2.44, according to the Feldman Cousins formulation.
+    The SES represents the highest flux required to observe at least 1 event in each energy bin.
+    The number of events we predict exist in our sample after all cuts have been applied is given in Tab.~\ref{tab:5sa_eventrates}.
+    Our result midly contradicts the flux and neutrino model given by \citep{km3net_neutrino} and \citep{flux-muzio}. \comment{do I need to be quantitative?}
+
     \begin{figure}
         \centering
         \includegraphics[
@@ -425,14 +451,6 @@
         \caption{Sensitivity achieved by the Five Station Analysis.}
         \label{fig:5sa_sensitivity}
     \end{figure}
-
-    The final upper limit of this analysis is established using the simulations defined in Section~\ref{sec:veff_calc} and Eq.~\ref{eq:phi_UL}. 
-    The \cite{feldman_cousins} 90\% confidence level upper limit factor on this analysis evaluates to 2.44 as the number of observed events is 0 and the expected number of backgrounds is 0.13.
-    The upper limit is shown as the bold line in Fig.~\ref{fig:5sa_sensitivity}, with the analysis' Single Event Sensitivity (SES) and trigger level upper limit. 
-    % We establish 90\% confidence when stating that the true rate of neutrinos in each energy bin could be up to 2.44, according to the Feldman Cousins formulation.
-    The SES represents the highest flux required to observe at least 1 event in each energy bin.
-    The number of events we predict exist in our sample after all cuts have been applied is given in Tab.~\ref{tab:5sa_eventrates}.
-    Our result midly contradicts the flux and neutrino model given by \cite{km3net_neutrino} and \cite{flux-muzio}. \comment{do I need to be quantitative?}
 
     \begin{table}
       \centering

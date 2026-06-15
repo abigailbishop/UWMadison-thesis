@@ -1,33 +1,30 @@
 \chapter{Conclusion \label{chap:conclusion}}
 
-This thesis focused on the search for ultra high energy neutrinos in ice via Askaryan emission.
-These neutrinos originate in extreme astrophysical sources (e.g. active galactic nuclei) or cosmogenically when ultra high energy cosmic rays interact with photons of the Cosmic Microwave Background. 
-I worked with the Askaryan Radio Array (ARA), the Radio Neutrino Observatory of Greenland (RNOG), and IceCube-Gen2 to simulate present and potential neutrino detectors; develope, assemble, and maintain detector hardware; and search for neutrinos in over one decade of experimental data. 
+This thesis focused on the search for ultra-high energy neutrinos in ice via Askaryan emission.
+These neutrinos originate in extreme astrophysical sources (e.g. active galactic nuclei) or cosmogenically when ultra-high energy cosmic rays interact with photons of the Cosmic Microwave Background. 
+I worked with the Askaryan Radio Array (ARA), the Radio Neutrino Observatory of Greenland (RNOG), and IceCube-Gen2 to simulate present and potential neutrino detectors; develop, assemble, and maintain detector hardware; and search for neutrinos in over one decade of experimental data. 
 
 This thesis began by presenting a study simulating radio antennas accompanying all 9,760 optical modules in the proposed IceCube-Gen2 optical volume. 
 These were intended to enhance IceCube’s directional reconstruction of very high energy neutrino cascades using Askaryan emission. 
 These events are very rare, therefore maximizing the information captured by their observation is crucial. 
 Due to the thin width of the Askaryan emission cone and low signal strength for neutrinos with less than $10^{17}$~eV of energy, only 11\% of the 54 expected IceCube-Gen2 Glashow Resonance events had sufficient Askaryan content in 10 years of observations. 
 This fraction increases for higher energy neutrinos, but the expected number of higher energy neutrinos falls too quickly to see much benefit.
-Given that most observed events will have low power radio content, it may be more lucrative to use strategically placed phased arrays in the IceCube-Gen2 optical module as these amplify low power signals, though a simulation study is necessary to assess potential benefits of this. 
-This study was completed along with Lu Lu, Albrecht Karle, and Ben Hokanson-Fasig \citep{icecube_gen2_infill}. 
+Given that most observed events will have low power radio content, it may be more lucrative to use strategically placed phased arrays in the IceCube-Gen2 optical module as these amplify low power signals, though a simulation study is necessary to assess potential benefits of this~\citep{icecube_gen2_infill}. 
 
 This thesis then presented discussions of the  Askaryan Radio Array (ARA). 
 ARA is comprised of 5 radio stations and has taken data since 2011. 
 Updates to simulations of the array were discussed, highlighting the importance of simulating the outgoing muons and taus from charged current neutrino interactions of the same flavors and the benefits of simulating these events in an array-wide context which considers an event's ability to trigger multiple stations. 
 We determined that, at trigger level, ARA is the most sensitive detector for neutrinos with energy above 3 EeV and could have observed 2.27 neutrinos according to the most optimistic \citep{flux-kotera} neutrino model. 
-These trigger level figures demonstrate the value of the ARA dataset and the goal that neutrino searches should strive for. 
-I conducted these studies with Austin Cummings, Ryan Krebs, Will Lusczak, Marco Muzio, and Alan Salcedo Gomez \citep{ara_secondaries, ara_veff}. 
+These trigger level figures demonstrate the value of the ARA dataset and the goal that neutrino searches should strive for~\citep{ara_secondaries, ara_veff}. 
+I believe that neutrinos have been recorded by ARA and exist in this dataset, but we need to design an analysis efficient enough to detect them.
 
 The thesis finishes with a neutrino search through 10.6 years of ARA data~\citep{ara_5sa-icrc}. 
-This was performed by a team of 8 - myself, Brian Clark, Paramita Dasgupta, Pawan Giri, Mohammad Hossain, Alex Machtay, Alan Salcedo Gomez, and was led by Marco Muzio . 
-My contributions focused on the cleaning of ARA's second station and simulations for the analysis. 
 Our analysis had one passing event on the PA station that was later determined to be a glitch that had a dedicated analysis cut for the traditional stations A1-A5 but not for the PA detector because we thought the glitch was confined to the data acquisition (DAQ) boards and the PA uses a different DAQ board than A1-A5. 
 We have since determined the glitch does not occur in the data acquisition boards, but is a power surge near the in-ice antennas causing amplified waveforms in some antennas on one string and releasing radio frequency emission that is recorded by nearby strings. 
 As A5 is colocated with PA, the passing PA event was classified as the observation of a glitch emitted on an A5 string and was not included in our upper limit calculation. 
 Our analysis set the upper limit on neutrino flux above 40 EeV and was expected to observe 0.41 events according to the \citep{flux-kotera} model, 18\% of the trigger level estimate. 
 This is mainly due to inefficient cuts that remove surface related events, mainly human-made anthropogenic backgrounds that mimic neutrinos and reconstruct deep into the ice. 
-Future analyses should consider ways to improve the efficiency of cuts targeting surface backgrounds, perhaps considering different cuts for the busy Pole season and the quieter winter period or an azimuth-dependent zenith cut. % I think we did this and determined we shouldn't? Why?
+Future analyses should consider ways to improve the efficiency of cuts targeting surface backgrounds, perhaps considering different cuts for the busy Pole season and the quieter winter period or an azimuth-dependent Zenith Cut. % I think we did this and determined we shouldn't? Why?
 We also recommend installing detectors more than 5 kilometers from expected anthropogenic backgrounds. 
 Additionally, 1.75 events were expected from the KM3NeT flux \citep{km3net_neutrino} at analysis level. 
 Finally, the analysis involved a great number of station-level and array-wide configurations which drove up simulation and analysis optimization complexity. 
@@ -35,4 +32,4 @@ We recommend that present and future detectors minimize changes that will motiva
 The gold standard to strive for is installing a detector in an optimized state and leaving it for as long as possible as such. 
 If a change is necessary, survey all stations for necessary changes and update them all at once, so the array wide configuration is only updated once. 
 
-Thesis work that we're not presented in the main body of this thesis include the design of antenna centralizers that are deployed in the Radio Neutrino Observatory of Greenland stations, the GPS survey of ARA, and my work configuring the ARA simulation package to import externally-simulated electric fields enabling integration of cosmic ray simulations like Corsika and FAERIE with ARA detector simulations. 
+Thesis work that we're not presented in this thesis include the GPS survey of ARA and my work configuring the ARA simulation package to import externally-simulated electric fields enabling integration of cosmic ray simulations like Corsika and FAERIE with ARA detector simulations. 

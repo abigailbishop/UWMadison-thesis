@@ -1,24 +1,48 @@
-\pagebreak
-\section{5 Station Analysis L2 Variables \label{app:5savariables}}
+\chapter{5 Station Analysis L2 Variables \label{app:5savariables}}
 
-\subsection{\texttt{wavefront\_rms\_v}}
+\section{\texttt{avg\_rpr} and \texttt{csw\_rpr}}
+  
+    \begin{figure}[!ht]
+      \centering
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_avg_rpr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_avg_rpr_v_rf.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_avg_rpr_v_rf.png}
+      \end{subfigure}
+      \caption{Distributions of average root power ratio of all vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+      \label{fig:avg_rpr}
+    \end{figure}
+  
+    \begin{figure}[!ht]
+      \centering
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_csw_rpr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_csw_rpr_v_rf.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+      \end{subfigure}
+      \caption{Distributions of root power ratio of events' coherently summed waveform from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+      \label{fig:csw_rpr}
+    \end{figure}
 
-  \texttt{wavefront\_rms} is a measure of how compatible observed waveforms are with an arriving plane wave. 
-  We use a simplified version of what was originally proposed by Carl Pfender and explained in Brian Clark's thesis.
-  For like-polarization antennas, we determine the time of maximum peak-to-peak (maximum-to-minimum) voltage in any 20 nanosecond window over the whole waveform.
-  We then assume, for the purpose of this calculation, that the signal from a potential plane wave arrived at this antenna at this time of maximum peak-to-peak voltage separation.
-  For each pair of antennas, the time difference between these maximum peak-to-peak times is used to calculate the arrival angle of the signal as
-  \begin{equation}
-    cos(\theta) = \frac{c \Delta t}{n \Delta d}
-    \label{eq:wavefrontrms}
-  \end{equation}
-  where $c$ is the speed of light in a vacuum, $\Delta t$ is the time delay between antennas, $n$ is the refractive index of the medium (ice), and $\Delta d$ is the distance between the two antennas. 
-  When comparing the arrival angle calculated by each pair of antennas, if a plane wave was observed then these arrival angles should all be similar. 
-  If a thermal-like event was observed, then these calculated arrival angles should all be quite different from each other. 
-  To quantify this, we calculate the variance of all the calculated arrival angles (contrary to the variable name of ``RMS'').
-  When this variance, the \texttt{wavefront\_rms}, is small, the recorded waveform has a strong likelihood of originating from a plane wave and when it is large, this scenario is less likely.
-
-\subsection{wavefront\_rms\_v}
+\section{\texttt{avg\_s2}}
 
   \texttt{avg\_s2} is a measure of signal causality constructed similarly to the \texttt{wavefront\_rms}. 
   For all antennas of like-polarization, the time of maximum peak-to-peak voltage in any 20 nanosecond window of every waveform is identified. 
@@ -32,193 +56,121 @@
   When $s^2$ is negative, this indicates an acausal, non-physical signal that would not be expected of an arriving impulsive signal.
   We take the average $s^2$ calculated over all antenna pairs of like-polarization and report this as the \texttt{avg\_s2}
 
-\subsection{Signal Correlation Parameters}
 
-  \subsubsection{Global Max Correlation}
-    
-    The cross correlation of all pairs of like-polarized antennas is performed on a sphere with a radius equal to the pulser's distance from the station's center (this is also called the "nearby" reconstruction) and a sphere with a radius of 300 meters (called the "distant" reconstruction). 
-    %The reconstructed correlation is computed by determining which point on the sphere the signals must have come from to be maximally correlated.
-    %The correlation is first computed between pairs of antennas where waveforms have been shifted in time according to the arrival delay of signals if they were to arrive from a certain location on the sphere. 
-    %Once time-shifted, the two waveforms are cross correlated to obtain their correlation value. 
-    %% What is the correlation? The maximum of the correlation function or the area under the curve or what? 
-    %% Is the total correlation an average of the correlation between all antennas? 
-    %It is a process that requires significant computation time as multiple locations on the sphere are tested in search of the best position on the sphere. 
-    
-    The maximum correlation in all four reconstructions (two polarizations, two distances) is saved to a variable called \texttt{global\_max\_corr} while the maximum correlation in horizontally and vertically polarized antennas separately are saved as \texttt{global\_max\_corr\_h} and \texttt{global\_max\_corr\_v}, respectively. Shown in Figure~\ref{fig:global_max_correlation} are example distributions of the \texttt{global\_max\_corr} variable.
-    
-      \begin{figure}[!ht]
-        \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_global_max_corr.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
-        \end{subfigure}
-        \caption{Global Max Correlation distributions from data. Left, 1-dimensional distribution. Right, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. }
-        \label{fig:global_max_correlation}
-      \end{figure}
-
-  \subsubsection{\texttt{mindepth\_v} \label{sec:mindepth}}
-
-    This variable is calculated using the map of correlation values for all locations on the sky in azimuth and elevation to identify the highest elevation in the reconstruction map with a correlation value $\geq 60$\% of the map's maximimum correlation value.
-    Taking Figure~\ref{fig:lowmindepth} for example, the maximum correlation value of this reconstruction skymap is 0.35 and we find the highest elevation a location on the sky with a correlation score of 0.21 ($0.6 \times 3.5$) is at an elevation of 68.5$^{\circ}$.
-    We take this one step further and convert this maximum elevation angle into a minimum depth from the surface 
-    \begin{equation}
-      d = z_{\text{SC}} - r \sin{\theta}
-      \label{eq:mindepth}
-    \end{equation}
-    where $z_{\text{SC}}$ is the average antenna depth for the station, $r$ is the radius of the reconstruction sphere, and $\theta$ is the elevation angle.
-    For Figure~\ref{fig:lowmindepth}, which is the reconstruction of an A1 event using the pulser map radius (defined in Tab.~\ref{tab:cpdist}), $z_{\text{SC}}=-67.5$~m and $r=48.02$~m.
-    This yields a \texttt{mindepth\_v}$=22.7$~m for this event. 
-    This conversion to \texttt{mindepth\_v} was done to more easily compare our event reconstructions to the average depth of cosmic ray cores that impact into the ice - the deepest surface-related background we expect to observe, in theory.
-
-    \begin{figure}
+\section{\texttt{avg\_snr}}
+  
+  Both H and Vpol
+  
+    \begin{figure}[!ht]
       \centering
-      \includegraphics[
-          width=0.75\textwidth,
-          alt={}
-      ]{sections/5sa-cleaning/images/a1r3183e65990_mindepth.pdf}
-      \caption{An example of an event with a high \texttt{mindepth\_v}, meaning this event has many possible reconstructions that imply this event originated near the surface. This example is A1, run 3183, event 65990.}
-      \label{fig:lowmindepth}
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_avg_snr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_avg_snr_v_rf.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_avg_snr_v_rf.png}
+      \end{subfigure}
+      \caption{Distributions of the average SNR of signals in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+      \label{fig:avg_snr}
+    \end{figure}
+  
+% \section{\texttt{corr\_snr}}
+  
+  % \begin{figure}[!ht]
+  %   \centering
+  %   \begin{subfigure}[t]{0.3\textwidth}
+  %     \centering
+  %     \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_corr_snr_v.png}
+  %   \end{subfigure}
+  %   ~
+  %   \begin{subfigure}[t]{0.3\textwidth}
+  %     \centering
+  %     \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_corr_snr_v_rf.png}
+  %   \end{subfigure}
+  %   ~
+  %   \begin{subfigure}[t]{0.3\textwidth}
+  %     \centering
+  %     \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_corr_snr_v_rf.png}
+  %   \end{subfigure}
+  %   \caption{Distributions of the correlation SNR in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+  %   \label{fig:corr_snr}
+  % \end{figure}
+  
+\section{\texttt{csw\_snr}}
+  
+    \begin{figure}[!ht]
+      \centering
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_csw_snr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+      \end{subfigure}
+      \caption{Distributions of the Coherently Summed Waveform's SNR for vertically polarized antennas from data. Left, 1-dimensional distribution.  Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+      \label{fig:csw_snr}
     \end{figure}
 
-\pagebreak
-\subsection{Signal Strength Parameters}
-
-  \subsubsection{Average SNR}
-    
-    Both H and Vpol
-    
-      \begin{figure}[!ht]
-        \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_avg_snr_v.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_avg_snr_v_rf.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_avg_snr_v_rf.png}
-        \end{subfigure}
-        \caption{Distributions of the average SNR of signals in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
-        \label{fig:avg_snr}
-      \end{figure}
-    
-  \subsubsection{Hilbert Enveloped SNR}
-    
-      \begin{figure}[!ht]
-        \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_hilbert_snr_v.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_hilbert_snr_v_vs_csw_snr_v_rf.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_hilbert_snr_v_vs_global_max_corr_v_rf.png}
-        \end{subfigure}
-        \caption{Distributions of the Hilbert SNR of signals in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
-        \label{fig:hilbert_snr}
-      \end{figure}
+\section{\texttt{global\_max\_corr} and \texttt{reco\_result\_*\_corr}}
   
-  \subsubsection{Correlation SNR}
-    
-      \begin{figure}[!ht]
+  The cross correlation of all pairs of like-polarized antennas is performed on a sphere with a radius equal to the pulser's distance from the station's center (this is also called the ``nearby" reconstruction) and a sphere with a radius of 300 meters (called the ``distant" reconstruction). 
+  %The reconstructed correlation is computed by determining which point on the sphere the signals must have come from to be maximally correlated.
+  %The correlation is first computed between pairs of antennas where waveforms have been shifted in time according to the arrival delay of signals if they were to arrive from a certain location on the sphere. 
+  %Once time-shifted, the two waveforms are cross correlated to obtain their correlation value. 
+  %% What is the correlation? The maximum of the correlation function or the area under the curve or what? 
+  %% Is the total correlation an average of the correlation between all antennas? 
+  %It is a process that requires significant computation time as multiple locations on the sphere are tested in search of the best position on the sphere. 
+  
+  The maximum correlation in all four reconstructions (two polarizations, two distances) is saved to a variable called \texttt{global\_max\_corr} while the maximum correlation in horizontally and vertically polarized antennas separately are saved as \texttt{global\_max\_corr\_h} and \texttt{global\_max\_corr\_v}, respectively. Shown in Figure~\ref{fig:global_max_correlation} are example distributions of the \texttt{global\_max\_corr} variable.
+  
+    \begin{figure}[!ht]
+      \centering
+      \begin{subfigure}[t]{0.3\textwidth}
         \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_corr_snr_v.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_corr_snr_v_rf.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_corr_snr_v_rf.png}
-        \end{subfigure}
-        \caption{Distributions of the correlation SNR in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
-        \label{fig:corr_snr}
-      \end{figure}
-    
-  \subsubsection{Coherently Summed SNR}
-    
-      \begin{figure}[!ht]
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_global_max_corr.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.3\textwidth}
         \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_csw_snr_v.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
-        \end{subfigure}
-        \caption{Distributions of the Coherently Summed Waveform's SNR for vertically polarized antennas from data. Left, 1-dimensional distribution.  Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
-        \label{fig:csw_snr}
-      \end{figure}
-    
-  \subsubsection{Average and Coherently Summed Root Power Ratio}
-    
-      \begin{figure}[!ht]
-        \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_avg_rpr_v.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_avg_rpr_v_rf.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_avg_rpr_v_rf.png}
-        \end{subfigure}
-        \caption{Distributions of average root power ratio of all vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
-        \label{fig:avg_rpr}
-      \end{figure}
-    
-      \begin{figure}[!ht]
-        \centering
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_csw_rpr_v.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_csw_snr_v_vs_csw_rpr_v_rf.png}
-        \end{subfigure}
-        ~
-        \begin{subfigure}[t]{0.3\textwidth}
-          \centering
-          \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
-        \end{subfigure}
-        \caption{Distributions of root power ratio of events' coherently summed waveform from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
-        \label{fig:csw_rpr}
-      \end{figure}
+        \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+      \end{subfigure}
+      \caption{Global Max Correlation distributions from data. Left, 1-dimensional distribution. Right, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. }
+      \label{fig:global_max_correlation}
+    \end{figure}
 
-\pagebreak
-\subsection{Signal Impulsivity Parameters}
+% \section{\texttt{hilbert_snr}}
+  
+    % \begin{figure}[!ht]
+    %   \centering
+    %   \begin{subfigure}[t]{0.3\textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_1d_hilbert_snr_v.png}
+    %   \end{subfigure}
+    %   ~
+    %   \begin{subfigure}[t]{0.3\textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_hilbert_snr_v_vs_csw_snr_v_rf.png}
+    %   \end{subfigure}
+    %   ~
+    %   \begin{subfigure}[t]{0.3\textwidth}
+    %     \centering
+    %     \includegraphics[width=\textwidth]{sections/5sa-analysis/plots/a2c5_10pct_allCuts250909_2d_hilbert_snr_v_vs_global_max_corr_v_rf.png}
+    %   \end{subfigure}
+    %   \caption{Distributions of the Hilbert SNR of signals in vertically polarized antennas from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
+    %   \label{fig:hilbert_snr}
+    % \end{figure}
 
-  \subsubsection{Impulsivity}
+\section{\texttt{*imp*}}
+  \subsection{\texttt{impulsivity}}
     
       \begin{figure}[!ht]
         \centering
@@ -239,10 +191,10 @@
         \caption{Distributions of impulsivity from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
         \label{fig:impulsivity}
       \end{figure}
-  
-  \pagebreak
-  \subsubsection{Linear Fit Parameters}
-  
+
+
+  \subsection{Linear Fit Parameters}
+
     \begin{figure}[!ht]
       \centering
       \begin{subfigure}[t]{0.48\textwidth}
@@ -257,13 +209,13 @@
       \caption{Example of a linear fit to an event's impulsivity curve courtesy of Marco Muzio.}
       \label{fig:linearimp}
     \end{figure}
-  
+
     \begin{equation}
       y = mx + b
       \label{eq:linear}
     \end{equation}
-  
-    \paragraph{bImp}
+
+    \subsubsection{\texttt{bImp}}
     
       \begin{figure}[!ht]
         \centering
@@ -285,7 +237,7 @@
         \label{fig:bImp}
       \end{figure}
     
-    \paragraph{mImp}
+    \subsubsection{\texttt{mImp}}
     
       \begin{figure}[!ht]
         \centering
@@ -307,7 +259,7 @@
         \label{fig:mImp}
       \end{figure}
     
-    \paragraph{rhoImp}
+    \subsubsection{\texttt{rhoImp}}
     
       \begin{figure}[!ht]
         \centering
@@ -328,8 +280,8 @@
         \caption{Distributions of the r-value of the linear fit to events' impulsivity curves from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
         \label{fig:rhoImp}
       \end{figure}
-  
-    \paragraph{impLinChi2}
+
+    \subsubsection{\texttt{impLinChi2}}
     
       \begin{figure}[!ht]
         \centering
@@ -350,10 +302,10 @@
         \caption{Distributions of the difference between the linear fit to all events' impulsivity curves and an ideal $x=y$ curve from data. Left, 1-dimensional distribution. Center, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. Right, 2-dimensional distribution against the global max correlation in vertically polarized antennas. }
         \label{fig:impLinChi2}
       \end{figure}
-  
-  \pagebreak
-  \subsubsection{Functional Fit Parameters}
-  
+
+
+  \subsection{Functional Fit Parameters}
+
     \begin{figure}[!ht]
       \centering
       \begin{subfigure}[t]{0.48\textwidth}
@@ -368,7 +320,7 @@
       \caption{Example of the hilbert-inspired curve given by Equation~\ref{eq:functionalimp} fit to an event's impulsivity curve.}
       \label{fig:functionalimp}
     \end{figure}
-  
+
     \begin{equation}
       h(t) \propto A e^{- t^2 / B^2 } + 1
       \label{eq:hilbert}
@@ -379,7 +331,7 @@
       \label{eq:functionalimp}
     \end{equation}
     
-    \paragraph{impErfA}
+    \subsubsection{\texttt{impErfA}}
     
       \begin{figure}[!ht]
         \centering
@@ -401,7 +353,7 @@
         \label{fig:impErfA}
       \end{figure}
     
-    \paragraph{impErfB}
+    \subsubsection{\texttt{impErfB}}
     
       \begin{figure}[!ht]
         \centering
@@ -423,7 +375,7 @@
         \label{fig:impErfB}
       \end{figure}
     
-    \paragraph{impErfLinChi2}
+    \subsubsection{\texttt{impErfLinChi2}}
     
       \begin{figure}[!ht]
         \centering
@@ -445,8 +397,8 @@
         \label{fig:impErfLinChi2}
       \end{figure}
     
-  \pagebreak
-  \subsubsection{impSig}
+
+  \subsection{\texttt{impSig}}
     
       \begin{figure}[!ht]
         \centering
@@ -468,5 +420,48 @@
         \label{fig:impSig}
       \end{figure}
 
+  % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2964 impulsivity metrics
+  
+\section{\texttt{mindepth\_v} \label{sec:mindepth}}
 
-% https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2964 impulsivity metrics
+  This variable is calculated using the map of correlation values for all locations on the sky in azimuth and elevation to identify the highest elevation in the reconstruction map with a correlation value $\geq 60$\% of the map's maximimum correlation value.
+  Taking Figure~\ref{fig:lowmindepth} for example, the maximum correlation value of this reconstruction skymap is 0.35 and we find the highest elevation a location on the sky with a correlation score of 0.21 ($0.6 \times 3.5$) is at an elevation of 68.5$^{\circ}$.
+  We take this one step further and convert this maximum elevation angle into a minimum depth from the surface 
+  \begin{equation}
+    d = z_{\text{SC}} - r \sin{\theta}
+    \label{eq:mindepth}
+  \end{equation}
+  where $z_{\text{SC}}$ is the average antenna depth for the station, $r$ is the radius of the reconstruction sphere, and $\theta$ is the elevation angle.
+  For Figure~\ref{fig:lowmindepth}, which is the reconstruction of an A1 event using the pulser map radius (defined in Tab.~\ref{tab:cpdist}), $z_{\text{SC}}=-67.5$~m and $r=48.02$~m.
+  This yields a \texttt{mindepth\_v}$=22.7$~m for this event. 
+  This conversion to \texttt{mindepth\_v} was done to more easily compare our event reconstructions to the average depth of cosmic ray cores that impact into the ice - the deepest surface-related background we expect to observe, in theory.
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=0.75\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/a1r3183e65990_mindepth.pdf}
+    \caption{An example of an event with a high \texttt{mindepth\_v}, meaning this event has many possible reconstructions that imply this event originated near the surface. This example is A1, run 3183, event 65990.}
+    \label{fig:lowmindepth}
+  \end{figure}
+
+
+
+\section{\texttt{wavefront\_rms\_v}}
+
+  \texttt{wavefront\_rms} is a measure of how compatible observed waveforms are with an arriving plane wave. 
+  We use a simplified version of what was originally proposed by Carl Pfender and explained in~\citet{thesis_clark}
+  For like-polarization antennas, we determine the time of maximum peak-to-peak (maximum-to-minimum) voltage in any 20 nanosecond window over the whole waveform.
+  We then assume, for the purpose of this calculation, that the signal from a potential plane wave arrived at this antenna at this time of maximum peak-to-peak voltage separation.
+  For each pair of antennas, the time difference between these maximum peak-to-peak times is used to calculate the arrival angle of the signal as
+  \begin{equation}
+    cos(\theta) = \frac{c \Delta t}{n \Delta d}
+    \label{eq:wavefrontrms}
+  \end{equation}
+  where $c$ is the speed of light in a vacuum, $\Delta t$ is the time delay between antennas, $n$ is the refractive index of the medium (ice), and $\Delta d$ is the distance between the two antennas. 
+  When comparing the arrival angle calculated by each pair of antennas, if a plane wave was observed then these arrival angles should all be similar. 
+  If a thermal-like event was observed, then these calculated arrival angles should all be quite different from each other. 
+  To quantify this, we calculate the variance of all the calculated arrival angles (contrary to the variable name of ``RMS'').
+  When this variance, the \texttt{wavefront\_rms}, is small, the recorded waveform has a strong likelihood of originating from a plane wave and when it is large, this scenario is less likely.
+

@@ -377,7 +377,7 @@
   These criteria include detector and background-related qualifications that filter out events like known calibration pulsing events, events with software glitches, and runs with known or assumed anthropogenic signals. 
   After these events are removed, cuts are applied to remove cosmic ray contamination. 
   As these events take place above the ice and sometimes also in the first few meters of the firn, cosmic rays are expected only from fairly inclined directions and are excluded by removing all events from inclined directions. 
-  For example, this analysis applied a cut removing all events with a zenith less than 60$^{\circ}$ in A2 and 80$^{\circ}$ in A3. 
+  For example, this analysis applied a cut removing all events with a elevation less than 60$^{\circ}$ in A2 and 80$^{\circ}$ in A3. 
   This is a fairly harsh cut that removes ``10-30\% of neutrinos" from simulated neutrino datasets \citep{ara_a23}, so improvements to this cut involving deliberate cosmic ray identification tools are an area of active development \citep{CRiniceARENA}. 
   After removing all background events that can be removed trivially, all remaining events are assumed to originate from thermal backgrounds or from real neutrino signal. 
   Signal is then identified by determining if an event's reconstruction confidence ($C_{\text{sky}}$, similar to the \texttt{max\_corr} variables in Appendix~\ref{app:5savariables}) and signal power (\texttt{root\_power\_ratio}, defined in Appendix~\ref{app:5savariables}) are both high enough to correspond to a neutrino, as shown in Figure~\ref{fig:ARA-A23-SignalCut}.
@@ -391,9 +391,9 @@
 
   This analysis involved two pipelines with slightly different cuts and configurations. 
   All events that pass these cuts are assumed to be signal-like events, though they are scrutinized further to ensure all detections are neutrino events. 
-  Neither pipeline found any neutrino-like events, though both found interesting events when all cuts were imposed on data except for the zenith cut. 
+  Neither pipeline found any neutrino-like events, though both found interesting events when all cuts were imposed on data except for the Zenith Cut. 
   One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic in origin).
-  The second found 7 "near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
+  The second found 7 ``near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
   At the time of publication, none of these surface events had been further analyzed to determine if they were cosmic ray events but are now under investigation as mentioned in Section~\ref{sec:analysis_cr}. 
   Some events that passed Analysis B of \citet{ara_a23} had ``an unphysical amount of power [that] was deposited in one or two strings''. 
   One of these events is shown in Figure~\ref{fig:ARA-A23-sparkevent}.

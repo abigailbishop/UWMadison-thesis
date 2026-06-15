@@ -65,7 +65,7 @@
               \caption{
                   \label{fig:event_gen_diagram}
                   Diagram of the \nuleptonsim{} event generation geometry.Neutrinos are thrown towards points uniformly sampled in the fiducial volume $V_{\text{fid}}$.
-                  The circular face of $V_{\text{fid}}$ is centered on A2 (see the ARA station layout in Fig.~\ref{fig:ARA_map}).
+                  The circular face of $V_{\text{fid}}$ is centered on A2 (see the ARA station layout in Fig.~\ref{fig:ARA}).
                   This cartoon shows examples of neutrinos and secondaries interacting with the Earth and ice, including an example of tau neutrino regeneration (upper left) and an outgoing muon (upper right).
                   The yellow stars represent particle interactions.
                   Only the interactions that fall within $V_{\text{fid}}$ are saved to the event library and passed to the detector simulation.
@@ -291,7 +291,7 @@
     Then the more time consuming signal generation can be performed for particles in a smaller volume, closer to the array~\citep{nuleptonsim}.
     NuRadioMC is a simulation framework that has a similar setting, using PROPOSAL for secondary production and propagation in a larger volume than considered for signal generation~\citep{nuradiomc1, nuradiomc2}.
 
-    The effective area results of our simulation are shown in Figure~\ref{fig:veffs}.
+    % The effective area results of our simulation are shown in Figure~\ref{fig:veffs}.
     In Figure~\ref{fig:EAbyflavor}, we compare our signal-only initial cascade results to previous ARA signal+noise simulations of initial cascades and tau/muon approximations.
     Although ARA's realistic use of noise and lepton approximations makes their effective areas larger than our calculations, our all-flavor initial cascade curve (red curve versus black curve) is reasonable.
     Note that the ARA simulation we compare to is the effective area of 1 station multiplied by 5 (to match our 5-station simulation) which overestimates the effective area at high energies since this double counts multi-station observations \citep{ara_testbed}.
@@ -328,7 +328,7 @@
         alt={x}
       ]{sections/araveff/images/icrc23/plots-221028-nutau-1e10-2928701-side_000-trimmed}
       \caption{
-        Example of an event where the initial tau neutrino charged current interaction (maroon star and ray) triggered ARA station 2.
+        Example of an event where the initial tau neutrino charged current interaction (maroon star and ray) triggered A2.
         Then the outgoing tau created a track of stochastic energy losses (grey dots) as the tau traveled downwards.
         Two energy losses created cascades that triggered 3 more ARA stations (yellow and blue circles and rays).
       }
@@ -901,7 +901,7 @@
         ARA's large acceptance means that it has the potential to be the most sensitive UHE neutrino detector.
         Given its exposure from 2013 to 2023, ARA has the leading trigger-level sensitivity to constrain UHE neutrino flux models beyond $4$~EeV.
         In practice, however, this potential sensitivity is currently not achievable in UHE neutrino searches.
-        To roughly capture the impact of a real UHE neutrino event selection, we applied a simple SNR threshold (to mimic thermal background suppression) and a simple zenith threshold (to mimic suppression of anthropogenic \& cosmic ray backgrounds).
+        To roughly capture the impact of a real UHE neutrino event selection, we applied a simple SNR threshold (to mimic thermal background suppression) and a simple elevation threshold (to mimic suppression of anthropogenic \& cosmic ray backgrounds).
         The resulting toy analysis-level sensitivity shows that ARA will set the most stringent constraints on UHE neutrino flux models beyond roughly $10$~EeV in a realistic UHE neutrino search.
         However, the exact energy at which ARA's limit is the most stringent will depend on the details of the specific UHE neutrino search.
 
