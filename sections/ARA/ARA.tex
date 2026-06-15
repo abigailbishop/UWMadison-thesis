@@ -1,19 +1,25 @@
 \chapter{The Askaryan Radio Array \label{chap:ARA}}
 
     As briefly discussed in Section~\ref{sec:iniceExperiments}, the Askaryan Radio Array (ARA) is an experiment searching for UHE neutrinos at the South Pole.
-    5 stations comprise the array where each station has 4-5 strings instrumented with radio antennas monitoring for Askaryan Radiation.
+    The array consists of 5 stations, each with 4-5 strings instrumented with radio antennas monitoring for Askaryan Radiation.
     This chapter expands on ARA's design and layout, operations, and summarizes a selection of previous analyses. 
 
 \section{Station Design and Layout \label{sec:design_layout}}
 
-    The station layout of ARA was shown in Fig.~\ref{fig:ARA}; the 5 stations are arranged on a hexagonal grid with 2~km spacing near the IceCube Neutrino Observatory and a couple kilometers from the South Pole. 
-    For ARA, it was determined that this 2~km station spacing was the right balance between neutrino detection, cost of equipment and installation, and the possibility to observe a single neutrino interaction with multiple detectors~\citep{ara_design}.
+    The station layout of ARA is shown in Fig.~\ref{fig:ARA}; the 5 stations are arranged on a hexagonal grid with 2~km spacing near the IceCube Neutrino Observatory and a couple kilometers from the South Pole. 
+    For ARA, the 2~km station spacing was chosen to balance full array volume, observations of the same neutrino event in multiple stations, and the cost of equipment and installation~\citep{ara_design}.
 
     \subsection{Traditional ARA Stations}
 
         \begin{table}
             \centering
-            \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{1.5cm}||YYYY}
+            \begin{tabularx}{\textwidth}{
+                >{\centering\arraybackslash}m{1.5cm}||
+                >{\centering\arraybackslash}m{3cm}
+                >{\centering\arraybackslash}m{3cm}
+                >{\centering\arraybackslash}m{3cm}
+                >{\centering\arraybackslash}m{3cm}
+              }
               \textbf{\hspace{40pt}Station} & 
               \textbf{\hspace{40pt}Installation Season} & 
               \textbf{\hspace{40pt}Horizontal\hspace{10pt}Baseline\hspace{30pt}[m]} & 
@@ -35,7 +41,7 @@
 
         Each ARA station is designed to be a rectangular lattice of pairs of horizontally polarized quadslot and vertically polarized bicone antennas, as were shown in Figure~\ref{fig:Antenna-types}.
         Figure~\ref{fig:ARA} shows an example of the A5 station.
-        The traditional stations A1-A5 were built by drilling 4 holes in the ice up to 200~m deep and arranged in a square. Two pairs of antennas were deployed into each hole, each pair separated in depth by 18-30~m. 
+        The traditional stations A1-A5 were built by drilling 4 holes in the ice up to 200~m deep and arranged in a square. Two pairs of antennas were deployed into each hole, each pair separated by 18-30~m in depth. 
         The square layout of the hole has a horizontal baseline of 14-32~m.
         The specifics for each of the 5 stations is shown in Table~\ref{tab:station_lattices}. 
 
@@ -64,15 +70,34 @@
           \label{fig:ARA-signalchain}
         \end{figure}
 
-        For each antenna, an arriving radio signal is transformed from an electric field into a voltage trace following the antenna's response function.
+        For each antenna, an arriving radio signal is transformed from an electric field into a voltage trace according to the antenna's response function.
         Deep in the borehole, the trace is passed through a notch filter that suppresses frequencies around 450~MHz, where most South Pole communications frequencies are transmitted.
         Next, the trace is amplified with a Low Noise Amplifier (LNA) that is located near the antenna. 
         Following this, the trace is converted into an optical signal and sent to the data acquisition (DAQ) box on the surface. 
         We expect that the LNA's occasionally experience power surges after discovering a class of events with clear impulses in some channels and high root-mean-square waveform values in some antennas. 
         The reconstructions of these events coincide with downhole antennas and LNAs, though this has not been experimentally verified and we do not currently know the cause of these sparks.
+    
+        \begin{table}
+          \centering
+          \begin{tabular}{ | c | c |}
+            \hline
+            Run Range & Firing Calibration Pulser \\
+            \hline
+            0-1900 & 6 \\
+            1901-1934 & 5 \\
+            1935-7005 & 6 \\
+            7006 - 8097 & 5 \\
+            8098 - 9578 & 6 \\
+            9779 - 19826 & 5 \\
+            \hline
+          \end{tabular}
+          \caption{Run periods and which calibration pulser was active during those periods.}
+          \label{tab:A2cp_runs}
+        \end{table}
 
-        Each station also has one or two additional strings with radio antennas, called Calibration Pulsers (CPs), that pulse radio waves approximately once per second. 
+        Each station also has one or two additional strings with radio antennas, called Calibration Pulsers (CPs), that pulse radio waves at a rate of 1~Hz. 
         CP events are used to monitor the performance of ARA stations over time and have occasionally alerted collaborators to adjust station settings to improve observations.
+        Only one CP is active during each run and Tab.~\ref{tab:A2cp_runs} documents which CP was active during each run. 
 
         All cables from each data taking and CP string are directed into a large, roughly 1~m by 2.5~m, box called a vault. 
         The vault contains a network switch, a power box, a DAQ box, and Fiber Optic Amplification Modules that convert the optical signals from each data taking string into electronics signals before they enter the DAQ box\footnote{\comment{Check this. Does it actually do the conversion or just an amplification}}.
@@ -147,18 +172,18 @@
         The chip enabling connection of the FPGA with the ATRI is called the FX2.
         This chip was installed on ATRI's used for stations A1-A5 between 2013 and 2018. 
         The USB connection between the FX2 and the ATRI degrades overtime preventing the SBC from communicating with the FPGA, rendering the station unable to take data. 
-        Full deprecation can be delayed by forcing the USB connection into slow speed. \comment{Give command for identifying the module and setting the USB speed to slow?} 
+        Full deprecation can be delayed by forcing the USB connection into slow speed. 
         Our stations tend to operate for a few months on low speed before connection to the FX2 chip is lost completely.
-        Table~\ref{tab:station_daqboards} summarizes the types of DAQ boards, when they were in use, and other notes. 
-        This is an abbreviation of a Wikipedia page I started, \href{https://mediawiki.icecube.wisc.edu/ara/index.php/ARA_Station_Histories}{ARA Station Histories}, which summarizes topline updates and downtimes for each station since they were installed. 
+        Table~\ref{tab:station_daqboards} summarizes the types of DAQ boards, when they were in use, and other notes.\footnote{\comment{One of my readers says the rest of this paragraph may not be relevant to the thesis but my ARA colleagues keep getting confused on the difference between these two pages and no one knows what's available on the wiki so I thought I'd document it here. Thoughts?}} 
+        This is an abbreviation of a Wikipedia page I authored, \href{https://mediawiki.icecube.wisc.edu/ara/index.php/ARA_Station_Histories}{ARA Station Histories}, which summarizes topline updates and downtimes for each station since they were installed. 
         This is not to be confused with the \href{https://mediawiki.icecube.wisc.edu/ara/index.php/Known_Station_Problems}{Known Station Problems} page, which contains notes about active and ongoing notes for each station, a page typically consulted by those on monitoring shifts. 
 
         ARA data is saved in batches, called ``runs'', typically taken over the course of 3 hours.
         There are three types of events: forced/software events, RF events, and events. 
-        Software triggered events read out $\sim200$~ns of ambient noise waveforms at a rate of $\sim 1$~Hz and are used to build simulations and define station livetime configurations (discussed in Section~\ref{sec:sec:a2configs}).
+        Software triggered events read out $\sim200$~ns of ambient noise waveforms at a rate of $\sim 1$~Hz and are used to build simulations and define station livetime configurations (discussed in Section~\ref{sec:a2configs}).
         RF (``Radio Frequency") events are the main event class and the one that we search for neutrino observations.
         An RF trigger occurs on if three antennas of the same polarization observe waveforms with power $\sim 6$ times more than the thermal background.
-        Lastly, CP events are recorded via the RF event trigger but are classified as CP events by the DAQ board if the CP was firing at the same time the RF event was read out.
+        Lastly, calibration pulser (CP) events are recorded via the RF event trigger but are classified as CP events by the DAQ board if the CP was firing at the same time the RF event was read out.
         At a combined trigger rate (software events + RF events + CP events) of $\sim11$~Hz, each run typically contains 100-120 thousand events. 
         Between each run, the station will enter into a brief state of lower power consumption as data is not being taken and the calibration pulser is not firing. 
         For, conservatively, the first minute of each run, as currents rise back to a nominal level, data taken by the detector is unusual and therefore typically excluded from analyses. 
@@ -186,13 +211,13 @@
         The runs of data that are saved by each station are collected by the radio processing (Radproc) computer which is housed in the IceCube Laboratory (ICL). 
         This data transfer and any other communications with the stations is conducted over fiber optic cable buried in the ice. 
         These fiber optic cables pass through a series of patch panels to reach their destination. 
-        Starting at Radproc, information travels over intranet to a White Rabbit Switch, a network switch used to improve time synchronization between connected devices. 
+        Starting at Radproc, information travels over intranet to a White Rabbit Switch\footnote{\url{https://www.white-rabbit.tech/wr-technology}{https://www.white-rabbit.tech/wr-technology}}, a network switch used to improve time synchronization between connected devices. 
         Ethernet leaves the White Rabbit Switch and is converted by a Small Form-factor Pluggable (SFP) into an optical signal that then enters a fiber optic patch panel in the ICL. 
         Outgoing fiber optic cables exit the ICL and run down the West Tower into the West Tower Junction Box, where the second patch panel is and leads immediately to a third patch panel located in the same box. 
         Cables leaving the third patch panel are laid over 1~km and end at Wind Turbine 3 where they meet their fourth patch panel. 
         Bundles of fiber optic cables are then run to stations A1, A2, and A3. 
         At this point, 2 fiber optic cables in each bundle are connected to A1, A2, and A3 while the last 2 cables at A1 are connected to a switch directing fiber optic signal to A4 and the last 2 cables at A2 being connected to a switch directing signal to A5. 
-        I compiled the mapping of all fibers from the ICL to ARA stations and the IceCube Surface Array into a spreadsheet that is available in \href{https://aradocs.wipac.wisc.edu/DocDB/DocumentDatabase}{ARA DocDB\#\#\#\#}. % todo not the real link
+        I compiled the mapping of all fibers from the ICL to ARA stations and the IceCube Surface Array into a spreadsheet that is available in \href{https://aradocs.wipac.wisc.edu/DocDB/DocumentDatabase}{ARA DocDB\#\#\#\#}.\footnote{\comment{I need to upload this file to DocDB then I'll get the number.}}
 
         % \begin{figure}
         %   \centering
@@ -219,7 +244,8 @@
         %   \label{fig:a3_otdr}
         % \end{figure}
 
-        Note that, in January 2025, we discovered the fibers connecting the ICL patch panel port 19 and 20 to the West Tower Junction Box patch panel were reversed compared to documentation and has been updated in the aforementioned DocDB article. 
+        Note that, in January 2025, we discovered the fibers connecting the ICL patch panel port 19 and 20 to the West Tower Junction Box patch panel were reversed compared to previous documentation.
+        This has been updated in the aforementioned DocDB article. 
         Handling of fibers in the West Tower Junction Box which connect the ICL to A3 via port 19 were handled unintentionally when installing the IceCube Surface Array extension. 
         Impurities may have been introduced into these fibers and the field team recommends retermination of the wires in the West Tower Junction Box in a future field season to restore network connection to A3.
         Since then, we have struggled to maintain network connection to A3. % and many Optical Time-Domain Reflectometer (OTDR) measurements have been conducted to calculate the distance to optical reflections caused by patch panels. 
@@ -240,10 +266,10 @@
         $\sim 1\%$ of events in each run are randomly selected, forming our monitoring data sample. 
         The monitoring data is put into a data ``dropbox" (i.e. a directory titled \texttt{dropboxes}) going ``north'' and the full run file is put into a data drop box going ``south''. 
         These drop boxes are coordinated by IceCube data specialists. 
-        The data in the ``north'' drop box is sent over satellite to the University of Wisconsin Madison (UW Madison) for processing and used in monitoring and operations. 
+        The data in the ``north'' drop box is sent over satellite to the University of Wisconsin Madison (UW--Madison) for processing and used in monitoring and operations. 
         This data sample is automatically processed by an ARA Operations lead so collaborators may generate and monitor event displays and station metadata (temperature, event rates, etc) on \href{http://aware.wipac.wisc.edu}{AWARE}.
         The data in the ``south'' drop box is stored on hard drives (also referred to as ``tapes'') that are accumulated and shipped at the end of each calendar year. 
-        These hard drives arrive at UW Madison in the spring and are uploaded to the IceCube data warehouse in late spring and early summer.
+        These hard drives arrive at UW--Madison in the spring and are uploaded to the IceCube data warehouse in late spring and early summer.
   
     \subsection{Data Processing}
   
@@ -268,7 +294,7 @@
             The smaller A1-A5 sample is technically reduced to a 9.5\% sample, but we round this to 10\% when referring to it.
         }. 
         Data analyses are typically built on the 10\% data sample then applied to the 100\% sample, as a blinding strategy. 
-        For an experiment looking for rare data in a band of electromagnetic frequencies that strongly overlaps with anthropogenic backgrounds (e.g. snowmobiles, radios, airplanes, weather balloons, etc), building an analysis on only 10\% of the data has proven risky. 
+        For an experiment looking for rare data in a band of electromagnetic frequencies that strongly overlaps with anthropogenic backgrounds (e.g. snowmobile spark plugs, radios, airplanes, weather balloons, etc), building an analysis on only 10\% of the data has proven risky. 
         For example, unpredicted backgrounds have survived final event selection in some analyses and other analyses have removed an excessive number of events to avoid surviving backgrounds, both reducing analysis impact. 
         It would benefit us to consider other blinding strategies in addition to this one.
 
@@ -347,7 +373,7 @@
 
   After 5 years of operation, the ARA collaboration carried out its first neutrino search. 
   Almost 2,200 days of combined livetime were analyzed from the second and third ARA station using a cut-based analysis\index{Cut-Based Analysis} \citep{ara_a23_10mo,ara_a23}. % The actual number is 2,162 days
-  This type of analysis is built by defining a collection of criteria, called cuts, such that a neutrino event will pass every cut but all other events will fail at least one. 
+  This type of analysis is built by defining a collection of criteria, called cuts, such that only a neutrino event will pass every cut, discriminating signal from background and contamination. 
   These criteria include detector and background-related qualifications that filter out events like known calibration pulsing events, events with software glitches, and runs with known or assumed anthropogenic signals. 
   After these events are removed, cuts are applied to remove cosmic ray contamination. 
   As these events take place above the ice and sometimes also in the first few meters of the firn, cosmic rays are expected only from fairly inclined directions and are excluded by removing all events from inclined directions. 
@@ -369,7 +395,8 @@
   One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic in origin).
   The second found 7 "near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
   At the time of publication, none of these surface events had been further analyzed to determine if they were cosmic ray events but are now under investigation as mentioned in Section~\ref{sec:analysis_cr}. 
-  Some events that passed Analysis B of \citet{ara_a23} had ``an unphysical amount of power [that] was deposited in one or two strings''. One of these events is shown in Figure~\ref{fig:a23}.
+  Some events that passed Analysis B of \citet{ara_a23} had ``an unphysical amount of power [that] was deposited in one or two strings''. 
+  One of these events is shown in Figure~\ref{fig:ARA-A23-sparkevent}.
   These events were removed post-unblinding by employing a reconstruction algorithm based on hit times \comment{called AraVertex?}. 
   One event did not have sufficient signal for and the other three reconstructed into the surface region.
 

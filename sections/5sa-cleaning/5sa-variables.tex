@@ -1,6 +1,37 @@
 \pagebreak
 \section{5 Station Analysis L2 Variables \label{app:5savariables}}
 
+\subsection{\texttt{wavefront\_rms\_v}}
+
+  \texttt{wavefront\_rms} is a measure of how compatible observed waveforms are with an arriving plane wave. 
+  We use a simplified version of what was originally proposed by Carl Pfender and explained in Brian Clark's thesis.
+  For like-polarization antennas, we determine the time of maximum peak-to-peak (maximum-to-minimum) voltage in any 20 nanosecond window over the whole waveform.
+  We then assume, for the purpose of this calculation, that the signal from a potential plane wave arrived at this antenna at this time of maximum peak-to-peak voltage separation.
+  For each pair of antennas, the time difference between these maximum peak-to-peak times is used to calculate the arrival angle of the signal as
+  \begin{equation}
+    cos(\theta) = \frac{c \Delta t}{n \Delta d}
+    \label{eq:wavefrontrms}
+  \end{equation}
+  where $c$ is the speed of light in a vacuum, $\Delta t$ is the time delay between antennas, $n$ is the refractive index of the medium (ice), and $\Delta d$ is the distance between the two antennas. 
+  When comparing the arrival angle calculated by each pair of antennas, if a plane wave was observed then these arrival angles should all be similar. 
+  If a thermal-like event was observed, then these calculated arrival angles should all be quite different from each other. 
+  To quantify this, we calculate the variance of all the calculated arrival angles (contrary to the variable name of ``RMS'').
+  When this variance, the \texttt{wavefront\_rms}, is small, the recorded waveform has a strong likelihood of originating from a plane wave and when it is large, this scenario is less likely.
+
+\subsection{wavefront\_rms\_v}
+
+  \texttt{avg\_s2} is a measure of signal causality constructed similarly to the \texttt{wavefront\_rms}. 
+  For all antennas of like-polarization, the time of maximum peak-to-peak voltage in any 20 nanosecond window of every waveform is identified. 
+  Again assuming that a plane wave arrived at each antenna at the determined time of maximal voltage separation, for each pair of antennas we calculate the average spacetime interval as
+  \begin{equation}
+    s^2 = \Delta r^2 - ({c}{n})^2 \Delta t^2
+    \label{eq:avg_s2}
+  \end{equation}
+  where $\Delta r$ is the distance between a pair of antennas, $c$ is the speed of light in a vacuum, $n$ is the index of refraction of the medium, and  $\Delta t$ is the time difference between the assumed signal arrival in each antenna (the time of maximal voltage separation).
+  When $s^2$ is positive this indicates a causal relationship between signals in each channel. 
+  When $s^2$ is negative, this indicates an acausal, non-physical signal that would not be expected of an arriving impulsive signal.
+  We take the average $s^2$ calculated over all antenna pairs of like-polarization and report this as the \texttt{avg\_s2}
+
 \subsection{Signal Correlation Parameters}
 
   \subsubsection{Global Max Correlation}
@@ -29,6 +60,30 @@
         \caption{Global Max Correlation distributions from data. Left, 1-dimensional distribution. Right, 2-dimensional distribution against the CSW SNR in vertically polarized antennas. }
         \label{fig:global_max_correlation}
       \end{figure}
+
+  \subsubsection{\texttt{mindepth\_v} \label{sec:mindepth}}
+
+    This variable is calculated using the map of correlation values for all locations on the sky in azimuth and elevation to identify the highest elevation in the reconstruction map with a correlation value $\geq 60$\% of the map's maximimum correlation value.
+    Taking Figure~\ref{fig:lowmindepth} for example, the maximum correlation value of this reconstruction skymap is 0.35 and we find the highest elevation a location on the sky with a correlation score of 0.21 ($0.6 \times 3.5$) is at an elevation of 68.5$^{\circ}$.
+    We take this one step further and convert this maximum elevation angle into a minimum depth from the surface 
+    \begin{equation}
+      d = z_{\text{SC}} - r \sin{\theta}
+      \label{eq:mindepth}
+    \end{equation}
+    where $z_{\text{SC}}$ is the average antenna depth for the station, $r$ is the radius of the reconstruction sphere, and $\theta$ is the elevation angle.
+    For Figure~\ref{fig:lowmindepth}, which is the reconstruction of an A1 event using the pulser map radius (defined in Tab.~\ref{tab:cpdist}), $z_{\text{SC}}=-67.5$~m and $r=48.02$~m.
+    This yields a \texttt{mindepth\_v}$=22.7$~m for this event. 
+    This conversion to \texttt{mindepth\_v} was done to more easily compare our event reconstructions to the average depth of cosmic ray cores that impact into the ice - the deepest surface-related background we expect to observe, in theory.
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=0.75\textwidth,
+          alt={}
+      ]{sections/5sa-cleaning/images/a1r3183e65990_mindepth.pdf}
+      \caption{An example of an event with a high \texttt{mindepth\_v}, meaning this event has many possible reconstructions that imply this event originated near the surface. This example is A1, run 3183, event 65990.}
+      \label{fig:lowmindepth}
+    \end{figure}
 
 \pagebreak
 \subsection{Signal Strength Parameters}
