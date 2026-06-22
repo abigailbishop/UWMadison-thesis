@@ -26,29 +26,29 @@
       \begin{tabular}{c | p{0.8\linewidth} }
         Variable Name & Definition \\
         \hline
-        global\_max\_corr & Maximum correlation score between all waveforms \\
-        global\_max\_corr\_v & Maximum correlation score between waveforms from VPol antennas\\
-        global\_max\_corr\_h & Maximum correlation score between waveforms from HPol antennas\\
-        avg\_snr\_v & Average SNR of signals from VPol antennas \\
-        avg\_snr\_h & Average SNR of signals from HPol antennas \\
-        hilbert\_snr\_v & Average Hilbert Enveloped SNR of signals from VPol antennas \\ 
-        corr\_snr\_v & Average SNR of the correlation function between all pairs of VPol antennas \\
-        csw\_snr\_v & Coherently Summed Signal to Noise Ratio  in VPol antennas \\
-        avg\_rpr\_v & Average SNR of signal power in VPol antennas \\ % Get a better definition
-        csw\_rpr\_v & SNR of the power in the CSW from signals in VPol antennas \\ % Get a better definition
-        impulsivity\_v & Power consumption during period maximal power consumption in the CSW compared to the rest of the CSW \\
-        bImp\_v & Y-intercept of the linear fit to the latter portion of the impulsivity curve\\
-        mImp\_v & Slope of the linear fit to the latter portion of the impulsivity curve \\
-        rhoImp\_v & R-value of the linear fit to the latter portion of the impulsivity curve\\
-        impLinChi2\_v & Difference between the linear fit to the latter portion of the impulsivity curve and a perfectly non-impulsive curve with a slope of 1. \\
-        impErfA\_v & $A$ term in the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
-        impErfB\_v & $B$ term in the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
-        impErfLinChi2\_v & $\chi^2$ of the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
-        impSig\_v & Significance of the functional impulsivity fit given by Equation~\ref{eq:functionalimp} compared to the linear fit via Wilk's Theorem \\
+        \texttt{global\_max\_corr} & Maximum correlation score between all waveforms \\
+        \texttt{global\_max\_corr\_v} & Maximum correlation score between waveforms from VPol antennas\\
+        \texttt{global\_max\_corr\_h} & Maximum correlation score between waveforms from HPol antennas\\
+        \texttt{avg\_snr\_v} & Average SNR of signals from VPol antennas \\
+        \texttt{avg\_snr\_h} & Average SNR of signals from HPol antennas \\
+        \texttt{hilbert\_snr\_v} & Average Hilbert Enveloped SNR of signals from VPol antennas \\ 
+        \texttt{corr\_snr\_v} & Average SNR of the correlation function between all pairs of VPol antennas \\
+        \texttt{csw\_snr\_v} & Coherently Summed Signal to Noise Ratio  in VPol antennas \\
+        \texttt{avg\_rpr\_v} & Average SNR of signal power in VPol antennas \\ % Get a better definition
+        \texttt{csw\_rpr\_v} & SNR of the power in the CSW from signals in VPol antennas \\ % Get a better definition
+        \texttt{impulsivity\_v} & Power consumption during period maximal power consumption in the CSW compared to the rest of the CSW \\
+        \texttt{bImp\_v} & Y-intercept of the linear fit to the latter portion of the impulsivity curve\\
+        \texttt{mImp\_v} & Slope of the linear fit to the latter portion of the impulsivity curve \\
+        \texttt{rhoImp\_v} & R-value of the linear fit to the latter portion of the impulsivity curve\\
+        \texttt{impLinChi2\_v} & Difference between the linear fit to the latter portion of the impulsivity curve and a perfectly non-impulsive curve with a slope of 1. \\
+        \texttt{impErfA\_v} & $A$ term in the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
+        \texttt{impErfB\_v} & $B$ term in the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
+        \texttt{impErfLinChi2\_v} & $\chi^2$ of the functional fit to the impulsivity curve given by Equation~\ref{eq:functionalimp} \\
+        \texttt{impSig\_v} & Significance of the functional impulsivity fit given by Equation~\ref{eq:functionalimp} compared to the linear fit via Wilk's Theorem \\
       \end{tabular}
     }
     \caption{
-        Analysis Variables used in the LDA along with their ranges and short descriptions. 
+        Analysis Variables used in the Linear Discriminant analysis along with a short description. 
         Full definitions of each variable can be found in Appendix~\ref{app:5savariables}.
     }
     \label{tab:LDAvars}
@@ -60,7 +60,9 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c7_lda_nudata.png}
-      \caption{LDA Distribution for thermal-like background events and simulated neutrinos in A2 configuration 7.}
+      \caption{
+        Distribution of Linear Discriminant Analysis scores for thermal-like background events (red, RF triggers that pass all cuts designed in Chapter~\ref{chap:5sa_cleaning}) from the 10\% sample and simulated neutrinos (blue) in A2 configuration 7.
+      }
       \label{fig:ldafit}
   \end{figure}
 
@@ -69,8 +71,12 @@
     \includegraphics[
         width=0.75\textwidth,
         alt={}
-    ]{sections/5sa-analysis/images/a2c7_100pct_lda_backgroundfit.png}
-    \caption{LDA distribution of the thermal-like background events from A2 configuration 7 fitted to an exponential.}
+    ]{sections/5sa-analysis/images/a2c7_10pct_lda_backgroundfit.png}
+    \caption{
+      Distribution of Linear Discriminant Analysis scores for the thermal-like background events (blue, RF triggers that pass all cuts designed in Chapter~\ref{chap:5sa_cleaning}) in the 10\% sample and from A2 configuration 7 fitted to an exponential (green).
+      The fit is performed only on data $\geq x_{\text{min}}$. 
+      The red curve is shows the fit density (green line times bin width).
+    }
     \label{fig:backgroundfit_10pct}
   \end{figure}
 
@@ -101,22 +107,39 @@
         width=0.75\textwidth,
         alt={}
     ]{sections/5sa-analysis/images/a2c7_100pct_lda_backgroundfit_toys.png}
-    \caption{Distribution of log-likelihoods comparing background pseudoexperiments to the background model on observed 100\% A2 configuration 7 data.}
+    \caption{Distribution of log-likelihoods comparing background pseudoexperiments (blue) to the background model on observed 100\% A2 configuration 7 data (red).}
     \label{fig:backgroundfit_10pct_toys}
   \end{figure}
 
   At the end of this process, we have models of background LDA values for each station and configuration which will be combined for array wide optimization.
+  Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. 
+  Said another way, if one station-configuration's LDA distribution ends at 1.2 and another ends at 1.4, this does not simply imply the former is better than the latter. 
 
 \section{Optimization \label{sec:optimization}}
 
   After the thermal background LDA model determined in Section~\ref{sec:lda} and the surface event elevation models determined in Section~\ref{sec:zc_slc} for each station-configuration are set, we feed them both into an algorithm that determines the best LDA cut and Zenith Cut for each array wide configuration. 
   An array-wide configuration is defined by the combination of active stations (in their respective station livetime configuration) over time periods of at least 1 week. 
-  There are 50 total array-wide combinations and they are shown in Fig.~\ref{fig:ARA_configurations}.
-  These 50 array wide configurations are comprised of 140 instances of our stations and as we have 6 instruments to set Zenith Cuts for, this optimization algorithm is solving a 146-dimension puzzle. 
-  The optimized A2 Zenith Cut is set to an elevation angle of $10.31^{\circ}$ and the LDA cuts are in Table~\ref{tab:ldacuts}. Note that as the LDA transformation matrix is optimized separately for each station-configuration, the resulting LDA scores for each station-configuration should not be compared to each other. Said another way, if one station-configuration has an LDA cut of 1.2 and another has a cut at 1.4, this does not simply imply the former is better than the latter. 
+  There are 50 total array-wide combinations as shown in Fig.~\ref{fig:ARA_configurations}.
+  Each LDA cut is established within each array-wide configuration. 
+  For example, A2 configuration 7 is present in array-wide configurations 40, 42, 43, and 44 and has a different LDA cut optimized for each array-wide configuration.
+  This means that the 50 array-wide configurations compounds into 140 LDA cuts to establish. 
+  We optimize just one zenith cut for each station (there are not enough statistics to do it based on station configuation like with the LDA).
+  In total this results in a 146-dimension puzzle for the optimizer to solve.
+  The optimized A2 Zenith Cut is set to an elevation angle of $10.31^{\circ}$ and the minimum and maximum LDA cut for each A2 configuration are presented in Table~\ref{tab:ldacuts}. 
 
   \begin{table}
     \centering
+    \begin{tabular}{cc}
+      Livetime Configuration & LDA Cut Range \\
+      \hline
+      1 & 0.951253 - 0.989765 \\
+      2 & 1.143709 \\
+      3 & 0.896584 - 0.914392 \\
+      4 & 1.008495 - 1.023205 \\
+      5 & 1.149564 - 1.336259 \\
+      6 & 1.114175 - 1.226427 \\
+      7 & 0.974845 - 0.996602 \\
+    \end{tabular}
     \caption{}
     \label{tab:ldacuts}
   \end{table}
@@ -136,7 +159,10 @@
           width=\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2_100pct_surfacecheck_zenithdist.png}
-      \caption{100\% background distribution for A2 surface event dataset.}
+      \caption{
+        A2 surface background dataset built with the 10\% data and multiplied by 10 (orange) compared to the surface background dataset built with the 100\% data (blue), as described in Section~\ref{sec:zc_slc}.
+        The background model built on the 10\% dataset multiplied by 10 (green) compared to a model built on the 100\% dataset (red).
+      }
       \label{fig:backgroundcheck_zenith_dist}
     \end{figure}
 
@@ -149,7 +175,10 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2_100pct_surfacecheck_outliers.png}
-      \caption{Distribution of events from the full 100\% dataset with reconstructed elevations less than the lowest bin in the 10\% dataset plotted by their reconstructed elevation and \texttt{mindepth\_v}.}
+      \caption{
+        Distribution of events from the full 100\% dataset with reconstructed elevations less than the lowest bin in the 10\% dataset (as shown in Fig.~\ref{fig:backgroundcheck_zenith_dist}) plotted by their reconstructed elevation and \texttt{mindepth\_v}.
+        As these events all have a \texttt{mindepth\_v} value sufficiently above the \texttt{mindepth\_v} cut established by the Zenith Cut optimization, these outliers do not suggest we have not modeled our surface background too loosely.
+      }
       \label{fig:backgroundcheck_zenith_outliers}
     \end{figure}
 
@@ -165,7 +194,10 @@
           width=\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2_100pct_surfacecheck_toys.png}
-      \caption{Distribution of pseudoexperiments of the A2 surface background model.}
+      \caption{
+        Distribution of the difference between surface background pseudoexperiments' log likelihood calculated against the model built on the 10\% and 100\% datasets (solid histogram). 
+        The difference between the log likelihood of the 10\% and 100\% model compared to the observed 100\% surface background event distribution is plotted for comparison (dashed line).
+      }
       \label{fig:backgroundcheck_zenith_toys}
     \end{figure}
 
@@ -192,7 +224,12 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c3_100pct_lda_backgroundfit.png}
-      \caption{100\% background distribution for A2 configuration 3.}
+      \caption{
+        Top: The distribution of thermal events (events that passed all cuts defined in Chapter~\ref{chap:5sa_cleaning}) from the 100\% sample of A2 configuration 3 (black dots with blue error bars).
+        Only events with LDA scores greater than the $x_{\text{min}}$ used to fit the background model in Section~\ref{sec:lda} (black dotted line) and less than the appropriate LDA Cut established in Section~\ref{sec:optimization} are plotted (grey dashed lines).
+        These are events are fit to an exponential (green line) plotted along the model built on the 10\% data multiplied by 10 (red dotted line).
+        Bottom: Ratio of the 100\% LDA distribution of thermal events (black dots in top panel) divided by the model built on the 10\% data scaled up by a factor of 10 (red dotted line in top panel).
+      }
       \label{fig:backgroundcheck_a2c3}
     \end{figure}
 
@@ -202,7 +239,9 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c3_100pct_lda_backgroundfit_toys.png}
-      \caption{100\% background pseudoexperiment distribution for A2 configuration 3.}
+      \caption{
+        Distribution of the log-likelihood of pseudoexperiments built on 100\% A2 Configuration 3 data (blue distribution) compared to the log-likelihood of the observed 100\% data (red line) both calculated against the 10\% background model scaled up by a factor of 10.
+      }
       \label{fig:backgroundcheck_a2c3_toys}
     \end{figure}
 
@@ -214,7 +253,12 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c3_100pct_lda_backgroundfit_outliers.png}
-      \caption{100\% background fit outliers for A2 configuration 3 distributed by Correlation Contrast and Average VPol SNR, the same analysis variables used to set the Low Reconstruction Confidence Cut.}
+      \caption{
+        Events from the A2 Configuration 3 distribution plotted in Fig.~\ref{fig:backgroundcheck_a2c3} with the highest LDA scores plotted by \texttt{corr\_contrast\_v} against \texttt{avg\_snr\_v}.
+        These are the variables used in the Low Reconstruction Confidence Cut defined in Section~\ref{sec:lrcc}. 
+        The events plotted have \texttt{corr\_contrast\_v} well within the range the Low Reconstruction Confidence Cut isolates events for, but the \texttt{avg\_snr\_v} scores were too low for the events to be cut. 
+        These events are therefore just thermal outliers with no indication that they are signal-like and would corrupt our background model.
+      }
       \label{fig:backgroundcheck_a2c3_outliers}
     \end{figure}
 
@@ -226,7 +270,12 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c4_100pct_lda_backgroundfit.png}
-      \caption{100\% background distribution for A2 configuration 4.}
+      \caption{
+        Top: The distribution of thermal events (events that passed all cuts defined in Chapter~\ref{chap:5sa_cleaning}) from the 100\% sample of A2 configuration 4 (black dots with blue error bars).
+        Only events with LDA scores greater than the $x_{\text{min}}$ used to fit the background model in Section~\ref{sec:lda} (black dotted line) and less than the appropriate LDA Cut established in Section~\ref{sec:optimization} are plotted (grey dashed lines).
+        These are events are fit to an exponential (green line) plotted along the model built on the 10\% data multiplied by 10 (red dotted line).
+        Bottom: Ratio of the 100\% LDA distribution of thermal events (black dots in top panel) divided by the model built on the 10\% data scaled up by a factor of 10 (red dotted line in top panel).
+      }
       \label{fig:backgroundcheck_a2c4}
     \end{figure}
 
@@ -236,7 +285,9 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c4_100pct_lda_backgroundfit_toys.png}
-      \caption{100\% background pseudoexperiment distribution for A2 configuration 4.}
+      \caption{
+        Distribution of the log-likelihood of pseudoexperiments built on 100\% A2 Configuration 4 data (blue distribution) compared to the log-likelihood of the observed 100\% data (red line) both calculated against the 10\% background model scaled up for a factor of 10.
+      }
       \label{fig:backgroundcheck_a2c4_toys}
     \end{figure}
 
@@ -248,7 +299,12 @@
           width=0.75\textwidth,
           alt={}
       ]{sections/5sa-analysis/images/a2c4_100pct_lda_backgroundfit_outliers.png}
-      \caption{100\% background fit outliers for A2 configuration 4 distributed by Correlation Contrast and Average VPol SNR, the same analysis variables used to set the Low Reconstruction Confidence Cut.}
+      \caption{
+        Events from the A2 Configuration 4 distribution plotted in Fig.~\ref{fig:backgroundcheck_a2c3} with the highest LDA scores plotted by \texttt{corr\_contrast\_v} against \texttt{avg\_snr\_v}.
+        These are the variables used in the Low Reconstruction Confidence Cut defined in Section~\ref{sec:lrcc}. 
+        The events plotted have \texttt{corr\_contrast\_v} well within the range the Low Reconstruction Confidence Cut isolates events for, but the \texttt{avg\_snr\_v} scores were too low for the events to be cut. 
+        These events are therefore just thermal outliers with no indication that they are signal-like and would corrupt our background model.
+      }
       \label{fig:backgroundcheck_a2c4_outliers}
     \end{figure}
 
@@ -274,7 +330,11 @@
             width=0.75\textwidth,
             alt={}
         ]{sections/5sa-analysis/images/isolation.png}
-        \caption{Isolation Condition}
+        \caption{
+          Cumulative distribution of the time difference between successive events in the toy Monte Carlo simulation of neutrino event detection times (blue).
+          The average time separation between successive neutrino events is 3998 hours (red, 5.48 months).
+          99.9\% of events occur at least 5.79 hours apart (green).
+        }
         \label{fig:isolation_condition}
     \end{figure}
 
@@ -315,7 +375,9 @@
           width=0.7\linewidth,
           alt={}
         ]{sections/5sa-analysis/images/passing_lda_parun767.png}
-        \caption{LDA distribution of events in PA run 767 including. The event that passed the analysis is the outlier with an LDA score of 2.43.}
+        \caption{
+          LDA distribution of events in PA run 767 including. The event that passed the analysis is the outlier with an LDA score of 2.43.
+        }
         \label{fig:passing_LDA}
       \end{figure}
 
@@ -327,10 +389,34 @@
 
       \begin{table}
         \centering
-        % \begin{tabular}
-        %   X
-        % \end{tabular}
-        \caption{}
+        \begin{tabular}{
+          | >{\centering\arraybackslash}m{3.5cm}  
+          | >{\centering\arraybackslash}m{3.5cm}  
+          | >{\centering\arraybackslash}m{2.5cm}  
+          >{\centering\arraybackslash}m{3.5cm}  |
+        }
+          \hline
+          PA Analysis Variable & Corresponding AraProc Analysis Variable & Value & Note \\
+          \hline
+          \texttt{avgHpolSnr} & \texttt{avg\_snr\_h} & 11.78 &  \\
+          \texttt{avgPaSnr} & \texttt{avg\_snr\_v} & 12.46 &  \\
+          \texttt{avgRms} & \texttt{avg\_rms\_v} & 57.71 V &  \\
+          \texttt{bestCorr} & \texttt{global\_max\_corr} & 0.18 &  \\
+          \texttt{bestPhi} & \texttt{global\_max\_phi} & 5.67 rad &  \\
+          \texttt{bestTheta} & \texttt{global\_max\_theta} & 2.18 rad & Elevation angle \\
+          \texttt{corrContrast} & \texttt{corr\_contrast\_v} & 7.01 &  \\
+          \texttt{cswPaSnr} & \texttt{csw\_snr\_v} & 12.89 &  \\
+          \texttt{eventNo} & \texttt{event\_number} & 89985 &  \\
+          \texttt{imp} & \texttt{impulsivity\_v} & 0.81 &  \\
+          \texttt{ldaScore} & \texttt{} & 2.44 &  \\
+          \texttt{runNo} & \texttt{run\_number} & 767 &  \\
+          \texttt{s2} & \texttt{avg\_s2\_v} & 11.25 &  \\
+          \texttt{unixTime} & \texttt{unixtime} & 1522821677 &  \\
+          \hline
+        \end{tabular}
+        \caption{
+          Analysis variables for the passing event calculated using the PA analysis framework, the corresponding analysis variable calculated by AraProc, the value of the PA analysis variable, and any notes regarding the variable.
+        }
         \label{tab:paevent}
       \end{table}
 
@@ -377,7 +463,10 @@
           width=\linewidth,
           alt={}
         ]{sections/5sa-analysis/images/passing_pawaveform.png}
-        \caption{Bandpassed}
+        \caption{
+          The voltage versus time traces in each A5 antenna for event 89985 of Run 767, the PA event that passed the analysis.
+          % This is bandpassed
+        }
         \label{fig:passing_pawaveform}
       \end{figure}
 
@@ -390,7 +479,7 @@
           alt={}
         ]{sections/5sa-analysis/images/passingevent_a5reco.png}
         \caption{
-          Reconstruction of the A5 event that occured at the same time as the PA passing event. 
+          Reconstruction of the A5 run 2899 event 64066, the event that occurred at the same time as the PA passing event. 
           The hit-time based reconstruction, AraVertex, and the interferometric reconstruction both estimate the event comes from within $20^{\circ}$ of A5 channels 4 and 12 located around (-120, -40). 
         }
         \label{fig:passing_a5reco}
@@ -430,7 +519,11 @@
         width=\linewidth,
         alt={}
       ]{sections/5sa-analysis/images/Background-Leakage.pdf}
-      \caption{}
+      \caption{
+        The number of events expected to ``leak'' into the final dataset based on the Geometry Cut and models defined in Section~\ref{sec:gc}, the Zenith Cut defined in Section~\ref{sec:zc_slc} and Optimized in Section~\ref{sec:optimization}, and the thermal-like LDA cut defined in Section~\ref{sec:lda} and optimized in Section~\ref{sec:optimization}.
+        The number of leaked events is presented per station and for the array as a whole.
+        \comment{Change table to say ``Geometry Cut" not ``Calpulser Cut''}
+      }
       \label{tab:backgrounds}
     \end{figure}
 
@@ -448,7 +541,12 @@
             width=0.75\textwidth,
             alt={}
         ]{sections/5sa-analysis/images/5sa_e2Sensitivity_astrocosmo-5SA.pdf}
-        \caption{Sensitivity achieved by the Five Station Analysis.}
+        \caption{
+          Analysis level sensitivity of the array-wide neutrino search through 10.6 years of ARA data (solid black curve). 
+          The single event sensitivity (SES) of the analysis level sensitivity is also presented (dotted black curve) along with the trigger level sensitivity (ARA TL, dashed black curve).
+          Previous experimental results from IceCube~\citep{icecube_search-ehe, icecube_search-combined-fit}, KM3NeT~\citep{km3net_neutrino}, Auger~\citep{flux-auger}, ANITA I--IV~\citep{anita_iv}, and earlier ARA analyses (ARA2~\citep{ara_a23} and PA~\citep{ara_pa_analysis}) are also shown (colored solid).
+          A selection of cosmogenic and astrophysical neutrino flux models are presented as well~\citep{flux-kotera,flux-muzio,flux-ahlers-halzen,flux-fang-pulsars, flux_olinto}.
+        }
         \label{fig:5sa_sensitivity}
     \end{figure}
 
@@ -471,6 +569,6 @@
         \citet{km3net_neutrino} & Experiment & 12.30 & 1.73 \\
         \citet{icecube_search_extension} & Experiment & 0.19 & 0.03 \\
       \end{tabular}
-      \caption{Expected number of neutrino events in this analysis sample according to a collection of flux models.}
+      \caption{Expected number of neutrino events expected at trigger level and at analysis level based on various astrophysical models, cosmogenic models, and experimental fluxes and upper limits.}
       \label{tab:5sa_eventrates}
     \end{table}

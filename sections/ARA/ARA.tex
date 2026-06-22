@@ -35,7 +35,7 @@
             \end{tabularx}
             \caption{
                 \label{tab:station_lattices}
-                Station lattice locations and installation years
+                For each ARA station, the installation season, the horizontal distance between neighboring strings (known as the baseline), the average depth of the two top antennas, and the average depth of the two bottom antennas. 
             }
         \end{table}
 
@@ -66,7 +66,15 @@
               }
               ]{sections/ARA/images/surfaceElectronics-1507.08991.png}
           \end{subfigure}
-          \caption{Left, the downhole electronics. \comment{I'd like this to show the through cables if I can find a good diagram.} Right, the DAQ electronics. Adapted from \citep{ara_a23_10mo}.}
+          \caption{
+            Left: The electronics chain in the borehole. 
+            Each antenna is connected to a 450~MHz notch filter and a low noise amplifier (LNA) before connecting to a device which converts electrical signals into optical signals. 
+            \comment{I'd like this to show the through cables if I can find a good diagram.} 
+            Right: The surface electronics chain for one string. 
+            Incoming optical signals are converted back into electrical signals, passed through band filters, then the signal for each antenna is split and sent to a Triggering Daughter Array (TDA) and a Digitizing Daughter Array (DDA). 
+            A Forward Programmable Gate Array (FPGA) determines if the event triggers from the TDA and, if so, reads the waveforms on the DDAs out to the Single Board Computer (SBC).
+            Adapted from \citep{ara_a23_10mo}.
+          }
           \label{fig:ARA-signalchain}
         \end{figure}
 
@@ -91,7 +99,9 @@
             9779 - 19826 & 5 \\
             \hline
           \end{tabular}
-          \caption{Run periods and which calibration pulser was active during those periods.}
+          \caption{
+            Run periods and which calibration pulser was active during those periods.
+          }
           \label{tab:A2cp_runs}
         \end{table}
 
@@ -112,7 +122,13 @@
             width=0.75\linewidth,
             alt={}
           ]{sections/ARA/images/A4-Vault.png}
-          \caption{}
+          \caption{
+            The A4 vault as viewed from above the vault extension.
+            The data acquisition (DAQ) box is labeled ``ARA4'' and receives one input per antenna from the Fiber Optic Amplification Modules (FOAMs) in the top left. 
+            The power box is in the top right and supplies power to the DAQ box and each FOAM.
+            The network switch which receives and distributes optical network connection is mounted to the wall of the vault on the right.
+            Green radio frequency shielding is mounted to the sides and bottom of the vault to prevent downhole electronics from observing emission from the vault.
+          }
           \label{fig:a4vault}
         \end{figure}
 
@@ -122,7 +138,12 @@
             width=0.75\linewidth,
             alt={}
           ]{sections/ARA/images/A4-DAQbox.png}
-          \caption{}
+          \caption{
+            The insides of the A4 data acquisition (DAQ) box.
+            The DAQ board is in the middle of the box with four stacks of DDA and TDAs on the left of the board.
+            16 cables, one for each downhole antenna, enter the DAQ box on the left wall and are connected to quads which split the signal from each antenna and directs them into the DDA and TDAs. 
+            The calibration pulser board is in the top, the network switch is in the top right, and the power board for the DAQ box is on the right.
+          }
           \label{fig:a4daq}
         \end{figure}
 
@@ -152,7 +173,7 @@
               \textbf{Lifetime} & 
               \textbf{Note} \\
               \hline 
-              A1 & ICRR & 2011-13 & \\
+              A1 & ICRR & 2011-13 & Replaced with ATRI\\
               A1 & ATRI & 2013-26 & SBC Failure\\
               A1 & ATRI & 2017-23 & Refurbished, FX2 failure\\
               A2 & ATRI & 2013-21 & FX2 failure\\
@@ -165,7 +186,8 @@
             \end{tabularx}
             \caption{
                 \label{tab:station_daqboards}
-                History of station DAQ boards.
+                Summary of changes to each of the data acquisition boards. 
+                For each station, the board type, the years it was in operation, and the reason it stopped working.
             }
         \end{table}
 
@@ -324,7 +346,9 @@
       \centering
       \includegraphics[width=\linewidth]{sections/ARA/images/ARAsolarflare.png}
       \caption{
-          Reconstructed azimuthal angle of ARA events during a solar flare plotted as a function of time (blue to yellow heat map) plotted with the sun's azimuth for comparison (red line) \citep{ara_solarflare}.
+          Reconstructed azimuthal angle of ARA events during a solar flare plotted as a function of time (blue to yellow heat map). 
+          The sun's azimuth as a function of time is plotted for comparison (red line). 
+          Adapted from \citep{ara_solarflare}.
       }
       \label{fig:ARAsolarflare}
   \end{figure}
@@ -337,17 +361,25 @@
       width=0.7\linewidth,
       alt={}
     ]{sections/ARA/images/ara_cr_charge_excess.pdf}
-    \caption{\citep{ara_cr}}
+    \caption{
+      Simulation of a cosmic ray air shower. 
+      The horizontal and verticle distribution of charge excess from the particle cascade is shown in the heat map on the left. 
+      The vertical distribution of relative charge excess is shown in the right panel.
+      Adapted from \citep{ara_cr}.
+    }
     \label{fig:cr_ice}
   \end{figure}
 
   \begin{figure}
     \centering
     \includegraphics[
-      width=0.7\linewidth,
+      width=0.5\linewidth,
       alt={}
-    ]{sections/ARA/images/ara_cr_askaryan_paper_plot.pdf}
-    \caption{\citep{ara_cr}}
+    ]{sections/ARA/images/ara_cr_askaryan_paper_plot.png}
+    \caption{
+      The high frequency content and low frequency content for a simulated point-like source (black, dotted line), a simulated cosmic ray air shower core (red, dashed line), and for data recorded by the PA (light blue circles) and A5 (dark blue squares).
+      Adapted from \citep{ara_cr}.
+    }
     \label{fig:cr_events}
   \end{figure}
 
@@ -385,7 +417,12 @@
   \begin{figure}
       \centering
       \includegraphics[width=0.8\linewidth]{sections/ARA/images/a2_r6290_e29583.png}
-      \caption{A2 Run 6290 event 29583}
+      \caption{
+        A2 Run 6290 event 29583, demonstrating an observed power surge in Channel 5 and 13 on String 2 and impulsive waveforms in the other strings.
+        This event was a passing event from the \citep{ara_a23} analysis which inspired the Spark Event Cut.
+        The columns of the waveform plot correspond to the instrumented string and the rows show, from top to bottom, the waveform for the top vertically polarized antenna (VPol), bottom VPol, top horizontally polarized antenne (HPol), and bottom HPol. This is different from how strings are instrumented (top HPol, top Vpol, bottom HPol, bottom VPol from top to bottom) so that time delays of impulsive signals can be quickly measured by eye between antennas with the same polarization.
+        \index{Waveforms, plotted}
+      }
       \label{fig:ARA-A23-sparkevent}
   \end{figure}
 
@@ -405,7 +442,10 @@
   \begin{figure}
       \centering
       \includegraphics[width=0.6\linewidth]{sections/ARA/images/analysis_pa_passingevent.png}
-      \caption{PA Passing event}
+      \caption{
+        Coherently summed waveform (CSW) for PA run 2143 event 56669 plotted alongside the CSW for a simulated neutrino event (red).
+        This PA event passed all analysis cuts in \citep{ara_pa_analysis}.
+      }
       \label{fig:analysis_pa_passingevent}
   \end{figure}
 

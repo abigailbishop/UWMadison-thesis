@@ -22,11 +22,12 @@
       alt={}
     ]{sections/introduction/images/pdg_cr_spectrum.png}
     \caption{
-      The flux of cosmic rays as a function of energy from 1~GeV to $10^{11}$~GeV~\citep{pdg_review}.
-      The total flux is shown in black but at energies less than $10^9$~GeV, the observed flux is great enough to calculate the flux of cosmic rays with different atomic masses.
+      The flux of cosmic rays as a function of energy from 1~GeV to 100~EeV~\citep{pdg_review}.
+      The total flux is shown in black.
+      At energies less than 1~EeV, the observed flux is great enough to calculate the mass composition of the flux.
       This plot also shows other multi-messenger fluxes: the galactic gamma ray flux in olive, the extragalactic gamma ray flux in gray, and the diffuse neutrino background in cyan.
-      Diagonal shaded regions indicate the frequency of different populations.
-      Ultra-high energy cosmic rays and neutrinos interact with Earth roughly once in a square kilometer area per year. 
+      Diagonal shaded regions indicate event rates for cosmic particle interactions with Earth.
+      Ultra-high energy cosmic rays and neutrinos interact with Earth roughly once per square kilometer area per year. 
     }
     \label{fig:CRspectrum}
   \end{figure}
@@ -177,8 +178,8 @@
       alt={}
     ]{sections/introduction/images/cross_section_neutrino_valera.pdf}
     \caption{
-      The neutrino-nucleon cross section as a function of energy from $10^{-1}$~GeV to $10^{12}$~GeV~\citep{cross_section_neutrino_valera}.
-      Constraints on the cross section for neutrinos with energies greater than $10^7$~GeV are shown in colored bands and span up to orders of magnitudes.
+      The neutrino-nucleon cross section as a function of energy from 100~MeV to 100~EeV~\citep{cross_section_neutrino_valera}.
+      Constraints on the cross section for neutrinos with energies greater than 10~PeV are shown in colored bands and span up to orders of magnitudes.
     }
     \label{fig:neutrinocrosssection}
   \end{figure}
@@ -294,7 +295,10 @@
       width=0.5\linewidth,
       alt={}
     ]{sections/introduction/images/rnog_design_viewing_angles.png}
-    \caption{Off cone \citep{rnog_design}}
+    \caption{
+      Electric field as a function of time for Askaryan emission observed on cone (blue, $\theta - \theta_{\text{Cherenkov}} = 0^{\circ}$) and how it diminishes when observed just a few degrees ``off~cone". 
+      Adapted from \citet{rnog_design}. 
+    }
     \label{fig:askaryancone}
   \end{figure}
 
@@ -304,7 +308,10 @@
       width=0.75\linewidth,
       alt={}
     ]{sections/introduction/images/fig3-lpm.pdf}
-    \caption{\citep{lpm_modeling}}
+    \caption{
+      Width of the cone of 300~MHz and 1~GHz Askaryan emission when emitted by $10^{16}$~eV, $10^{17}$~eV , and $10^{18}$~eV particle cascades in ice. 
+      Adapted from \citet{lpm_modeling}.
+    }
     \label{fig:askaryanconewidth}
   \end{figure}
 
@@ -314,7 +321,11 @@
       width=\linewidth,
       alt={}
     ]{sections/introduction/images/ara_a23_interaction_figure.pdf}
-    \caption{Particle cascade with Askaryan radiation \citep{ara_a23}}
+    \caption{
+      Drawing of a neutrino interaction vertex (red oval) and the cone of Askaryan radiation emitted (blue cone) whose opening angle is defined by the Cherenkov Angle of the medium ($\theta_C = 56^{\circ}$).
+      The inset diagrams show the polarization of Askaryan Radiation oriented perpendicularly to the Askaryan emission cone.
+      Adapted from \citet{ara_a23}.
+    }
     \label{fig:askaryan_radiation}
   \end{figure}
 
@@ -342,8 +353,9 @@
       alt={}
     ]{sections/introduction/images/barwick_glaser_review_attenuation.pdf}
     \caption{
-      Attenuation length of radio wavelength radiation as a function of depth in glaciers located at Summit Station in Greenland, Moore's Bay near McMurdo Station in Antarctica, and at the South Pole~\citep{barwick_glaser_review}. 
+      Attenuation length of radio wavelength radiation as a function of depth in glaciers located at Summit Station in Greenland (orange), Moore's Bay near McMurdo Station in Antarctica (green), and at the South Pole (blue). 
       Solid lines are for 200~MHz radiation and dashed lines are for 400~MHz radiation.
+      Adapted from \citet{barwick_glaser_review}.
     }
     \label{fig:attenuation_glaciers}
   \end{figure}
@@ -358,7 +370,13 @@
       width=0.75\linewidth,
       alt={}
     ]{sections/introduction/images/ara_design_rays.pdf}
-    \caption{Ray bending in ice \citep{ara_design}}
+    \caption{
+      Example of two rays of radiation from a deep emission source to a shallow antenna. 
+      There are two ray solutions (blue): one that travels straight to the antenna and one that reflects off the surface before traveling to the antenna.
+      Due to the changing index of refraction in South Pole ice, both ray solutions bend and can be compared to the straight line drawn between the emitter and the antenna (red).
+      The bottom image is the same as the top, but is zoomed in on the antenna and surrounding rays.
+      Adapted from \citet{ara_design}
+    }
     \label{fig:raybending}
   \end{figure}
 
@@ -406,7 +424,13 @@
         alt={}
       ]{sections/introduction/images/anita_i_horn.eps}
     \end{subfigure}
-    \caption{Antennas: Bicone (NSF/ARA), quad slot (NSF/ARA), LPDA adapted from~\citep{rnog_design}, horn~\citep{anita_i}}
+    \caption{
+      Collection of antennas used by radio neutrino observatories. 
+      Top Left: ``Bicone'' antenna which measures vertically polarized radiation in narrow spaces such as boreholes in ice~[NSF/ARA]. 
+      Top Middle: ``Quadslot'' antenna which measures horizontally polarized radiation by observing vertically polarized magnetic fields~[NSF/ARA]. Also used in narrow spaces.
+      Top Right: Logarithmically Polarized Dipole Antenna (LPDA) which measures radiation polarized in one direction but are usually deployed in shallow ice trenches or on the surface, allowing many to be installed and oriented in a variety of directions~\citep{rnog_design}. 
+      Bottom: Dually polarized ``horn'' antenna typically mounted to balloon-borne radio observatories such as ANITA and PUEO~\citep{anita_i}.
+    }
     % Photo from https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2994
     \label{fig:Antenna-types}
   \end{figure}
@@ -430,7 +454,11 @@
           alt={}
         ]{sections/introduction/images/arianna_cr_layout.pdf}
       \end{subfigure}
-      \caption{ARIANNA detection strategy~\citep{arianna_pilot}, ARIANNA hexagonal array \citep{arianna_cr}}
+      \caption{
+        Left: Diagram of the ARIANNA detection strategy for Cosmic Rays (CR, pink), Earth-skimming tau air showers ($\tau$, green), and neutrino events ($\nu$, green) on the Ross Ice Shelf. 
+        Right: Array layout for ARIANNA's hexagonal array of surface stations.
+        Adapted from \citet{arianna_pilot} and \citet{arianna_cr}, respectively.
+      }
       \label{fig:ARIANNA}
     \end{figure}
   
@@ -488,7 +516,11 @@
           alt={}
         ]{sections/introduction/images/rnog_neutrino_icrc25_map.png}
       \end{subfigure}
-      \caption{RNOG station \citep{rnog_design}, RNOG layout \citep{rnog_neutrino_icrc25}}
+      \caption{
+        Left: RNOG station layout including a ``Power String'' with a phased array, two ``Helper Strings'' for reconstruction, and 9 surface antennas. 
+        Right: Current map of installed RNOG stations and not-yet-instrumented but drilled stations.
+        Adapted from \citet{rnog_design} and \citet{rnog_neutrino_icrc25}, respectively.
+      }
       \label{fig:rnog}
     \end{figure}
 
@@ -528,8 +560,11 @@
         ]{sections/introduction/images/pueo_arena22_events.png}
       \end{subfigure}
       \caption{
-        % anita IV detector \citep{anita_iv}, pueo detector \citep{pueo_wp}, 
-        Balloon Detection Strategy \citep{pueo_arena22}}
+        Diagram of a balloon-borne radio experiment over glacial ice. 
+        The diagram of direct and reflected UHECR radiation, Earth-skimming tau lepton air showers, and Askaryan radiation generated by an in-ice neutrino interaction.
+        A visualization of the balloon payload is in the upper left showing horn antennas, solar panels, and a low-energy extension below the balloon. 
+        Adapted from \citet{pueo_arena22}.
+      }
       \label{fig:pueo}
     \end{figure}
 
@@ -572,7 +607,12 @@
           alt={}
         ]{sections/introduction/images/retn-station.png}
       \end{subfigure}
-      \caption{RET Detection Strategy \citep{retcr} and RET-CR \citep{retcr_initialperformance} and RET-N \citep{retn}}
+      \caption{
+        Left: Diagram of the RET detection strategy for particle cascades from cosmic rays. 
+        An in-ice transmitter (TX) emits radio-wavelength radiation that reflects off the in-ice cascade and is then recorded by an in-ice receiving antenna (RX). 
+        Right: The planned 9 string RET array for neutrino detection.
+        Adapted from \citep{retcr} and \citep{retn}, respectively.
+      }
       \label{fig:ret}
     \end{figure}
 
