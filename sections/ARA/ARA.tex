@@ -9,7 +9,7 @@
     The station layout of ARA is shown in Fig.~\ref{fig:ARA}; the 5 stations are arranged on a hexagonal grid with 2~km spacing near the IceCube Neutrino Observatory and a couple kilometers from the South Pole. 
     For ARA, the 2~km station spacing was chosen to balance full array volume, observations of the same neutrino event in multiple stations, and the cost of equipment and installation~\citep{ara_design}.
 
-    \subsection{Traditional ARA Stations}
+    \subsection{Traditional ARA Stations \label{sec:ARA_design}}
 
         \begin{table}
             \centering
@@ -155,7 +155,7 @@
         A station's SBC is what technicians connect to when accessing each station. 
         They contain and run scripts that program the FPGA for data taking and calibration pulsing, recording data, and packaging data for retrieval by processes on the Radproc computer.
 
-        In the DAQ box, the optical signals from the strings are converted back into voltage traces and then passed through band filters which suppress out of band noise. % Above 1GHz and below 1 MHz right?
+        In the DAQ box, the optical signals from the strings are converted back into voltage traces and then passed through band filters which suppress out-of-band noise less than 150~MHz and greater than 850~MHz.
         The voltage is then split and passed simultaneously through a Triggering Daughter Array (TDA) and a Digitizing Daughter Array (DDA). 
         Before entering the TDA, the traces pass through tunnel diodes that convert voltage into power. 
         The TDA then analyzes if three antennas of the same polarization observed a signal with more than $\sim 6$ times the power of noise.
@@ -213,8 +213,8 @@
     \subsection{Phased Array}
 
       Between the 4 traditional strings of A5 is another string, also shown in Fig.~\ref{fig:ARA}, instrumented with 7 vertically polarized antennas installed between depths of 173~m and 180~m~\citep{ara_pa_design}.
-      This type of instrument, called a Phased Array (PA), uses a beamforming trigger as was proposed for radio observations of neutrinos by \citet{phased-array-concept}.
-      Beamforming triggers use predetermined anticipated signal arrival directions\footnote{\comment{Why are these arrival directions typically symmetric around an elevation of 0? Wouldn't we want to skew these towards deep ice, where we expect to find the most neutrinos?}} to calculate the time delay between the arrival of such signals between pairs of antennas and automatically shifts the observed signals according to these delays\footnote{\comment{I want to find or make a figure showing how these signals add up and decrease SNR. Could also refer to the CSW explanation in the appendix if I add enough to it.}}.
+      This type of instrument, called a Phased Array (PA), uses a beamforming trigger as was proposed for radio observations of neutrinos by \citep{phased-array-concept}.
+      Beamforming triggers use predetermined anticipated signal arrival directions to calculate the time delay between the arrival of such signals between pairs of antennas and automatically shifts the observed signals according to these delays\footnote{\comment{I want to find or make a figure showing how these signals add up and decrease SNR. Could also refer to the CSW explanation in the appendix if I add enough to it.}}.
       Once the waveforms are shifted, they are summed together, amplifying coherent and impulsive signals.
       This magnifies low power signals that may not have been observed from the waveforms alone.
       This PA string has a DAQ board separate from A5's and two horizontally polarized antennas placed below the 7 vertically polarized antennas to assist in event reconstruction.
@@ -233,7 +233,7 @@
         The runs of data that are saved by each station are collected by the radio processing (Radproc) computer which is housed in the IceCube Laboratory (ICL). 
         This data transfer and any other communications with the stations is conducted over fiber optic cable buried in the ice. 
         These fiber optic cables pass through a series of patch panels to reach their destination. 
-        Starting at Radproc, information travels over intranet to a White Rabbit Switch\footnote{\url{https://www.white-rabbit.tech/wr-technology}{https://www.white-rabbit.tech/wr-technology}}, a network switch used to improve time synchronization between connected devices. 
+        Starting at Radproc, information travels over intranet to a White Rabbit Switch\footnote{\url{https://www.white-rabbit.tech/wr-technology}}, a network switch used to improve time synchronization between connected devices. 
         Ethernet leaves the White Rabbit Switch and is converted by a Small Form-factor Pluggable (SFP) into an optical signal that then enters a fiber optic patch panel in the ICL. 
         Outgoing fiber optic cables exit the ICL and run down the West Tower into the West Tower Junction Box, where the second patch panel is and leads immediately to a third patch panel located in the same box. 
         Cables leaving the third patch panel are laid over 1~km and end at Wind Turbine 3 where they meet their fourth patch panel. 
@@ -334,8 +334,6 @@
   The polarization of the radio signal may also change due to birefringence, affecting ARA's ability to reconstruct the astrophysical source of neutrino events and is an active area of investigation~\citep{ara_birefringence}.
   These studies use SPICE core data and A2 and A4 observations of radio waves from a pulser deployed into the SPICE core hole to estimate the rate at which signal polarization changes as radio waves travel between the SPICE core and the receiving station.
 
-  \comment{Hole closure?}
-
 \subsection{Solar Flare Reconstruction} 
   Solar flares typically release large amounts of radio-wavelength radiation, making them a good source for calibrating the ARA detector. 
   On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, the Testbed \citep{ara_solarflare}\footnote{\comment{Should I have mentioned the Testbed earlier?}}. 
@@ -387,10 +385,10 @@
   The relative charge excess of such a particle shower is demonstrated in Figure~\ref{fig:cr_ice}, showing an air shower that develops over $\sim 10$~km and a denser core in ice with a great increase in the observed charge excess confined to just $\sim 30$~m of the surface. 
   If a CR impacts within a few hundred meters of an ARA station, they may be observed by one of our stations. % Cite nicolas' thesis or a cr paper
   Previous neutrino searches have observed events containing signatures that could indicate radio-frequency radiation from a UHECR air shower that triggered our stations \citep{ara_a23, ara_pa_analysis}.  
-  A recent publication from the ARA collaboration, led by Nat Alden and Philipp Windischhofer at the University of Chicago, deconvolved the electric fields of 13 highly impulsive and signal-like events with high reconstructed elevations originally observed by an analysis of A5 and PA data reported in \citet{ara_pa_analysis} and summarized in Section~\ref{sec:analysis_pa}~\citep{ara_cr}.
+  A recent publication from the ARA collaboration, led by Nat Alden and Philipp Windischhofer at the University of Chicago, deconvolved the electric fields of 13 highly impulsive and signal-like events with high reconstructed elevations originally observed by an analysis of A5 and PA data reported in \citep{ara_pa_analysis} and summarized in Section~\ref{sec:analysis_pa}~\citep{ara_cr}.
   The frequency content of the electric fields of these events are compared to simulated cosmic rays and established that the frequency content of the 7 data events were consistent with originating from a shower-like source in shallow ice, as shown in Fig.~\ref{fig:cr_events}.
   This was the first in ice observation of Askaryan Radiation from cosmic particles and was a great advancement in our field. 
-  Similar studies are currently being conducted using similar events from the \citet{ara_a23} publication (summarized in Section~\ref{sec:analysis_a23}) that reconstruct towards the surface~\citep{ara_cr_a2}.
+  Similar studies are currently being conducted using similar events from the \citep{ara_a23} publication (summarized in Section~\ref{sec:analysis_a23}) that reconstruct towards the surface~\citep{ara_cr_a2}.
 
 
 \subsection{Neutrino Search with 2 Detectors \label{sec:analysis_a23}} 
@@ -420,7 +418,8 @@
       \caption{
         A2 Run 6290 event 29583, demonstrating an observed power surge in Channel 5 and 13 on String 2 and impulsive waveforms in the other strings.
         This event was a passing event from the \citep{ara_a23} analysis which inspired the Spark Event Cut.
-        The columns of the waveform plot correspond to the instrumented string and the rows show, from top to bottom, the waveform for the top vertically polarized antenna (VPol), bottom VPol, top horizontally polarized antenne (HPol), and bottom HPol. This is different from how strings are instrumented (top HPol, top Vpol, bottom HPol, bottom VPol from top to bottom) so that time delays of impulsive signals can be quickly measured by eye between antennas with the same polarization.
+        The columns of the waveform plot correspond to the instrumented string and the rows show, in order from top to bottom: the waveform for the top vertically polarized antenna (VPol), bottom VPol, top horizontally polarized antenna (HPol), and bottom HPol. This is different from how strings are instrumented (top HPol, top Vpol, bottom HPol, bottom VPol, from top to bottom) so that time delays of impulsive signals can be quickly measured by eye between antennas with the same polarization.
+        The waveform for Channel 15 is greyed out and has the annotation ``Masked to Analysis'' because signals recorded by this antenna are not suitable for analysis. 
         \index{Waveforms, plotted}
       }
       \label{fig:ARA-A23-sparkevent}
@@ -432,7 +431,7 @@
   One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic in origin).
   The second found 7 ``near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
   At the time of publication, none of these surface events had been further analyzed to determine if they were cosmic ray events but are now under investigation as mentioned in Section~\ref{sec:analysis_cr}. 
-  Some events that passed Analysis B of \citet{ara_a23} had ``an unphysical amount of power [that] was deposited in one or two strings''. 
+  Some events that passed Analysis B of \citep{ara_a23} had ``an unphysical amount of power [that] was deposited in one or two strings''. 
   One of these events is shown in Figure~\ref{fig:ARA-A23-sparkevent}.
   These events were removed post-unblinding by employing a reconstruction algorithm based on hit times \comment{called AraVertex?}. 
   One event did not have sufficient signal for and the other three reconstructed into the surface region.
@@ -454,7 +453,7 @@
   A cut based analysis was used for this study as well, where cuts were designed over 10\% of the data to eliminate events of anthropogenic, cosmic ray, faulty detector, and other non-thermal and non-signal origin.
   After all cuts were chosen, tuned, and applied to 10\% of the data, all events in the 10\% sample that passed all cuts were assumed to be entirely composed of thermal background events. 
   Using these thermal background events and a database of simulated neutrino events, a Fischer Discriminant was trained to identify signal and thermal noise based events to use on the full 100\% dataset \citep{fisherDiscriminant}.
-  46 events that passed the analysis and reconstructed in the ``surface region'' were discussed briefly, noting that this dataset may contain cosmic ray candidates which were later analyzed in \citet{ara_cr}.
+  46 events that passed the analysis and reconstructed in the ``surface region'' were discussed briefly, noting that this dataset may contain cosmic ray candidates which were later analyzed in \citep{ara_cr}.
   1 event passed the analysis in the ``deep region'' but did not appear impulsive enough to have come from a neutrino cascade, as shown in Figure~\ref{fig:analysis_pa_passingevent}.
 
 

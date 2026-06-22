@@ -1,6 +1,6 @@
 \chapter{Analysis of the Second Station for the Askaryan Radio Array's Five Station Analysis \label{chap:5sa_analysis}}
 
-  After reducing our 10\% data to a predominantly thermal-like collection of events, we are ready to construct an analysis that separates potential signal from our thermal-like background. 
+  After reducing our 10\% data to a predominantly thermal-like collection of events, we construct an analysis that separates potential signal from our background. 
   This is done by training a Linear Discriminant Analysis (LDA) algorithm on each station-configuration.
   This LDA transforms 19 L2 analysis variables per event into one number that is low for background events and high for simulated neutrino events. 
   The distribution of LDA values for thermal-like events is modeled and passed, along with the model of surface-like events identified in Section~\ref{sec:zc_slc}, to an optimization algorithm that identifies the best LDA cut for each station-configuration in the context of each arraywide configuration and the best Zenith Cut for the 6 instruments. 
@@ -12,7 +12,7 @@
 
 \section{The Linear Discriminant Analysis \label{sec:lda}}
 
-  In this analysis, the ultimate signal and background discrimination is performed using a Linear Discriminant Analysis (LDA).
+  In this analysis, signal and background discrimination is performed using a Linear Discriminant Analysis (LDA).
   Previous analyses have used the Fisher Discriminant~\citep{fisherDiscriminant, ara_pa_analysis} or a cut in the 2 dimensional distribution of event correlation against signal strength~\citep{ara_a23}. 
   An LDA is a generalization of Fisher Discriminants and, if only using two variables, performs similarly to separating signal and background by drawing a line in the 2 dimensional histogram of event correlation versus signal strength. 
   LDAs, for each event, will take an array of analysis variables and combine them linearly into a single number by multiplying the variables for each event against a matrix that's been optimized to minimize LDA scores for background events and maximize scores for signal events. 
@@ -312,7 +312,7 @@
 
     To investigate the low p=value on A2 configuration 3 and configuration 4, we first looked for run-level anomalies then looked at each event driving the disagreement between the 10\% model and the 100\% model.
     For configuration 3, we identified runs that had unstable firmware (6558-6569) and poor restabilization after a reported power fail (7100), all of which should have been in the Bad Run Log.
-    We then established that all remaining events would have been cut by the Low Reconstruction Confidence Cut described in Section~\ref{sec:lrcc} if these events had been more signal-like, meaning these events were determined to be thermal-like but were upward fluctuations of the backgrounds enough to unseat the background model.
+    We then established that all remaining events would have been cut by the Low Reconstruction Confidence Cut described in Section~\ref{sec:lrcc} if these events had been more signal-like, meaning these events were determined to be thermal-like but were upward fluctuations of the backgrounds enough to invalidate the background model.
     All outliers in the configuration 4 background LDA model were similar, they would have been removed by the Low Reconstruction Confidence Cut if they had been more signal-like. 
     These outliers were therefore deemed inconsequential and, after adding those runs to the Bad Run Log and therefore excluding these events from analysis, the 100\% background fit to configurations 3 and 4 were deemed to be compatible with the 10\% fits. 
 
@@ -464,7 +464,10 @@
           alt={}
         ]{sections/5sa-analysis/images/passing_pawaveform.png}
         \caption{
-          The voltage versus time traces in each A5 antenna for event 89985 of Run 767, the PA event that passed the analysis.
+          The voltage versus time waveforms in each PA antenna for event 89985 of Run 767, the event that passed the analysis.
+          Channel 0 is the top antenna of the PA string and channel 9 is the bottom antenna.
+          Channels 0-7 (black) are the vertically polarized antennas from which we construct the PA trigger. 
+          Channel 8 and channel 9 (red) are the horizontally polarized antennas at the bottom of the PA string used to enhance angular event reconstruction.
           % This is bandpassed
         }
         \label{fig:passing_pawaveform}
@@ -489,7 +492,7 @@
       This showed that the AraVertex algorithm reconstructed the A5 event within $20^{\circ}$ of channels 4 and 12. 
       The same effect was observed when we plotted the skymap of correlation scores for the A5 event's interferometric reconstruction using a map radius equal to the distance between A5 channel 4 and the station center - the best interferometric reconstruction is $20^{\circ}$ away from the location of channel 4 and 12. 
       We repeated this exercise for the A4 event shown in Fig.~\ref{fig:a4outlier} and found the event reconstructed where channels 6 and 14 are, the same channels exhibiting power surge behavior.
-      The \citep{ara_a23} analysis also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut\footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
+      The \citep{ara_a23} analysis also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut\footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
 
       When we designed the Anomalous Channel Cut, we were unsure what the observed impulsive signatures on the strings without the power surge were, but would not classify these events as neutrino observations given the inexplicable power surge in some channels. 
       We had assumed that the power surge happens on the data acquisition board which is housed in the vault at the surface, but as the impulsive events resemble coherent radio emission, we considered that the power surge occurred on the string itself near the antennas. 
@@ -569,6 +572,9 @@
         \citet{km3net_neutrino} & Experiment & 12.30 & 1.73 \\
         \citet{icecube_search_extension} & Experiment & 0.19 & 0.03 \\
       \end{tabular}
-      \caption{Expected number of neutrino events expected at trigger level and at analysis level based on various astrophysical models, cosmogenic models, and experimental fluxes and upper limits.}
+      \caption{
+        Expected number of neutrino events expected at trigger level and at analysis level based on various astrophysical models, cosmogenic models, and experimental fluxes and upper limits. 
+        These results may be compared to the Feldman-Cousins upper limit of 2.44 events, established by the observation of 0 events on an expected background of 0.13 events in this analysis.
+      }
       \label{tab:5sa_eventrates}
     \end{table}
