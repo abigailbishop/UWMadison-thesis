@@ -3,12 +3,12 @@
 This thesis focused on the search for ultra-high energy (UHE) neutrinos in ice via Askaryan emission.
 These neutrinos originate in extreme astrophysical sources (e.g. active galactic nuclei) or cosmogenically when UHE cosmic rays (UHECRs) interact with photons of the Cosmic Microwave Background. 
 I worked mainly with the Askaryan Radio Array (ARA) but also with the Radio Neutrino Observatory of Greenland (RNOG) and IceCube-Gen2 to simulate present and potential neutrino detectors; develop, assemble, and maintain detector hardware; and search for neutrinos in over one decade of experimental data.
-Graduate projects\footnote{\comment{The rest of this paragraph feels random, could be rephrased.}} that we're not presented in this thesis include the GPS survey of ARA and my work configuring the ARA simulation package to import externally-simulated electric fields enabling integration of cosmic ray simulations like Corsika and FAERIE with ARA detector simulations. 
+Graduate projects\footnote{\comment{The rest of this paragraph feels random, could be rephrased.}} that we're not presented in this thesis include the GPS survey of ARA, service work managing data for ARA and rootifying PA data for analysis, and my work configuring the ARA simulation package to import externally-simulated electric fields enabling integration of cosmic ray simulations like Corsika and FAERIE with ARA detector simulations. 
 
 ARA is comprised of 5 radio stations and has taken data since 2012. 
 Updates to simulations of the array were discussed, highlighting the importance of simulating the outgoing muons and taus from charged current neutrino interactions of the same flavors and the benefits of simulating these events in an array-wide context which considers an event's ability to trigger multiple stations. 
 For example, secondary particle interactions make up 40\% of triggered events at $10^{21}$~eV and 35\% of triggered events trigger on multiple ARA stations at the same energy~\citep{ara_veff}.
-We also calculated that ARA is expected to have triggered on 2.27 neutrinos according to the pure-proton cosmogenic neutrino flux model using an optimistic maximum proton acceleration energy of $E_{\text{max}}=10^{21}$~eV from \citet{flux-kotera}. 
+We also calculated that ARA is expected to have triggered on 2.27 neutrinos according to the pure-proton cosmogenic neutrino flux model using an optimistic maximum proton acceleration energy of $E_{\text{max}}=10^{21}$~eV from \citep{flux-kotera}. 
 These trigger level figures demonstrate the value of the ARA dataset and the goal that neutrino searches should strive for~\citep{ara_secondaries, ara_veff}. 
 
 This thesis centers around a neutrino search through 10.6 years of ARA data taken by all stations~\citep{ara_5sa-icrc}. 
@@ -19,7 +19,7 @@ When the analysis was applied to the full dataset, one event passed all cuts on 
 After expanding this cut, a posteriori, to remove PA events within 0.1~s of A5 events removed by this glitch cut, the PA event no longer passes all analysis cuts.
 
 We proceed to calculate the Feldman-Cousins 90\% confidence level intervals based on the observation of 0 events and an expected background of 0.13 events, leading to an upper limit based an underfluctuation of 2.44 expected events\footnote{\comment{I've been working with Marco to figure out how to phrase this correctly. I doubt I have it, still.}}~\citep{feldman_cousins}. 
-Our analysis sets the world-leading upper limit on the cosmic neutrino flux above $4 \times 10^{19}$~eV and was expected to observe 0.41 events at analysis level according to the \citet{flux-kotera} model discussed earlier. 
+Our analysis sets the world-leading upper limit on the cosmic neutrino flux above $4 \times 10^{19}$~eV and was expected to observe 0.41 events at analysis level according to the \citep{flux-kotera} model discussed earlier. 
 Additionally, we estimate that this analysis would have identified 1.75 neutrino candidates if subjected to the flux established from the UHE neutrino observation of KM3NeT \citep{km3net_neutrino}, 2.79 if subjected to the flux established by \citep{flux-muzio}, and 6.24 if subjected to the upper limit formed by \citep{icecube_search-ehe} and \citep{anita_iv} which can be compared to our upper limit based on 2.44 events \comment{idk about this phrasing}.
 With the addition of the upper limit established by our analysis to the field, UHE radio detectors are on the precipice of probing theoretical UHE neutrino flux models at the highest energies which expands both our knowledge of cosmic neutrinos but also the cosmic rays that produce many of them.
 

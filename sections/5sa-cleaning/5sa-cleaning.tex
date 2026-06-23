@@ -34,7 +34,7 @@
   Cleaning continues in Section~\ref{sec:cleaning_anthropogenics} with the removal of science and anthropogenic backgrounds. 
   The process for generating the surface background dataset is also discussed.
   The Fast Filter used to speed up data preparation of the 100\% sample is presented next in Section~\ref{sec:fast_filter}.
-  This chapter ends with the order in which all cuts from Section~\ref{sec:cleaning_glitches}, Section~\ref{sec:cleaning_anthropogenics}, and Section~\ref{sec:fast_filter} are applied to the data and the analysis efficiencies of the cleaning procedure.
+  This chapter ends with the order in which all cuts from Section~\ref{sec:cleaning_glitches}, Section~\ref{sec:cleaning_anthropogenics}, and Section~\ref{sec:fast_filter} are applied to the data and the signal efficiencies of the cleaning procedure.
   At the end of this cleaning process, we are left only with a collection of thermal-like background events from the 10\% sample and a surface background model built on the 10\% to be optimized for the analysis discussed in Chapter~\ref{chap:5sa_analysis}. 
   
 \section{Simulation Setup for Data Cleaning \label{sec:5sa_sims}}
@@ -319,7 +319,7 @@
     %A list of frequencies registered with the South Pole Stations communications team was shared with us and is available on \url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=3265}{ARA DocDB\#3265}.
     The main communications frequencies that affect this analysis are the 450~MHz walkie talkie frequencies (that motivated notch filters built into ARA event readout) and the $\sim 407$~MHz Radiosonde weather balloon.
     To remove this contamination in analysis, we use the SineSubtract algorithm available in \texttt{libRootFftw}\footnote{\url{https://github.com/nichol77/libRootFftwWrapper}}.
-    % At the start of this analysis, we used the Phase Variance method described in~\citet{thesis_clark}, however we found that this did not reliably remove all CW contamination.
+    % At the start of this analysis, we used the Phase Variance method described in~\citep{thesis_clark}, however we found that this did not reliably remove all CW contamination.
 
     In addition to this so called CW filtering, we also bandpass all out-of-band frequencies below 50~MHz and above 875~MHz.
     This analysis level bandpassing is supplemental to the bandpassing done by the data acquisition board during event readout which removes frequencies below 150~MHz and above 850~MHz, as discussed in Section~\ref{sec:ARA_design}.
@@ -511,7 +511,7 @@
 
     There are occasions where only some antennas on a string read out waveforms with more power than the rest, so the string as a whole does not have enough power to get flagged by the Spark Event Cut.
     Event 40469 from run 3733 recorded by A4 inspired this cut as the impulsive, as shown in Figure~\ref{fig:a4outlier}.
-    This event is reminiscent of 3 similar events from A2 that passed all cuts in the analysis over 4 years of A2 and A3 data, presented in \citet{ara_a23} and summarized in Section~\ref{sec:analysis_a23}: Run 3439 event 19142, run 3689 event 87466, and run 6290 event 29583 which is shown in Figure~\ref{fig:ARA-A23-sparkevent}. % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032 slide 5
+    This event is reminiscent of 3 similar events from A2 that passed all cuts in the analysis over 4 years of A2 and A3 data, presented in \citep{ara_a23} and summarized in Section~\ref{sec:analysis_a23}: Run 3439 event 19142, run 3689 event 87466, and run 6290 event 29583 which is shown in Figure~\ref{fig:ARA-A23-sparkevent}. % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032 slide 5
     
     The anomalous channel cut is designed to remove events where one channel's waveform has (1) an unusually high amount of power and (2) does not correlate well with waveforms from other antennas of the same polarization.
     For the first, we calculate the \texttt{max\_rms\_ratio} by calculating the RMS of waveforms from all channels with like-polarization, identify the max, and divide it by the average - like an antenna level \texttt{spark\_power\_ratio}.
@@ -962,7 +962,7 @@
     For A2, this algorithm set a Zenith Cut at an elevation of $19^{\circ}$ which led to a \texttt{mindepth\_v} threshold of 82~m for the 300~m distant reconstruction sphere and 166~m for the 42.86~m pulser reconstruction sphere. 
 
     As we were unblinding the analysis (Section~\ref{sec:unblinding}), we were suggested to add the determination of the Zenith Cut to the analysis optimization (Section~\ref{sec:optimization}). 
-    The procedure outlined in this section is used to set a temporary Zenith Cut, but the exponential model the background distribution's tail is fit to is later passed into the optimization script to help recover analysis efficiency. 
+    The procedure outlined in this section is used to set a temporary Zenith Cut, but the exponential model the background distribution's tail is fit to is later passed into the optimization script to help recover signal efficiency. 
 
 \section{Quick Removal of Thermal-Like Events during 100\% Processing with the Fast Filter \label{sec:fast_filter}}
 
@@ -1010,6 +1010,7 @@
   The effect of cuts on the neutrino distribution in this same 2-D plane are shown in Fig.~\ref{fig:snrcorr_nu_nocuts} and Fig.~\ref{fig:snrcorr_data_allcuts}.
   Figure~\ref{fig:brj} shows that 72.6\% of data RF events are removed by the cuts and Fig.~\ref{fig:sigeff} shows 43.3\% of neutrinos survive all cuts, with the Low Reconstruction Confidence Cut, Zenith Cut, and Surface Like Cut having the freatest effect on neutrino removal. 
   This neutrino efficiency per cut is analyzed as a function of simulated neutrino energy in Fig.~\ref{fig:sigeff_energy} and as a function of \texttt{avg\_snr\_v} in Fig.~\ref{fig:sigeff_snr}.
+  The full array-wide signal efficiency as a function of simulated neutrino energy is shown in Fig.~\ref{fig:LDA_efficiency_woLDA} 
 
   \pagebreak 
 
@@ -1130,3 +1131,18 @@
     \label{fig:sigeff_snr}
   \end{figure}
   
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.7\linewidth,
+      alt={}
+    ]{sections/5sa-analysis/images/arraywide_efficiencies_vs_energy-withoutLDA.png}
+    \caption{
+      Array-wide efficiency for each array-wide configuration (colored lines) and the exposure-weighted efficiency over all array-wide configurations (black lines) presented as a function of neutrino energy. 
+      The two lines with the greatest signal efficiency are for array-wide configuration 48 and 50 during both of which, only the PA was active therefore demonstrating the signal efficiency of the PA detector in isolation.
+      This represents the array-wide signal efficiency after all cleaning cuts defined in this chapter were applied (using unoptimized Zenith Cuts and Surface Like Cuts).
+      \comment{Ensure correct ``cut-level'' was used when this plot was generated.}
+    }
+    \label{fig:LDA_efficiency_woLDA}
+  \end{figure}

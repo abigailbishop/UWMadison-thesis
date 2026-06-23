@@ -1,13 +1,13 @@
 \chapter{The Askaryan Radio Array \label{chap:ARA}}
 
     As briefly discussed in Section~\ref{sec:iniceExperiments}, the Askaryan Radio Array (ARA) is an experiment searching for UHE neutrinos at the South Pole.
-    The array consists of 5 stations, each with 4-5 strings instrumented with radio antennas monitoring for Askaryan Radiation.
+    The array consists of 5 stations, each with 4-5 strings instrumented with radio antennas monitoring for radio frequency Askaryan signal.
     This chapter expands on ARA's design and layout, operations, and summarizes a selection of previous analyses. 
 
 \section{Station Design and Layout \label{sec:design_layout}}
 
     The station layout of ARA is shown in Fig.~\ref{fig:ARA}; the 5 stations are arranged on a hexagonal grid with 2~km spacing near the IceCube Neutrino Observatory and a couple kilometers from the South Pole. 
-    For ARA, the 2~km station spacing was chosen to balance full array volume, observations of the same neutrino event in multiple stations, and the cost of equipment and installation~\citep{ara_design}.
+    For ARA, the 2~km station spacing was chosen to balance the instrumented volume of the full array, the probability of observing the same neutrino event in multiple stations, and the cost of equipment and installation~\citep{ara_design}.
 
     \subsection{Traditional ARA Stations \label{sec:ARA_design}}
 
@@ -41,7 +41,7 @@
 
         Each ARA station is designed to be a rectangular lattice of pairs of horizontally polarized quadslot and vertically polarized bicone antennas, as were shown in Figure~\ref{fig:Antenna-types}.
         Figure~\ref{fig:ARA} shows an example of the A5 station.
-        The traditional stations A1-A5 were built by drilling 4 holes in the ice up to 200~m deep and arranged in a square. Two pairs of antennas were deployed into each hole, each pair separated by 18-30~m in depth. 
+        The five traditional ARA stations (A1-A5) were built by drilling 4 holes in the ice up to 200~m deep and arranged in a square. Two pairs of antennas were deployed into each hole, each pair separated by 18-30~m in depth. 
         The square layout of the hole has a horizontal baseline of 14-32~m.
         The specifics for each of the 5 stations is shown in Table~\ref{tab:station_lattices}. 
 
@@ -78,12 +78,12 @@
           \label{fig:ARA-signalchain}
         \end{figure}
 
-        For each antenna, an arriving radio signal is transformed from an electric field into a voltage trace according to the antenna's response function.
-        Deep in the borehole, the trace is passed through a notch filter that suppresses frequencies around 450~MHz, where most South Pole communications frequencies are transmitted.
-        Next, the trace is amplified with a Low Noise Amplifier (LNA) that is located near the antenna. 
-        Following this, the trace is converted into an optical signal and sent to the data acquisition (DAQ) box on the surface. 
-        We expect that the LNA's occasionally experience power surges after discovering a class of events with clear impulses in some channels and high root-mean-square waveform values in some antennas. 
-        The reconstructions of these events coincide with downhole antennas and LNAs, though this has not been experimentally verified and we do not currently know the cause of these sparks.
+        For each antenna, an arriving radio signal is transformed from an electric field into a voltage signal according to the antenna's response function.
+        Deep in the borehole, the waveform is passed through a notch filter that suppresses frequencies around 450~MHz, where most South Pole communications frequencies are transmitted.
+        Next, the waveform is amplified with a Low Noise Amplifier (LNA) that is located near the antenna. 
+        Following this, the waveform is converted into an optical signal and sent to the data acquisition (DAQ) box on the surface. 
+        A class of events has been observed with strong impulsive signals and a high waveform root-mean-square value  in some antennas. 
+        The angular reconstruction of these events coincide with downhole antennas and LNAs.
     
         \begin{table}
           \centering
@@ -105,13 +105,12 @@
           \label{tab:A2cp_runs}
         \end{table}
 
-        Each station also has one or two additional strings with radio antennas, called Calibration Pulsers (CPs), that pulse radio waves at a rate of 1~Hz. 
+        Each station also has one or two additional strings with radio antennas, called Calibration Pulsers (CPs), that emit impulsive radio waves at a rate of 1~Hz. 
         CP events are used to monitor the performance of ARA stations over time and have occasionally alerted collaborators to adjust station settings to improve observations.
         Only one CP is active during each run and Tab.~\ref{tab:A2cp_runs} documents which CP was active during each run. 
 
         All cables from each data taking and CP string are directed into a large, roughly 1~m by 2.5~m, box called a vault. 
-        The vault contains a network switch, a power box, a DAQ box, and Fiber Optic Amplification Modules that convert the optical signals from each data taking string into electronics signals before they enter the DAQ box\footnote{\comment{Check this. Does it actually do the conversion or just an amplification}}.
-        These vaults have RF shielding to protect the detector's antennas from observing any electronics in the vault.
+        The vault contains a network switch, a power box, a DAQ box, and Fiber Optic Amplification Modules that convert the optical signals from each data taking string into electronics signals before they enter the DAQ box.
         As roughly 28 centimeters of snow accumulates at the South Pole per year (mostly due to snow drift, not precipitation) \citep{sp_snow_accumulation}, these vaults become buried overtime.
         Vault extensions (large empty wooden boxes with a ladder) can be installed over the existing vault to improve future accessibility. 
         Figure~\ref{fig:a4vault} shows the electronics in the original A4 vault viewed from the edge of its vault extension.
@@ -127,7 +126,6 @@
             The data acquisition (DAQ) box is labeled ``ARA4'' and receives one input per antenna from the Fiber Optic Amplification Modules (FOAMs) in the top left. 
             The power box is in the top right and supplies power to the DAQ box and each FOAM.
             The network switch which receives and distributes optical network connection is mounted to the wall of the vault on the right.
-            Green radio frequency shielding is mounted to the sides and bottom of the vault to prevent downhole electronics from observing emission from the vault.
           }
           \label{fig:a4vault}
         \end{figure}
@@ -148,21 +146,20 @@
         \end{figure}
 
         DAQ boxes are the nexus of station data taking and control. 
-        The sides of the boxes are made of solid aluminum about 1~cm thick, for additional radio-frequency shielding, and are 10-40~cm along each side.
-        Like the vault, there is a network switch, a power board, and ports that connect to each antenna and calibration pulser for the station. 
+        The sides of the boxes are made of solid aluminum, about 1~cm thick, for additional radio-frequency shielding.
+        There is a network switch, a power board, and ports that connect to each antenna and calibration pulser for the station. 
         The main piece of electronics in the DAQ box is called the ARA Triggering and Readout Interface (ATRI) board which includes a single-board-computer (SBC), an Field-Programmable Gate Array (FPGA, a customizable logic device often used in custom electronics), and stacks of triggering and digitizing boards that connect to each antenna~\citep{ara_design}.
         The predecessor to the ATRI board was the ICRR board and was used on A1 until the 2013-14 South Pole Season when it was replaced with an ATRI board.
         A station's SBC is what technicians connect to when accessing each station. 
         They contain and run scripts that program the FPGA for data taking and calibration pulsing, recording data, and packaging data for retrieval by processes on the Radproc computer.
 
-        In the DAQ box, the optical signals from the strings are converted back into voltage traces and then passed through band filters which suppress out-of-band noise less than 150~MHz and greater than 850~MHz.
+        In the DAQ box, the voltage signals from the strings are passed through band filters which suppress out-of-band noise less than 150~MHz and greater than 850~MHz.
         The voltage is then split and passed simultaneously through a Triggering Daughter Array (TDA) and a Digitizing Daughter Array (DDA). 
-        Before entering the TDA, the traces pass through tunnel diodes that convert voltage into power. 
-        The TDA then analyzes if three antennas of the same polarization observed a signal with more than $\sim 6$ times the power of noise.
-        If this occurs, the signal that was simultaneously digitized by the DDA is saved to the local Single Board Computer (SBC).
+        Before entering the TDA, the waveforms pass through tunnel diodes that convert voltage into power used to determine event trigger, discussed in Section~\ref{sec:triggering}. 
+        If an event triggers, the signal that was simultaneously digitized by the DDA is saved to the local Single Board Computer (SBC).
         This electronics chain is shown in Figure~\ref{fig:ARA-signalchain}.
         Each TDA and DDA have four inputs and are arranged to take in signals from the four antennas on each string. 
-        Occasionally, the DDA will experience a power surge and amplify the signal in one string. 
+        Occasionally, the DDA will malfunction, resulting in large erratic signals in all waveforms for one string.
         We refer to these as spark events and they are typically excluded from analyses. 
 
         \begin{table}
@@ -194,21 +191,7 @@
         The chip enabling connection of the FPGA with the ATRI is called the FX2.
         This chip was installed on ATRI's used for stations A1-A5 between 2013 and 2018. 
         The USB connection between the FX2 and the ATRI degrades overtime preventing the SBC from communicating with the FPGA, rendering the station unable to take data. 
-        Full deprecation can be delayed by forcing the USB connection into slow speed. 
-        Our stations tend to operate for a few months on low speed before connection to the FX2 chip is lost completely.
-        Table~\ref{tab:station_daqboards} summarizes the types of DAQ boards, when they were in use, and other notes.\footnote{\comment{One of my readers says the rest of this paragraph may not be relevant to the thesis but my ARA colleagues keep getting confused on the difference between these two pages and no one knows what's available on the wiki so I thought I'd document it here. Thoughts?}} 
-        This is an abbreviation of a Wikipedia page I authored, \href{https://mediawiki.icecube.wisc.edu/ara/index.php/ARA_Station_Histories}{ARA Station Histories}, which summarizes topline updates and downtimes for each station since they were installed. 
-        This is not to be confused with the \href{https://mediawiki.icecube.wisc.edu/ara/index.php/Known_Station_Problems}{Known Station Problems} page, which contains notes about active and ongoing notes for each station, a page typically consulted by those on monitoring shifts. 
-
-        ARA data is saved in batches, called ``runs'', typically taken over the course of 3 hours.
-        There are three types of events: forced/software events, RF events, and events. 
-        Software triggered events read out $\sim200$~ns of ambient noise waveforms at a rate of $\sim 1$~Hz and are used to build simulations and define station livetime configurations (discussed in Section~\ref{sec:a2configs}).
-        RF (``Radio Frequency") events are the main event class and the one that we search for neutrino observations.
-        An RF trigger occurs on if three antennas of the same polarization observe waveforms with power $\sim 6$ times more than the thermal background.
-        Lastly, calibration pulser (CP) events are recorded via the RF event trigger but are classified as CP events by the DAQ board if the CP was firing at the same time the RF event was read out.
-        At a combined trigger rate (software events + RF events + CP events) of $\sim11$~Hz, each run typically contains 100-120 thousand events. 
-        Between each run, the station will enter into a brief state of lower power consumption as data is not being taken and the calibration pulser is not firing. 
-        For, conservatively, the first minute of each run, as currents rise back to a nominal level, data taken by the detector is unusual and therefore typically excluded from analyses. 
+        Table~\ref{tab:station_daqboards} summarizes the types of DAQ boards, when they were in use, and other notes.
 
     \subsection{Phased Array}
 
@@ -226,109 +209,50 @@
       With 6 inputs available on the PA DAQ board, the readout of 6 vertically polarized antennas from A5 were connected to the PA DAQ in the season of 2019-20.
       The 7 total A5 antennas connected to the PA DAQ board do not contribute to triggering but do aid in event reconstruction.
 
-\section{Operations Pipeline}
+  \subsection{Station Triggering}
 
-    \subsection{Data Transfer Pipeline}
-  
-        The runs of data that are saved by each station are collected by the radio processing (Radproc) computer which is housed in the IceCube Laboratory (ICL). 
-        This data transfer and any other communications with the stations is conducted over fiber optic cable buried in the ice. 
-        These fiber optic cables pass through a series of patch panels to reach their destination. 
-        Starting at Radproc, information travels over intranet to a White Rabbit Switch\footnote{\url{https://www.white-rabbit.tech/wr-technology}}, a network switch used to improve time synchronization between connected devices. 
-        Ethernet leaves the White Rabbit Switch and is converted by a Small Form-factor Pluggable (SFP) into an optical signal that then enters a fiber optic patch panel in the ICL. 
-        Outgoing fiber optic cables exit the ICL and run down the West Tower into the West Tower Junction Box, where the second patch panel is and leads immediately to a third patch panel located in the same box. 
-        Cables leaving the third patch panel are laid over 1~km and end at Wind Turbine 3 where they meet their fourth patch panel. 
-        Bundles of fiber optic cables are then run to stations A1, A2, and A3. 
-        At this point, 2 fiber optic cables in each bundle are connected to A1, A2, and A3 while the last 2 cables at A1 are connected to a switch directing fiber optic signal to A4 and the last 2 cables at A2 being connected to a switch directing signal to A5. 
-        I compiled the mapping of all fibers from the ICL to ARA stations and the IceCube Surface Array into a spreadsheet that is available in \href{https://aradocs.wipac.wisc.edu/DocDB/DocumentDatabase}{ARA DocDB\#\#\#\#}.\footnote{\comment{I need to upload this file to DocDB then I'll get the number.}}
+    ARA data is saved in batches, called ``runs'', typically taken over the course of 3 hours.
+    There are three types of events: forced/software events, RF events, and events. 
+    At a combined trigger rate (software events + RF events + CP events) of $\sim11$~Hz for A1-A5 and $\sim13$~Hz for PA, each run typically contains 100-120 thousand events. 
 
-        % \begin{figure}
-        %   \centering
-        %   \begin{subfigure}[t]{0.18\textwidth}
-        %     \centering
-        %     \includegraphics[
-        %       width=\textwidth,
-        %       alt={
-        %         x
-        %       }
-        %       ]{sections/ARA/images/IMG_1742_FiberX_20250123_1445_toA3_fromICL_Abby.jpg} 
-        %   \end{subfigure}
-        %   ~
-        %   \begin{subfigure}[t]{0.79\textwidth}
-        %     \centering
-        %     \includegraphics[
-        %       width=\textwidth,
-        %       alt={
-        %         x
-        %       }
-        %       ]{sections/ARA/images/IMG_1744_FiberX_20250123_1452_toA3_fromICL_Abby.jpg}
-        %   \end{subfigure}
-        %   \caption{OTDR. Left, before cleaning. Right, after cleaning.}
-        %   \label{fig:a3_otdr}
-        % \end{figure}
+    Software triggered events read out $\sim200$~ns of ambient noise waveforms at a rate of $\sim 1$~Hz and are used to build simulations and define station livetime configurations (discussed in Section~\ref{sec:a2configs}).
 
-        Note that, in January 2025, we discovered the fibers connecting the ICL patch panel port 19 and 20 to the West Tower Junction Box patch panel were reversed compared to previous documentation.
-        This has been updated in the aforementioned DocDB article. 
-        Handling of fibers in the West Tower Junction Box which connect the ICL to A3 via port 19 were handled unintentionally when installing the IceCube Surface Array extension. 
-        Impurities may have been introduced into these fibers and the field team recommends retermination of the wires in the West Tower Junction Box in a future field season to restore network connection to A3.
-        Since then, we have struggled to maintain network connection to A3. % and many Optical Time-Domain Reflectometer (OTDR) measurements have been conducted to calculate the distance to optical reflections caused by patch panels. 
-        % On January 23, 2025 Delia Tosi and I ran OTDR measurements from the ICL to A3 and saw reflections consistent with Wind Turbine 3 around 2.0~km and at A3 around 4.8~km, but no reflections at the West Tower Junction Box at 300~m, shown on the left of Fig.~\ref{fig:a3_otdr}.
-        % At this stage we did not have connection to A3 so we cleaned the fibers with electronics alcohol pads in the ICL and the West Tower Junction box then repeated the measurement where we saw reflections at the West Tower Junction Box and A3 but not at the closer Wind Turbine 3. 
-        % After swapping out SFPs, fiber optics cables, and restarting the A3 power multiple times A3 came back online and took data for a few weeks before we lost connection again. 
-        % OTDR measurements were repeated by IceCube Winterover Joe Baines-Holmeson March 7, 2025 where a steep power drop at 300~m was measured with no reflections. 
-        % Oddly, some OTDR measurements still showed reflections at 4.7~km but still no reflections at 2~km at Wind Turbine 3. 
-        % ^^^ I don't have this story nailed down well enough right now. I need to consult my notebook.
+    RF (``Radio Frequency") events make up the main event class used in analyses to search for neutrino observations.
+    For traditional ARA stations (A1-A5), an RF trigger is based on observed power in the TDAs during a $\sim 100$~ns trigger window. 
+    If three antennas with the same polarization observe power over $\sim 6$ times the thermal background, the station saves the current time as the ``trigger bin'' and records the event.
+    The thermal background is calculated as the root-mean-square of the power in the TDA and the trigger power threshold is tuned to achieve the combined trigger rate of $\sim11$~Hz.
+    The station records $\mathcal{O}(500~\text{ns})$ of signal defined as the ``readout window'', beginning the readout $\sim 100$~ns before the trigger bin in a setting defined as the ``pre-trigger readout window'', the latter of which is important when defining station livetime configurations.
 
-        % Would be nice to have a diagram of the networking
+    The PA detector utilizes the beamforming trigger defined in \citep{ara_pa_design} for its RF events. 
+    For the 7 closely packed antennas, the PA data acquisition board is preprogrammed to anticipate signals from 15 directions (so-called ``beams'') between $-60^{\circ}$ and $60^{\circ}$.
+    Observed signals from the 7 antennas are shifted by the time delays corresponding to each of these 15 beams. 
+    Similar to the A1-A5 trigger, the \comment{$\sim\,X$} trigger power thresholds for each beam are tuned for a 0.75~Hz trigger rate per beam to achieve an overall 11~Hz RF trigger rate.
+    If a beam observes power over \comment{$\sim\,X$} time greater than the root-mean-square thermal background within a 10~ns trigger window, the PA triggers on and records the event.
+    The PA's waveform readout length is $\mathcal{O}(400~\text{ns})$.
 
-        ARA's power cabling follows a similar layout between the ICL and Wind Turbine 3. 
-        Stations A1 and A4 are connected to the same power supply in the ICL, similar to the networking setup, however A2, A3, and A5 have their own power supplies\footnote{\comment{Are these separate power cables or does a power cable go into A1 and then a new cable connects A1 power to A4?}}. 
-        A2 and A3 used to share a power supply but these stations drew too much power when being turned on after the power supplies experienced a full shut down, so they are now powered separately.
+    Lastly, calibration pulser (CP) events on traditional ARA stations and the PA are recorded via the RF event trigger but are classified as CP events by the DAQ board if the CP was firing at the same time the RF event was read out.
+    The stations' CPs fire at a rate of 1~Hz.
+    CP events are important tools used to monitor detector performance and define station livetime configurations.
 
-        The Radproc computer in the ICL collects all the data from A1-A5 and the Phased Array.
-        $\sim 1\%$ of events in each run are randomly selected, forming our monitoring data sample. 
-        The monitoring data is put into a data ``dropbox" (i.e. a directory titled \texttt{dropboxes}) going ``north'' and the full run file is put into a data drop box going ``south''. 
-        These drop boxes are coordinated by IceCube data specialists. 
-        The data in the ``north'' drop box is sent over satellite to the University of Wisconsin Madison (UW--Madison) for processing and used in monitoring and operations. 
-        This data sample is automatically processed by an ARA Operations lead so collaborators may generate and monitor event displays and station metadata (temperature, event rates, etc) on \href{http://aware.wipac.wisc.edu}{AWARE}.
-        The data in the ``south'' drop box is stored on hard drives (also referred to as ``tapes'') that are accumulated and shipped at the end of each calendar year. 
-        These hard drives arrive at UW--Madison in the spring and are uploaded to the IceCube data warehouse in late spring and early summer.
-  
-    \subsection{Data Processing}
-  
-        Data straight from the hard drives are referred to as ``raw'' or ``L0'' data. 
-        With some packages, like \texttt{pyaradisplay}\footnote{Documented in \href{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=937}{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=937} but updated in 2024 by John Kelley, Alan Salcedo Gomez, and me.}, one can plot waveforms however this does not include any calibrations and is not quickly readable for analysis.
-        Therefore, once uploaded, A1-A5 L0 data is transformed into a ROOT~\citep{root} readable, L1 format by the ARA Mass Processing\footnote{
-          \href{https://github.com/AndrewShultz/AraMassProcessing}{https://github.com/AndrewShultz/AraMassProcessing}, written by Andrew Schultz.
-        } package and PA data is transformed by the NuPhase Rootification\footnote{
-          \href{https://github.com/vPhase/nuphase_rootification}{https://github.com/vPhase/nuphase\_rootification}, written by me, based on scripts by Kaeli Hughes and the \href{https://github.com/vPhase/nuphaseroot}{\texttt{NuPhaseRoot}} and \href{https://github.com/vPhase/libnuphase}{\texttt{libNuPhase}} packages that were created by Cosmin Deaconu. 
-          Note that the \texttt{NuPhase Rootification} package is in a private repository that cannot be viewed by those who are not members of the \href{https://github.com/vPhase}{\texttt{vPhase}} GitHub organization.
-        } package.
-        The process of transforming L0 into L1 data is called ``rootification'' or ``unpacking''\footnote{IceCube IT refers to the uploading of L0 data to the IceCube data warehouse as ``unpacking'' so I refer to the transformation of L0 into L1 data as ``rootification''. ARA collaborators may still use ``unpacking'' to describe L1 generation.}. 
-        Colleagues at the University of Nebraska Lincoln rootify A1-A5 data under the supervision of Ilya Kravchenko while I have rootified PA data with advice from Cosmin Deaconu and Marco Muzio. 
-        Over the past year I trained Sanyukta Agarwal at Kansas University to rootify PA data. 
-
-        After ARA data has been rootified, the data is validated. 
-        Some runs are too small and are logged as such in presentations on the ARA Analysis Call and pages like \href{https://mediawiki.icecube.wisc.edu/ara/index.php/2020_L0-L1_Unpacking_Notes}{the 2020 L0-L1 Unpacking Notes}. 
-        A series of validation tests are performed to assess that the data has been unpacked properly and to identify any bad runs. 
-        Some validation metrics include analyzing the number of samples in a waveform, sampling rate, waveform root mean square, and repeated event numbers.
-        
-        After data has been rootified, data is split into two samples: a full 100\% sample and a smaller 10\% sample\footnote{
-            The smaller A1-A5 sample is technically reduced to a 9.5\% sample, but we round this to 10\% when referring to it.
-        }. 
-        Data analyses are typically built on the 10\% data sample then applied to the 100\% sample, as a blinding strategy. 
-        For an experiment looking for rare data in a band of electromagnetic frequencies that strongly overlaps with anthropogenic backgrounds (e.g. snowmobile spark plugs, radios, airplanes, weather balloons, etc), building an analysis on only 10\% of the data has proven risky. 
-        For example, unpredicted backgrounds have survived final event selection in some analyses and other analyses have removed an excessive number of events to avoid surviving backgrounds, both reducing analysis impact. 
-        It would benefit us to consider other blinding strategies in addition to this one.
+    Between each run, ARA stations enter into a brief state of lower power consumption as data is not being taken and the calibration pulser is not firing. 
+    For, conservatively, the first minute of each run, as currents rise back to a nominal level, the detectors' trigger rates are unstable.
+    Data taken by the detector in the first minute of each run is therefore typically excluded from analyses. 
 
 \section{Previous Analyses} 
 
-  ARA has been releasing technical design and analysis papers for over a decade. A selection of studies are discussed in this section: ice studies performed with ARA data, solar flare reconstruction, the observation of Askaryan Radiation from cosmic rays, and analyses with A2, A3, A5, and PA. 
+  ARA has been releasing technical design and analysis papers for over a decade. A selection of studies are discussed in this section: ice studies performed with ARA data, solar flare reconstruction, the observation of Askaryan Radiation from cosmic rays, and analyses with stations A2, A3, A5, and PA. 
 
 \subsection{Ice Studies} 
 
   ARA has been used to study the ice around South Pole both to enhance our understanding of the array's environment and to contribute to the field of glaciology. 
-  A recent publication used data emitted by a radio pulser deployed to depths between 700~m and 1300~m and favored modeling the South Pole ice as three exponential functions~\citep{ice_ara}.
-  The simulation and analyses presented in this thesis, however, use a single exponential function \comment{Based on the one from the PA analysis but I think we changed something?}
+  Most ice studies are conducted using observations of radio emissions from the local station calibration pulser or emissions from pulser drops in the South Pole Ice (SPIce) Core. 
+  For simulations and analysis, we use the refractive index model given in Eq.~\ref{eq:ice_model} built by fitting PA observations of SPIce Core emissions~\citep{ara_pa_analysis}.
+  \begin{equation}
+    n(z) = 1.780 - 0.454 e^{-0.0202~z}
+    \label{eq:ice_model}
+  \end{equation}
+  % A recent publication used data emitted by a radio pulser deployed to depths between 700~m and 1300~m~\citep{ice_ara}.
+  % According to findings in that work, the South Pole ice is modeled well with three exponential functions. 
   ARA observations have also been used to investigate the effect of birefringence on radio observations~\citep{ice2019}. 
   Radio signals traveling perpendicular to the flow of ice experience significant propagation delays but not when travelling parallel to ice flow. 
   The polarization of the radio signal may also change due to birefringence, affecting ARA's ability to reconstruct the astrophysical source of neutrino events and is an active area of investigation~\citep{ara_birefringence}.
@@ -336,7 +260,7 @@
 
 \subsection{Solar Flare Reconstruction} 
   Solar flares typically release large amounts of radio-wavelength radiation, making them a good source for calibrating the ARA detector. 
-  On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, the Testbed \citep{ara_solarflare}\footnote{\comment{Should I have mentioned the Testbed earlier?}}. 
+  On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, the Testbed \citep{ara_solarflare}. 
   2,000 events that were recorded over these 70 minutes were highly correlated with the location of the Sun, as shown in Figure~\ref{fig:ARAsolarflare}.
   The approximately 2 degree offset in reconstructed azimuth compared to expected azimuth is attributed to systematic uncertainties in the reconstruction algorithms that were used.
   This analysis not only demonstrated the Testbed's, and therefore ARA's, reliability in reconstructing signals from distant sources, but having a source with a known location helps the collaboration tune and improve the accuracy of our analysis methods. 

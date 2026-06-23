@@ -126,6 +126,7 @@
   We optimize just one zenith cut for each station (there are not enough statistics to do it based on station configuation like with the LDA).
   In total this results in a 146-dimension puzzle for the optimizer to solve.
   The optimized A2 Zenith Cut is set to an elevation angle of $10.31^{\circ}$ and the minimum and maximum LDA cut for each A2 configuration are presented in Table~\ref{tab:ldacuts}. 
+  The signal efficiency of the analysis over the entire array is plotted as a function of simulated neutrino energy in Fig.~\ref{fig:LDA_efficiency_wLDA} with the optimized LDA applied.
 
   \begin{table}
     \centering
@@ -143,6 +144,20 @@
     \caption{}
     \label{tab:ldacuts}
   \end{table}
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.7\linewidth,
+      alt={}
+    ]{sections/5sa-analysis/images/arraywide_efficiencies_vs_energy.png}
+    \caption{
+      Array-wide efficiency for each array-wide configuration (colored lines) and the exposure-weighted efficiency over all array-wide configurations (black lines) presented as a function of neutrino energy. 
+      The two lines with the greatest signal efficiency are for array-wide configuration 48 and 50 during both of which, only the PA was active therefore demonstrating the signal efficiency of the PA detector in isolation.
+      This represents the array-wide signal efficiency after all cleaning cuts defined in Chapter~\ref{chap:5sa_cleaning} were applied (using Zenith Cuts and Surface Like Cuts optimized in this section) and after the optimized LDA cut was applied.
+    }
+    \label{fig:LDA_efficiency_wLDA}
+  \end{figure}
 
 \section{Post-Unblinding Analysis \label{sec:unblinding}}
 
@@ -426,7 +441,7 @@
           width=\linewidth,
           alt={}
         ]{sections/5sa-analysis/images/passingevent_a5waveform.png}
-        \caption{The voltage versus time traces in each A5 antenna for event 64066 of Run 2899, the A5 event corresponding to the PA event that passed the analysis.}
+        \caption{The voltage versus time waveforms in each A5 antenna for event 64066 of Run 2899, the A5 event corresponding to the PA event that passed the analysis.}
         \label{fig:passing_a5waveform}
       \end{figure}
 
@@ -492,7 +507,7 @@
       This showed that the AraVertex algorithm reconstructed the A5 event within $20^{\circ}$ of channels 4 and 12. 
       The same effect was observed when we plotted the skymap of correlation scores for the A5 event's interferometric reconstruction using a map radius equal to the distance between A5 channel 4 and the station center - the best interferometric reconstruction is $20^{\circ}$ away from the location of channel 4 and 12. 
       We repeated this exercise for the A4 event shown in Fig.~\ref{fig:a4outlier} and found the event reconstructed where channels 6 and 14 are, the same channels exhibiting power surge behavior.
-      The \citep{ara_a23} analysis also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut\footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
+      The \citep{ara_a23} analysis also discovered that 7 events of this nature in the 100\% dataset passed all analysis cuts which gave rise to the original Spark Event Cut.% \footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
 
       When we designed the Anomalous Channel Cut, we were unsure what the observed impulsive signatures on the strings without the power surge were, but would not classify these events as neutrino observations given the inexplicable power surge in some channels. 
       We had assumed that the power surge happens on the data acquisition board which is housed in the vault at the surface, but as the impulsive events resemble coherent radio emission, we considered that the power surge occurred on the string itself near the antennas. 
@@ -509,7 +524,7 @@
   
 \section{Results from Analyzing the Full Data Sample \label{sec:5sa_results}}
 
-    The \citet{feldman_cousins} 90\% confidence level upper limit factor relies on the number of observed events (0, for this analysis) and the number of expected backgrounds. 
+    The \citep{feldman_cousins} 90\% confidence level upper limit factor relies on the number of observed events (0, for this analysis) and the number of expected backgrounds. 
     We modeled backgrounds for the Geometry Cut, the Zenith Cut, and the LDA Cut.
     As discussed in Section~\ref{sec:gc}, the windows used in the Geometry Cut were defined where the number of expected events past the cut per window was $2\times10^{-5}$ for the 10\% sample, meaning $2\times10^{-4}$ for the 100\% sample. 
     Multiplied this by our expected misfire rate of $10^{-4}$ for each station to get an expected background leakage of $2\times 10^{-8}$ events per window.  
@@ -531,12 +546,12 @@
     \end{figure}
 
     The final upper limit of this analysis is established using the simulations defined in Section~\ref{sec:veff_calc} and Eq.~\ref{eq:phi_UL}. 
-    The \citet{feldman_cousins} 90\% confidence level upper limit factor on this analysis evaluates to 2.44 as the number of observed events is 0 and the expected number of backgrounds is 0.13.
+    The \citep{feldman_cousins} 90\% confidence level upper limit factor on this analysis evaluates to 2.44 as the number of observed events is 0 and the expected number of backgrounds is 0.13.
     The upper limit is shown as the bold line in Fig.~\ref{fig:5sa_sensitivity}, with the analysis' Single Event Sensitivity (SES) and trigger level upper limit. 
     % We establish 90\% confidence when stating that the true rate of neutrinos in each energy bin could be up to 2.44, according to the Feldman Cousins formulation.
     The SES represents the highest flux required to observe at least 1 event in each energy bin.
     The number of events we predict exist in our sample after all cuts have been applied is given in Tab.~\ref{tab:5sa_eventrates}.
-    Our result midly contradicts the flux and neutrino model given by \citep{km3net_neutrino} and \citep{flux-muzio}. \comment{do I need to be quantitative?}
+    The sensitivity achieved by this analysis can be compared to results by other experiments and a collection of neutrino flux models, including the models that yield the greatest neutrino flux from \citep{flux-kotera,flux-muzio,flux-ahlers-halzen}.
 
     \begin{figure}
         \centering
@@ -548,7 +563,7 @@
           Analysis level sensitivity of the array-wide neutrino search through 10.6 years of ARA data (solid black curve). 
           The single event sensitivity (SES) of the analysis level sensitivity is also presented (dotted black curve) along with the trigger level sensitivity (ARA TL, dashed black curve).
           Previous experimental results from IceCube~\citep{icecube_search-ehe, icecube_search-combined-fit}, KM3NeT~\citep{km3net_neutrino}, Auger~\citep{flux-auger}, ANITA I--IV~\citep{anita_iv}, and earlier ARA analyses (ARA2~\citep{ara_a23} and PA~\citep{ara_pa_analysis}) are also shown (colored solid).
-          A selection of cosmogenic and astrophysical neutrino flux models are presented as well~\citep{flux-kotera,flux-muzio,flux-ahlers-halzen,flux-fang-pulsars, flux_olinto}.
+          A selection of optimistic cosmogenic and astrophysical neutrino flux models are presented as well~\citep{flux-kotera,flux-muzio,flux-ahlers-halzen,flux-fang-pulsars, flux_olinto}.
         }
         \label{fig:5sa_sensitivity}
     \end{figure}
@@ -565,12 +580,12 @@
         \hline
         \hline
         Global Upper Limit \citep{icecube_search-ehe, anita_iv} & Experimental & 21.64 & 6.24 \\
-        \citet{flux-muzio} & Cosmogenic & 12.11 & 2.79 \\
-        \citet{flux-kotera} & Cosmogenic & 2.09 & 0.41 \\
-        100\% Protons \citet{flux-ahlers-halzen} & Cosmogenic & 0.87 & 0.15 \\
-        \citet{flux-fang-pulsars} & Astrophysical & 1.31 & 0.20 \\
-        \citet{km3net_neutrino} & Experiment & 12.30 & 1.73 \\
-        \citet{icecube_search_extension} & Experiment & 0.19 & 0.03 \\
+        \citep{flux-muzio} & Cosmogenic & 12.11 & 2.79 \\
+        \citep{flux-kotera} & Cosmogenic & 2.09 & 0.41 \\
+        100\% Protons \citep{flux-ahlers-halzen} & Cosmogenic & 0.87 & 0.15 \\
+        \citep{flux-fang-pulsars} & Astrophysical & 1.31 & 0.20 \\
+        \citep{km3net_neutrino} & Experiment & 12.30 & 1.73 \\
+        \citep{icecube_search_extension} & Experiment & 0.19 & 0.03 \\
       \end{tabular}
       \caption{
         Expected number of neutrino events expected at trigger level and at analysis level based on various astrophysical models, cosmogenic models, and experimental fluxes and upper limits. 
