@@ -14,8 +14,8 @@
 
   The IceCube Neutrino Observatory has detected a diffuse cosmic neutrino flux in the energy range from 60~TeV to more than 10~PeV \citep{icecube_search_2013,icecube_search_2016tracks,icecube_search_2020cascades,icecube_search_glashow, icecube_search-ehe}.  
   IceCube-Gen2 will substantially improve the event rates especially for cascade events. 
-  IceCube-Gen2 will include a deep optical array of about 8 km$^3$ instrumented volume and the Gen2-Radio array for high energy (>30~PeV)\footnote{\comment{This was what was written in the Gen2 Optical infill radio proceeding, but this thesis describes UHE as $\geq 10^{17}$. Is this confusing/inconsistent?}} neutrino observations \citep{icecube_gen2}. 
-  The Gen2-Radio array is designed using insights from previous radio neutrino experiments such as RICE \citep{rice}, ANITA \citep{anita_iv}, ARA \citep{ara_design, ara_a23}, ARIANNA \citep{arianna_testbed, arianna_pilot}, and RNOG (currently in construction in Greenland) \citep{rnog_design}.
+  IceCube-Gen2 will include a deep optical array of about 8 km$^3$ instrumented volume and the Gen2-Radio array for high energy (>10~PeV) neutrino observations \citep{icecube_gen2}. 
+  The Gen2-Radio array is designed using insights from previous radio neutrino experiments such as RICE \citep{rice}, ANITA \citep{anita_iv}, ARA \citep{ara_design, ara_a23}, ARIANNA \citep{arianna_testbed, arianna_pilot}, and \mbox{RNO-G} (currently in construction in Greenland) \citep{rnog_design}.
   %Experiments like the Gen2 radio array and ARA take advantage of far-reaching radio neutrino signals by spreading their detector antennas hundreds of meters apart and burying them a frugal 200 meters in ice. 
   The Gen2-Radio array will achieve a sensitivity of the cosmic neutrino flux at high energies (>30~PeV) by more than an order of magnitude of what would be imaginable with an optical array.  
   Here, we investigate the possibility to enhance the performance of 
@@ -52,9 +52,9 @@
   The radio detector component is conceived such that every optical sensor on the string, there is one radio antenna associated 
   with that sensor and located 8\,m above it.
   Thus, a simulation was performed with 9760 ARA-style vertically polarized (Vpol) radio antennas located on the 120 Gen2 Strings, 80 per string, between 1350 and 2600 meters below the Antarctic ice's surface.  The simulation assumed a vertical spacing of antennas is 17~m and the spacing between strings is $\approx$~240~m.  
-  The technical implementation would be such that every multi-PMT optical sensor would feature one additional readout channel that would connect an envelope detector to the antenna, which is located 7~m above the DOM in the null of the antenna\footnote{\comment{
-    I was asked what an ``envelope detector'' and what the ``null of the antenna'' mean. I think an envelope detector is referring to how signal in the radio antenna would be read out by trigger logic on the DOM. I think the null refers to the blind spot of the DOM.
-  }}. 
+  The technical implementation would be such that every multi-PMT optical sensor would feature one additional readout channel that would connect an envelope detector to the antenna, which is located 7~m above the DOM in the null of the antenna.%\footnote{\comment{
+  %   I was asked what an ``envelope detector'' and what the ``null of the antenna'' mean. I think an envelope detector is referring to how signal in the radio antenna would be read out by trigger logic on the DOM. I think the null refers to the blind spot of the DOM.
+  % }}. 
   
   In the simulation 40,000 events are generated and simulated at select energies 
   using the radio-signal simulation software PyREx and the aforementioned parameters. Next, all events with exactly 6~PeV, 10~PeV, 30~PeV, or 100~PeV of energy and located within 300 meters of IceCube-Gen2 boundary are isolated and processed using the optical-signal simulation software IceTray\footnote{Github: https://github.com/icecube/icetray/tree/gen2-optical-sim} ($\approx$ 6,000 events for each energy).
