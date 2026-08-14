@@ -101,7 +101,7 @@
       \begin{tikzpicture}
         \begin{feynman}
           \vertex (a) {\(\pi^+\)};
-          \vertex[right=2.5cm of a] (b) {\(\mu+\nu_{\mu}\)};
+          \vertex[right=2.5cm of a] (b) {\(\mu^++\nu_{\mu}\)};
           \diagram* {
             {[edges=fermion]
               (a) -- (b),
@@ -133,17 +133,17 @@
   \begin{center}  
     \begin{tikzpicture}
       \begin{feynman}
-        \vertex (a) {\(\mu^-\)};
+        \vertex (a) {\(\mu^+\)};
         \vertex[right=2cm of a] (b);
         \vertex[right=2cm of b] (c2);
     
-        \vertex[above=1.5em of c2] (c1) {\(\nu_{\mu}\)};
+        \vertex[above=1.5em of c2] (c1) {\(\bar{\nu}_{\mu}\)};
         \vertex[below=2.5em of c2] (c3);
 
         \vertex[right=3em of c3] (d3);
 
-        \vertex[above=1em of d3] (d2) {\(\bar{\nu}_e\)};
-        \vertex[below=1em of d3] (d4) {\(e^-\)};
+        \vertex[above=1em of d3] (d2) {\(\nu_e\)};
+        \vertex[below=1em of d3] (d4) {\(e^+\)};
     
         \diagram* {
           {[edges=fermion]
@@ -152,7 +152,7 @@
             (d2) -- (c3),
             (c3) -- (d4),
           },
-          (b) -- [boson, edge label'=\(W^-\)] (c3),
+          (b) -- [boson, edge label'=\(W^+\)] (c3),
         };
       \end{feynman}
     \end{tikzpicture}
