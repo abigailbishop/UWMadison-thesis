@@ -1,0 +1,387 @@
+\chapter{The Askaryan Radio Array \label{chap:ARA}}
+
+    As briefly discussed in Section~\ref{sec:iniceExperiments}, the Askaryan Radio Array (ARA) is an experiment searching for UHE neutrinos at the South Pole.
+    The array consists of 5 stations, each with 4-5 strings instrumented with radio antennas monitoring for radio frequency Askaryan signal.
+    This chapter expands on ARA's design and layout, operations, and summarizes a selection of previous analyses. 
+
+\section{Station Design and Layout \label{sec:design_layout}}
+
+    The station layout of ARA is shown in Fig.~\ref{fig:ARA}; the 5 stations are arranged on a hexagonal grid with 2~km spacing near the IceCube Neutrino Observatory and a couple kilometers from the South Pole. 
+    For ARA, the 2~km station spacing was chosen to balance the instrumented volume of the full array, the probability of observing the same neutrino event in multiple stations, and the cost of equipment and installation~\citep{ara_design}.
+
+    \subsection{Traditional ARA Stations \label{sec:ARA_design}}
+
+        \begin{table}
+            \centering
+            \begin{tabularx}{\textwidth}{
+                >{\centering\arraybackslash}m{1.5cm}||
+                >{\centering\arraybackslash}m{3cm}
+                >{\centering\arraybackslash}m{3cm}
+                >{\centering\arraybackslash}m{3cm}
+                >{\centering\arraybackslash}m{3cm}
+              }
+              \textbf{\hspace{40pt}Station} & 
+              \textbf{\hspace{40pt}Installation Season} & 
+              \textbf{\hspace{40pt}Horizontal\hspace{10pt}Baseline\hspace{30pt}[m]} & 
+              \textbf{Top Antenna\hspace{10pt}Average Depth [m]} & 
+              \textbf{Bottom Antenna Average Depth [m]} \\
+              \hline 
+              \hline
+              A1 & 2011-12 & 14 & 58 & 76 \\
+              A2 & 2012-13 & 14 & 170 & 189 \\
+              A3 & 2012-13 & 14 & 172 & 191 \\
+              A4 & 2017-18 & 28 & 161 & 191 \\
+              A5 & 2017-18 & 32 & 158 & 188 
+            \end{tabularx}
+            \caption{
+                \label{tab:station_lattices}
+                For each ARA station, the installation season, the horizontal distance between neighboring strings (known as the baseline), the average depth of the two top antennas, and the average depth of the two bottom antennas. 
+            }
+        \end{table}
+
+        Each ARA station is designed to be a rectangular lattice of pairs of horizontally polarized quadslot and vertically polarized bicone antennas, as were shown in Figure~\ref{fig:Antenna-types}.
+        Figure~\ref{fig:ARA} shows an example of the A5 station.
+        The five traditional ARA stations (A1-A5) were built by drilling 4 holes in the ice up to 200~m deep and arranged in a square. Two pairs of antennas were deployed into each hole, each pair separated by 18-30~m in depth. 
+        The square layout of the hole has a horizontal baseline of 14-32~m.
+        The specifics for each of the 5 stations is shown in Table~\ref{tab:station_lattices}. 
+
+        \begin{figure}
+          \centering
+          \begin{subfigure}[t]{0.18\textwidth}
+            \centering
+            \includegraphics[
+              width=\textwidth,
+              alt={
+                x
+              }
+              ]{sections/ARA/images/downholeElectronics-1507.08991.png} 
+          \end{subfigure}
+          ~
+          \begin{subfigure}[t]{0.79\textwidth}
+            \centering
+            \includegraphics[
+              width=\textwidth,
+              alt={
+                x
+              }
+              ]{sections/ARA/images/surfaceElectronics-1507.08991.png}
+          \end{subfigure}
+          \caption{
+            Left: The electronics chain in the borehole. 
+            Each antenna is connected to a 450~MHz notch filter and a low noise amplifier (LNA) before connecting to a device which converts electrical signals into optical signals. 
+            Right: The surface electronics chain for one string. 
+            Incoming optical signals are converted back into electrical signals, passed through band filters, then the signal for each antenna is split and sent to a Triggering Daughter Array (TDA) and a Digitizing Daughter Array (DDA). 
+            A Forward Programmable Gate Array (FPGA) determines if the event triggers from the TDA and, if so, reads the waveforms on the DDAs out to the Single Board Computer (SBC).
+            Adapted from \citep{ara_a23_10mo}.
+          }
+          \label{fig:ARA-signalchain}
+        \end{figure}
+
+        For each antenna, an arriving radio signal is transformed from an electric field into a voltage signal according to the antenna's response function.
+        Deep in the borehole, the waveform is passed through a notch filter that suppresses frequencies around 450~MHz, where most South Pole communications frequencies are transmitted.
+        Next, the waveform is amplified with a Low Noise Amplifier (LNA) that is located near the antenna. 
+        Following this, the waveform is converted into an optical signal and sent to the data acquisition (DAQ) box on the surface. 
+        A class of events has been observed with strong impulsive signals and a high waveform root-mean-square value  in some antennas. 
+        The angular reconstruction of these events coincide with downhole antennas and LNAs.
+    
+        \begin{table}
+          \centering
+          \begin{tabular}{ | c | c |}
+            \hline
+            Run Range & Firing Calibration Pulser \\
+            \hline
+            0-1900 & 6 \\
+            1901-1934 & 5 \\
+            1935-7005 & 6 \\
+            7006 - 8097 & 5 \\
+            8098 - 9578 & 6 \\
+            9779 - 19826 & 5 \\
+            \hline
+          \end{tabular}
+          \caption{
+            Run periods and which calibration pulser was active during those periods.
+          }
+          \label{tab:A2cp_runs}
+        \end{table}
+
+        Each station also has one or two additional strings with radio antennas, called Calibration Pulsers (CPs), that emit impulsive radio waves at a rate of 1~Hz. 
+        CP events are used to monitor the performance of ARA stations over time and have occasionally alerted collaborators to adjust station settings to improve observations.
+        Only one CP is active during each run and Tab.~\ref{tab:A2cp_runs} documents which CP was active during each run. 
+
+        All cables from each data taking and CP string are directed into a large, roughly 1~m by 2.5~m, box called a vault. 
+        The vault contains a network switch, a power box, a DAQ box, and Fiber Optic Amplification Modules that convert the optical signals from each data taking string into electronics signals before they enter the DAQ box.
+        As roughly 28 centimeters of snow accumulates at the South Pole per year (mostly due to snow drift, not precipitation) \citep{sp_snow_accumulation}, these vaults become buried over time.
+        Vault extensions (large empty wooden boxes with a ladder) can be installed over the existing vault to improve future accessibility. 
+        Figure~\ref{fig:a4vault} shows the electronics in the original A4 vault viewed from the edge of its vault extension.
+
+        \begin{figure}
+          \centering
+          \includegraphics[
+            width=0.75\linewidth,
+            alt={}
+          ]{sections/ARA/images/A4-Vault.png}
+          \caption{
+            The A4 vault as viewed from above the vault extension.
+            The data acquisition (DAQ) box is labeled ``ARA4'' and receives one input per antenna from the Fiber Optic Amplification Modules (FOAMs) in the top left. 
+            The power box is in the top right and supplies power to the DAQ box and each FOAM.
+            The network switch which receives and distributes optical network connection is mounted to the wall of the vault on the right.
+          }
+          \label{fig:a4vault}
+        \end{figure}
+
+        \begin{figure}
+          \centering
+          \includegraphics[
+            width=0.75\linewidth,
+            alt={}
+          ]{sections/ARA/images/A4-DAQbox.png}
+          \caption{
+            The insides of the A4 data acquisition (DAQ) box.
+            The DAQ board is in the middle of the box with four stacks of DDA and TDAs on the left of the board.
+            16 cables, one for each downhole antenna, enter the DAQ box on the left wall and are connected to quads which split the signal from each antenna and directs them into the DDA and TDAs. 
+            The calibration pulser board is in the top, the network switch is in the top right, and the power board for the DAQ box is on the right.
+          }
+          \label{fig:a4daq}
+        \end{figure}
+
+        DAQ boxes are the nexus of station data taking and control. 
+        The sides of the boxes are made of solid aluminum, about 1~cm thick, for additional radio-frequency shielding.
+        There is a network switch, a power board, and ports that connect to each antenna and calibration pulser for the station. 
+        The main piece of electronics in the DAQ box is called the ARA Triggering and Readout Interface (ATRI) board which includes a single-board-computer (SBC), a Field-Programmable Gate Array (FPGA, a customizable logic device often used in custom electronics), and stacks of triggering and digitizing boards that connect to each antenna~\citep{ara_design}.
+        The predecessor to the ATRI board was the ICRR board and was used on A1 until the 2013-14 South Pole Season when it was replaced with an ATRI board.
+        A station's SBC is what technicians connect to when accessing each station. 
+        They contain and run scripts that program the FPGA for data taking and calibration pulsing, recording data, and packaging data for retrieval by processes on the Radproc computer.
+
+        In the DAQ box, the voltage signals from the strings are passed through band filters which suppress out-of-band noise less than 150~MHz and greater than 850~MHz.
+        The voltage is then split and passed simultaneously through a Triggering Daughter Array (TDA) and a Digitizing Daughter Array (DDA). 
+        Before entering the TDA, the waveforms pass through tunnel diodes that convert voltage into power used to determine event trigger, discussed in Section~\ref{sec:triggering}. 
+        If an event triggers, the signal that was simultaneously digitized by the DDA is saved to the local Single Board Computer (SBC).
+        This electronics chain is shown in Figure~\ref{fig:ARA-signalchain}.
+        Each TDA and DDA have four inputs and are arranged to take in signals from the four antennas on each string. 
+        Occasionally, the DDA will malfunction, resulting in large erratic signals in all waveforms for one string.
+        We refer to these as spark events and they are typically excluded from analyses. 
+
+        \begin{table}
+            \centering
+            \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{1.5cm}>{\centering\arraybackslash}p{2.5cm}Y}
+              \textbf{Station} & 
+              \textbf{Board Type} & 
+              \textbf{Lifetime} & 
+              \textbf{Note} \\
+              \hline 
+              A1 & ICRR & 2011-13 & Replaced with ATRI\\
+              A1 & ATRI & 2013-26 & SBC Failure\\
+              A1 & ATRI & 2017-23 & Refurbished, FX2 failure\\
+              A2 & ATRI & 2013-21 & FX2 failure\\
+              A2 & ATRI & 2026 & Refurbished, reinstalled, hardware failure\\
+              A3 & ATRI & 2013-present & \\
+              A4 & ATRI & 2018-21 & FX2 failure\\
+              A4 & ATRI & 2016-present & Refurbished\\
+              A5 & ATRI & 2018-19 & FX2 failure \\
+              PA & NuPhase & 2018-present &
+            \end{tabularx}
+            \caption{
+                \label{tab:station_daqboards}
+                Summary of changes to each of the data acquisition boards. 
+                For each station, the board type, the years it was in operation, and the reason it stopped working.
+            }
+        \end{table}
+
+        The chip enabling connection of the FPGA with the ATRI is called the FX2.
+        This chip was installed on ATRI's used for stations A1-A5 between 2013 and 2018. 
+        The USB connection between the FX2 and the ATRI degrades overtime preventing the SBC from communicating with the FPGA, rendering the station unable to take data. 
+        Table~\ref{tab:station_daqboards} summarizes the types of DAQ boards, when they were in use, and other notes.
+
+    \subsection{Phased Array \label{sec:pa_hardware}}
+
+      Between the 4 traditional strings of A5 is another string, also shown in Fig.~\ref{fig:ARA}, instrumented with 7 vertically polarized antennas installed between depths of 173~m and 180~m~\citep{ara_pa_design}.
+      This type of instrument, called a Phased Array (PA), uses a beamforming trigger as was proposed for radio observations of neutrinos by \citep{phased-array-concept}.
+      Beamforming triggers use predetermined anticipated signal arrival directions to calculate the time delay between the arrival of such signals between pairs of antennas and automatically shifts the observed signals according to these delays.%\footnote{\comment{I want to find or make a figure showing how these signals add up and decrease SNR. Could also refer to the CSW explanation in the appendix if I add enough to it.}}.
+      Once the waveforms are shifted, they are summed together, amplifying coherent and impulsive signals.
+      This magnifies low power signals that may not have been observed from the waveforms alone.
+      This PA string has a DAQ board separate from A5's and two horizontally polarized antennas placed below the 7 vertically polarized antennas to assist in event reconstruction.
+      When the PA triggers, the A5 detector will force the readout of an event so that the 16 A5 antennas can also enhance event reconstruction.
+      When A5 and the PA were first installed, they were completely separate besides the outrigger pathway that forces A5 to readout when the PA triggers. 
+      In the season of 2018-19, the readout of one of the vertically polarized antennas on A5 was split so that it could be read out by A5 and the PA. 
+      This allows analyzers to synchronize the clocks between the two detectors, improving joint A5 and PA event reconstruction.
+      In October 2019 the A5 DAQ board suffered the hardware malfunction and stopped taking data. 
+      With 6 inputs available on the PA DAQ board, the readout of 6 vertically polarized antennas from A5 were connected to the PA DAQ in the season of 2019-20.
+      The 7 total A5 antennas connected to the PA DAQ board do not contribute to triggering but do aid in event reconstruction.
+
+  \subsection{Station Triggering \label{sec:triggering}}
+
+    ARA data is saved in batches, called ``runs'', typically taken over the course of 3 hours.
+    There are three types of events: forced/software events, RF events, and events. 
+    At a combined trigger rate (software events + RF events + CP events) of $ \! 11$~Hz for A1-A5 and $\sim \! 13$~Hz for PA, each run typically contains 100-120 thousand events. 
+
+    Software triggered events read out $\sim \! 200$~ns of ambient noise waveforms at a rate of $\sim \! 1$~Hz and are used to build simulations and define station livetime configurations (discussed in Section~\ref{sec:a2configs}).
+
+    RF (``Radio Frequency") events make up the main event class used in analyses to search for neutrino observations.
+    For traditional ARA stations (A1-A5), an RF trigger is based on observed power in the TDAs during a $\sim \! 100$~ns trigger window. 
+    If three antennas with the same polarization observe power over $\sim  \! 6$ times the thermal background, the station saves the current time as the ``trigger bin'' and records the event.
+    The thermal background is calculated as the root-mean-square of the power in the TDA and the trigger power threshold is tuned to achieve the combined trigger rate of $\sim \! 11$~Hz.
+    The station records $\mathcal{O}(500~\text{ns})$ of signal defined as the ``readout window'', beginning the readout $\sim \! 100$~ns before the trigger bin in a setting defined as the ``pre-trigger readout window'', the latter of which is important when defining station livetime configurations.
+
+    The PA detector utilizes the beamforming trigger defined in \citep{ara_pa_design} for its RF events. 
+    For the 7 closely packed antennas, the PA data acquisition board is preprogrammed to anticipate signals from 15 directions (so-called ``beams'') between $-60^{\circ}$ and $60^{\circ}$.
+    Observed signals from the 7 antennas are shifted by the time delays corresponding to each of these 15 beams. 
+    Similar to the A1-A5 trigger, the trigger power thresholds for each beam are tuned for a 0.75~Hz trigger rate per beam to achieve an overall 11~Hz RF trigger rate.
+    If a beam observes sufficient power within a 10~ns trigger window, the PA triggers on and records the event.
+    The PA's waveform readout length is $\mathcal{O}(400~\text{ns})$.
+
+    When the PA triggers, event readout is forced on A5 and flagged with a dedicated event type.
+    However, A5's trigger is faster than the PA trigger meaning if both stations observe the same event, A5 will readout the event before the PA is able to force the readout on A5 and assign the dedicated event type to the event, so the events will need to be connected during analysis.
+
+    Lastly, calibration pulser (CP) events on traditional ARA stations and the PA are recorded via the RF event trigger but are classified as CP events by the DAQ board if the CP was firing at the same time the RF event was read out.
+    The stations' CPs fire at a rate of 1~Hz.
+    CP events are important tools used to monitor detector performance and define station livetime configurations.
+    One in roughly every $10^4$ CP events are recorded by the RF trigger during a very narrow time window where the CP is not registered as firing by the DAQ board. 
+    These events are called ``untagged'' CP events as they record CP signals but are not labelled as such.
+
+    Between each run, ARA stations enter into a brief state of lower power consumption as data is not being taken and the calibration pulser is not firing. 
+    For, conservatively, the first minute of each run, as currents rise back to a nominal level, the detectors' trigger rates are unstable.
+    Data taken by the detector in the first minute of each run is therefore typically excluded from analyses. 
+
+\section{Previous Analyses} 
+
+  ARA has been releasing technical design and analysis papers for over a decade. A selection of studies are discussed in this section: ice studies performed with ARA data, solar flare reconstruction, the observation of Askaryan Radiation from cosmic rays, and analyses with stations A2, A3, A5, and PA. 
+
+\subsection{Ice Studies} 
+
+  ARA has been used to study the ice around South Pole both to enhance our understanding of the array's environment and to contribute to the field of glaciology. 
+  Most ice studies are conducted using observations of radio emissions from the local station calibration pulser or emissions from pulser drops in the South Pole Ice (SPIce) Core. 
+  For simulations and analysis, we use the refractive index model given in Eq.~\ref{eq:ice_model} built by fitting PA observations of SPIce Core emissions~\citep{ara_pa_analysis}.
+  \begin{equation}
+    n(z) = 1.780 - 0.454 e^{-0.0202~z}
+    \label{eq:ice_model}
+  \end{equation}
+  % A recent publication used data emitted by a radio pulser deployed to depths between 700~m and 1300~m~\citep{ice_ara}.
+  % According to findings in that work, the South Pole ice is modeled well with three exponential functions. 
+  ARA observations have also been used to investigate the effect of birefringence on radio observations~\citep{ice2019}. 
+  Radio signals traveling perpendicular to the flow of ice experience significant propagation delays but not when travelling parallel to ice flow. 
+  The polarization of the radio signal may also change due to birefringence, affecting ARA's ability to reconstruct the astrophysical source of neutrino events and is an active area of investigation~\citep{ara_birefringence}.
+  These studies use SPICE core data and A2 and A4 observations of radio waves from a pulser deployed into the SPICE core hole to estimate the rate at which signal polarization changes as radio waves travel between the SPICE core and the receiving station.
+
+\subsection{Solar Flare Reconstruction} 
+  Solar flares typically release large amounts of radio-wavelength radiation, making them a good source for calibrating the ARA detector. 
+  On February 15, 2011, a solar flare released substantial radiation for 70 minutes that was visible to ARA's prototype station, the Testbed \citep{ara_solarflare}. 
+  2,000 events that were recorded over these 70 minutes were highly correlated with the location of the Sun, as shown in Figure~\ref{fig:ARAsolarflare}.
+  The approximately 2 degree offset in reconstructed azimuth compared to expected azimuth is attributed to systematic uncertainties in the reconstruction algorithms that were used.
+  This analysis not only demonstrated the Testbed's, and therefore ARA's, reliability in reconstructing signals from distant sources, but having a source with a known location helps the collaboration tune and improve the accuracy of our analysis methods. 
+  \begin{figure}[h]
+      \centering
+      \includegraphics[width=\linewidth]{sections/ARA/images/ARAsolarflare.png}
+      \caption{
+          Reconstructed azimuthal angle of ARA events during a solar flare plotted as a function of time (blue to yellow heat map). 
+          The sun's azimuth as a function of time is plotted for comparison (red line). 
+          Adapted from \citep{ara_solarflare}.
+      }
+      \label{fig:ARAsolarflare}
+  \end{figure}
+
+\subsection{Cosmic Ray Searches \label{sec:analysis_cr}}
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.7\linewidth,
+      alt={}
+    ]{sections/ARA/images/ara_cr_charge_excess.pdf}
+    \caption{
+      Simulation of a cosmic ray air shower. 
+      The horizontal and vertical distribution of charge excess from the particle cascade is shown in the heat map on the left. 
+      The vertical distribution of relative charge excess is shown in the right panel.
+      Adapted from \citep{ara_cr}.
+    }
+    \label{fig:cr_ice}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.5\linewidth,
+      alt={}
+    ]{sections/ARA/images/ara_cr_askaryan_paper_plot.png}
+    \caption{
+      The high frequency content and low frequency content for a simulated point-like source (black, dotted line), a simulated cosmic ray air shower core (red, dashed line), and for data recorded by the PA (light blue circles) and A5 (dark blue squares).
+      Adapted from \citep{ara_cr}.
+    }
+    \label{fig:cr_events}
+  \end{figure}
+
+  As discussed in Chapter~\ref{chap:intro}, UHE Cosmic Ray (CR) particle showers initiated in Earth's atmosphere can impact upon the South Pole glacier. 
+  The relative charge excess of such a particle shower is demonstrated in Figure~\ref{fig:cr_ice}, showing an air shower that develops over $\sim \! 10$~km and a denser core in ice with a great increase in the observed charge excess confined to just $\sim \! 30$~m of the surface. 
+  If a CR impacts within a few hundred meters of an ARA station, they may be observed by one of our stations. % Cite nicolas' thesis or a cr paper
+  Previous neutrino searches have observed events containing signatures that could indicate radio-frequency radiation from a UHECR air shower that triggered our stations \citep{ara_a23, ara_pa_analysis}.  
+  A recent publication from the ARA collaboration, led by Nat Alden and Philipp Windischhofer at the University of Chicago, deconvolved the electric fields of 13 highly impulsive and signal-like events with high reconstructed elevations originally observed by an analysis of A5 and PA data reported in \citep{ara_pa_analysis} and summarized in Section~\ref{sec:analysis_pa}~\citep{ara_cr}.
+  The frequency content of the electric fields of these events are compared to simulated cosmic rays and established that the frequency content of the 7 data events were consistent with originating from a shower-like source in shallow ice, as shown in Fig.~\ref{fig:cr_events}.
+  This was the first in ice observation of Askaryan Radiation from cosmic particles and was a great advancement in our field. 
+  Similar studies are currently being conducted using similar events from the \citep{ara_a23} publication (summarized in Section~\ref{sec:analysis_a23}) that reconstruct towards the surface~\citep{ara_cr_a2}.
+
+
+\subsection{Neutrino Search with 2 Detectors \label{sec:analysis_a23}} 
+
+  \begin{figure}
+      \centering
+      \includegraphics[width=0.49\linewidth]{sections/ARA/images/ARA03_type3_snrMode1_nMinusCoherenceSNR_c_snr_outOfBand_logX_distinctColorsV3_rpr.pdf}
+      \includegraphics[width=0.49\linewidth]{sections/ARA/images/ARA03_type3_E18_snrMode1_nMinusCoherenceSNR_c_snr_outOfBand_extendedAxesRange_logX_distinctColorsV3_rpr.pdf}
+      \caption{Two-dimensional histogram containing each events' signal power (Root Power Ratio) on the X axis and reconstruction confidence ($C_{sky}$) on the Y axis \citep{ara_a23}. The left plot shows the distribution for thermal background events from 10\% of A3's dataset and the right shows the distribution for simulated neutrino events.}
+      \label{fig:ARA-A23-SignalCut}
+  \end{figure}
+
+  After 5 years of operation, the ARA collaboration carried out its first neutrino search. 
+  Almost 2,200 days of combined livetime were analyzed from the second and third ARA station using a cut-based analysis\index{Cut-Based Analysis} \citep{ara_a23_10mo,ara_a23}. % The actual number is 2,162 days
+  This type of analysis is built by defining a collection of criteria, called cuts, such that only a neutrino event will pass every cut, discriminating signal from background and contamination. 
+  These criteria include detector and background-related qualifications that filter out events like known calibration pulsing events, events with software glitches, and runs with known or assumed anthropogenic signals. 
+  After these events are removed, cuts are applied to remove cosmic ray contamination. 
+  As these events take place above the ice and sometimes also in the first few meters of the firn, cosmic rays are expected only from fairly inclined directions and are excluded by removing all events from inclined directions. 
+  For example, this analysis applied a cut removing all events with a elevation less than 60$^{\circ}$ in A2 and 80$^{\circ}$ in A3. 
+  This is a fairly harsh cut that removes ``10-30\% of neutrinos" from simulated neutrino datasets \citep{ara_a23}, so improvements to this cut involving deliberate cosmic ray identification tools are an area of active development \citep{CRiniceARENA}. 
+  After removing all background events that can be removed trivially, all remaining events are assumed to originate from thermal backgrounds or from real neutrino signal. 
+  Signal is then identified by determining if an event's reconstruction confidence ($C_{\text{sky}}$, similar to the \texttt{max\_corr} variables in Appendix~\ref{app:5savariables}) and signal power (\texttt{root\_power\_ratio}, defined in Appendix~\ref{app:5savariables}) are both high enough to correspond to a neutrino, as shown in Figure~\ref{fig:ARA-A23-SignalCut}.
+
+  \begin{figure}
+      \centering
+      \includegraphics[width=0.8\linewidth]{sections/ARA/images/a2_r6290_e29583.png}
+      \caption{
+        A2 Run 6290 event 29583, demonstrating an observed power surge in Channel 5 and 13 on String 2 and impulsive waveforms in the other strings.
+        This event was a passing event from the \citep{ara_a23} analysis which inspired the Spark Event Cut.
+        The columns of the waveform plot correspond to the instrumented string and the rows show, in order from top to bottom: the waveform for the top vertically polarized antenna (VPol), bottom VPol, top horizontally polarized antenna (HPol), and bottom HPol. This is different from how strings are instrumented (top HPol, top VPol, bottom HPol, bottom VPol, from top to bottom) so that time delays of impulsive signals can be quickly measured by eye between antennas with the same polarization.
+        The waveform for Channel 15 is greyed out and has the annotation ``Masked to Analysis'' because signals recorded by this antenna are not suitable for analysis. 
+        \index{Waveforms, plotted}
+      }
+      \label{fig:ARA-A23-sparkevent}
+  \end{figure}
+
+  This analysis involved two pipelines with slightly different cuts and configurations. 
+  All events that pass these cuts are assumed to be signal-like events, though they are scrutinized further to ensure all detections are neutrino events. 
+  Neither pipeline found any neutrino-like events, though both found interesting events when all cuts were imposed on data except for the Zenith Cut. 
+  One analysis found 2 surface-like events in A2 and 1 in A3 (in addition to 3 events that are thought to be anthropogenic in origin).
+  The second found 7 ``near surface" events in A2 and the same A3 event found in the first analysis (with 2 more events from the same run as the anthropogenic triplet found in the first analysis, so they're assumed to be background as well). 
+  At the time of publication, none of these surface events had been further analyzed to determine if they were cosmic ray events but are now under investigation as mentioned in Section~\ref{sec:analysis_cr}. 
+  Some events that passed Analysis B of \citep{ara_a23} had ``an unphysical amount of power [that] was deposited in one or two strings''. 
+  One of these events is shown in Figure~\ref{fig:ARA-A23-sparkevent}.
+  These events were removed post-unblinding by employing a reconstruction algorithm based on hit times \texttt{AraVertex}. 
+  One event did not have sufficient signal for and the other three reconstructed into the surface region.
+
+\subsection{Neutrino Search with the Phased Array \label{sec:analysis_pa}} 
+
+  \begin{figure}
+      \centering
+      \includegraphics[width=0.6\linewidth]{sections/ARA/images/analysis_pa_passingevent.png}
+      \caption{
+        Coherently summed waveform (CSW) for PA run 2143 event 56669 plotted alongside the CSW for a simulated neutrino event (red).
+        This PA event passed all analysis cuts in \citep{ara_pa_analysis}.
+      }
+      \label{fig:analysis_pa_passingevent}
+  \end{figure}
+
+  An analysis was conducted on the 208.7 days of livetime in 2019 after the A5 channel output was split (to be read out by both A5 and PA DAQ boards) and before the A5 DAQ went down~\citep{ara_pa_analysis}.
+  During this period, the clock on teh 2 DAQ boards could be synchronized using this shared channel, allowing for powerful joint A5+PA reconstruction of events. 
+  A cut based analysis was used for this study as well, where cuts were designed over 10\% of the data to eliminate events of anthropogenic, cosmic ray, faulty detector, and other non-thermal and non-signal origin.
+  After all cuts were chosen, tuned, and applied to 10\% of the data, all events in the 10\% sample that passed all cuts were assumed to be entirely composed of thermal background events. 
+  Using these thermal background events and a database of simulated neutrino events, a Fischer Discriminant was trained to identify signal and thermal noise based events to use on the full 100\% dataset \citep{fisherDiscriminant}.
+  46 events that passed the analysis and reconstructed in the ``surface region'' were discussed briefly, noting that this dataset may contain cosmic ray candidates which were later analyzed in \citep{ara_cr}.
+  1 event passed the analysis in the ``deep region'' but did not appear impulsive enough to have come from a neutrino cascade, as shown in Figure~\ref{fig:analysis_pa_passingevent}.
+
+

@@ -41,7 +41,7 @@
 \pagenumbering{roman}  % This makes the page numbers Roman (i, ii, etc)
 
 \makeatletter
-\gdef\@title{Search for Neutrinos with Energy Greater than $\boldsymbol{10^{16}}$~eV Using All 5 Stations of the Askaryan Radio Array at the South Pole}
+\gdef\@title{Search for Neutrinos with Energy Greater than $\boldsymbol{10^{17}}$~eV Using All 5 Stations of the Askaryan Radio Array at the South Pole}
 \gdef\@author{Abigail Rae Huffaker Bishop}
 \gdef\@department{(Physics)}
 \gdef\@date{2026}
@@ -64,30 +64,32 @@
 
 \include{frontmatter/frontmatter}
 
-%% Now include the tex files for each chapter, like so (I put these in separate dirs): 
+%% Main Content
 \doublespacing 
-% \include{intro/intro}
-% \include{motivation/motivation}
-% \include{related/related}
+\include{sections/introduction/introduction}
+\include{sections/ARA/ARA}
+\include{sections/araveff/araveff}
+\include{sections/5sa-cleaning/5sa-cleaning}
+\include{sections/5sa-analysis/5sa-analysis}
+\include{sections/conclusion/conclusion}
 
 %% etc, etc.
 
 %% Do you have appendices?  If so, add them here, just like chapters.
-% \begin{appendices}
-% \include{backmatter/appendix1}
-% \end{appendices}
-
-%% Are you a big nerd with a colophon?  Add it here.
-\singlespacing
-\begin{colophon}
-\input{backmatter/colophon}
-\end{colophon}
+\begin{appendices}
+  \include{sections/5sa-cleaning/5sa-variables}
+  \include{sections/5sa-analysis/passing_event}
+  \include{sections/spacers/spacers}
+  \include{sections/gen2radio/gen2radio}
+  \include{sections/araveff/araveff-pyrex}
+  \include{sections/araveff/arasim}
+\end{appendices}
 
 %% McBride is a very nice style (some version is included in this distribution)
 \bibliographystyle{aasjournal}
 \bibliography{bibliography}
 
-%% Want an index?  Neither did I.
-\printindex
+% %% Want an index?  Neither did I.
+% \printindex
 
 \end{document}

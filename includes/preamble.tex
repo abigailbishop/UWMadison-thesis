@@ -120,6 +120,8 @@
 \fi
 \prebibhook
   \begin{bibitemlist}{#1}}{\end{bibitemlist}\postbibhook}
+
+\setcitestyle{square}
 \newcommand{\prd}{Physical Review D}
 
 \usepackage{tagpdf}
@@ -131,6 +133,9 @@
 
 \usepackage{tabularx}
 \usepackage{siunitx}
+\usepackage{array}
+\usepackage{booktabs}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
 
 \usepackage{hyperref}
 \hypersetup{

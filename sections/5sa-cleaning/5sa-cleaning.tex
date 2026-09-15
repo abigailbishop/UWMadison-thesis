@@ -1,0 +1,1184 @@
+\chapter{Data Cleaning for the Five Station Analysis \label{chap:5sa_cleaning}}
+
+  There have been multiple analyses conducted with ARA data to search for neutrinos, solar flares, and deduce ice properties at the South Pole. 
+  When the livetime of the five ARA stations are added together, it totals approximately 28 station-years of data.
+  However, only 9 of those station-years have been used in analyses prior to this work.
+  This is partly because of how long it takes to calibrate stations; define analysis configurations for each station; prepare noise, electronics gain, and antenna models for each configuration of each station; and build a software package to analyse so much data.
+  It is also time consuming to design cuts that encompass every unique detector glitch and anthropogenic background class.
+  ARA currently has 5 graduate students, 1 postdoctoral researcher, and a faculty member who are devoted to analyzing the full 28 station-years of ARA data. 
+  We isolate a randomized 10\% of our dataset, build an analysis on this 10\% sample and a collection of simulated neutrino signal, and finally apply the analysis framework to the full 100\% data sample.
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=\linewidth,
+      alt={}
+    ]{sections/5sa-cleaning/images/flowchart-analysis.pdf}
+    \caption{
+      Flowchart depicting the design of a Linear Discriminant Analysis (LDA) trained to discriminate between simulated neutrino events and thermal-like background data. 
+      The dataset of thermal-like backgrounds is created from 10\% of all ARA data which has instrumental, anthropogenic, and surface backgrounds removed via cuts that are also applied to the simulated neutrino dataset.
+      The LDA event score that designates an event as signal or background is optimized along with the cut that removes events that reconstruct where events of surface origin are expected to originate before the full suite of cuts is applied to the full ARA dataset.
+    }
+    \label{fig:analysis-flowchart}
+  \end{figure}
+
+  The procedure for this analysis is shown in Figure~\ref{fig:analysis-flowchart}.
+  Chapter~\ref{chap:5sa_cleaning} discusses the generation of neutrino simulation, a surface background dataset, and a thermal background dataset through a process called ``cleaning''.
+  The signal simulation was already described in Chapter~\ref{chap:veff}. 
+  Rather than simulating the thermal background, we use the experimental data to build a process to separate the thermal background from the signal.
+  Through data cleaning we remove events with traces of hardware glitches, anthropogenic backgrounds, and data not suitable for analysis which leaves only a thermal data sample in the end.
+  Then, Chapter~\ref{chap:5sa_analysis} presents the Linear Discriminant Algorithm (LDA) trained to separate thermal events from neutrinos, the optimization of the LDA Cut and the Surface Cut, and the results of applying the analysis to the 100\% dataset including the analysis' sensitivity.
+
+  This chapter begins by detailing the creation of simulated neutrino events in Section~\ref{sec:5sa_sims}. 
+  These simulations will be used to ensure that analysis cuts don't remove the very events we are searching for and were largely orchestrated by me.
+  Section~\ref{sec:a2configs} details how A2 data is partitioned into livetime configurations for analysis and simulation, as this was the station I was dedicated to cleaning.
+  Next, the Python package used to generate analysis variables for each event is presented in Section~\ref{sec:araproc}.
+  We all worked as a team to develop this package and review each other's work.
+  I configured our software stack so that these analysis variables could be calculated on the Open Science Grid along with our simulation sets, increasing our throughput by roughly a factor of 10.
+  The cleaning process then begins in Section~\ref{sec:cleaning_glitches} with the removal of events not suitable for analysis (e.g. events with glitches or poor reconstructions).
+  Cleaning continues in Section~\ref{sec:cleaning_anthropogenics} with the removal of science and physics backgrounds (e.g. impacting cores from cosmic ray air showers). 
+  The process for generating the surface background dataset is also discussed.
+  The Fast Filter used to speed up data preparation of the 100\% sample is presented next in Section~\ref{sec:fast_filter}.
+  This chapter ends with the order in which all cuts from Section~\ref{sec:cleaning_glitches}, Section~\ref{sec:cleaning_anthropogenics}, and Section~\ref{sec:fast_filter} are applied to the data and, finally, we determine the signal efficiencies of the cleaning procedure.
+  At the end of this cleaning process, we are left only with a collection of thermal-like background events from the 10\% sample and a surface background model built on the 10\% to be optimized for the analysis discussed in Chapter~\ref{chap:5sa_analysis}. 
+  
+\section{Simulation Setup for Data Cleaning \label{sec:5sa_sims}}
+
+  It is important to consider how each cut translates to overall data loss and expected neutrino rejection. 
+  Neutrino events are therefore simulated uniformly in $\log(E)$ space with energies, $E$, from $10^{16}$ eV to $10^{21}$ eV. 
+  In scenarios where a neutrino flux model should be assumed, distributions of simulated neutrino events are weighted appropriately.
+  Neutrino propagation in the Earth is accounted for and all outgoing particles with energy greater than $E_{\text{th}} = \text{min}(10~\text{PeV}, E_{\nu}/10)$ are simulated further. 
+  Muon and tau stochastic losses, tau decays, and outgoing neutrino interactions are simulated. 
+  
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.75\textwidth,
+      alt={
+        Line plot showing voltage as a function of time for a software triggered event. 
+        The line varies stochastically between -50 volts and 50 volts, characteristic of thermal-like recordings.
+      }
+    ]{sections/5sa-cleaning/images/event_soft_station_2_run_19291_eventNo_6268_7_trace.pdf}
+    % python plot_event.py --station_id 2 --run_number 19291 --event_number 6268 --data_type data --channel 7
+    \caption{Example of a software triggered event showing mostly thermal-like data from an A2 configuration 7 event: Run 19291 Event 6288.}
+    \label{fig:software_event}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\textwidth,
+        alt={
+          Line plot showing voltage as a function of time for a thermal-like RF event (an event that triggered the detector). 
+          The line varies stochastically between -50 volts and 50 volts, characteristic of thermal-like recordings.
+        }
+        ]{sections/5sa-cleaning/images/event_rf_station_2_run_19291_eventNo_6573_7_trace.pdf} 
+        % python plot_event.py --station_id 2 --run_number 19291 --event_number 6573 --data_type data --channel 7 --ylims_wf -110 110
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+      \centering
+      \includegraphics[
+        width=\textwidth,
+        alt={
+          Line plot showing voltage as a function of time for a simulated noise event. 
+          The line varies stochastically between -50 volts and 50 volts, characteristic of thermal-like recordings.
+        }
+        ]{sections/5sa-cleaning/images/event_noise_station_2_noise_config_7_run_2700000001_eventNo_101_7_trace.pdf}
+        % python plot_event.py --station_id 2 --run_number 2700000001 --event_index 101 --data_type noise --channel 7 --config 7  --ylims_wf -110 110 # From 260213 sims 
+    \end{subfigure}
+    \caption{Example of a thermal-like waveform in channel 7 (a bottom vertically polarized antenna) in A2 configuration 7 from data (left) and simulation (right).}
+    \label{fig:noiseevent}
+  \end{figure}
+  
+  Noise-only simulations are also generated using frequency-dependent noise models, as shown in Fig.~\ref{fig:noise_model}, which are calculated from the ``software trigger" events that are read out once per second on each station.
+  The accuracy of these simulations is important for simulating neutrino signal waveforms with realistic thermal background noise. 
+  An example of a software trigger used to extract the noise model is shown in Fig.~\ref{fig:software_event} and a thermal-like waveform is shown next to a simulated thermal-noise waveform in Fig.~\ref{fig:noiseevent}
+
+  The signal and noise simulations are fed through the cleaning pipeline described in Section~\ref{sec:araproc} so that, as cuts are designed to remove backgrounds from the dataset, we can ensure that we do so in a way that retains as much signal as possible.
+  
+\section{Defining Livetime Configurations for A2\label{sec:a2configs}}
+
+  As detector settings and hardware change, so does the behavior of triggering and readout. 
+  This has significant effects on event reconstruction and analysis (e.g., if a string is masked, this significantly affects reconstruction of events), so each station's livetime is divided into what we call ``livetime configurations". 
+  Cleaning is then performed separately for each livetime configuration - the cuts are the same but the exact cut thresholds change between configurations.
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.99\textwidth,
+      alt={}
+    ]{sections/5sa-cleaning/images/cp5_brc_nmc_avgSNRv5_2d_reco_result_pulser_v_theta_vs_unixtime_cp.png}
+    \caption{
+      The reconstructed elevation of one A2 calibration pulser (CP5) is shown for events with \texttt{avg\_snr\_v} $\geq 5$ plotted over the entire A2 livetime from 2013 to 2021. 
+      The true elevation of CP5 is $-25.40^{\circ}$ but ``mirror'' solutions can be seen around $36^{\circ}$ as well. 
+      The large spread of reconstructed elevations from unixtimes of 1.579e9~s to 1.591e9~s (149 days) is due to the detector using a pre-trigger window too small to capture enough waveform in all events, leading to skewed reconstructions. 
+      This feature vanishes when excluding all events with \texttt{reco\_result\_pulser\_v\_corr} $\leq 0.225$, as shown in Figure~\ref{fig:cps}.
+    }
+    \label{fig:cp5_smear}
+  \end{figure}
+
+  These livetime configurations are mostly based on antenna/string masking, trigger window, and the amount of waveform readout ahead of the bin that triggered the detector, called the pre-trigger readout window or the number of pre-RF blocks. 
+  Each trigger block is 10~ns and the total trigger window, $t_{\text{trig}}$, is defined as 
+  \begin{equation}
+    t_{\text{trig}} = (N_{TB}+1) \times 10~\text{ns}
+    \label{eq:trigwin}
+  \end{equation}
+  and the default number of trigger window blocks, $N_{TB}$, is 10, leading to a default trigger window of 110~ns.
+  The waveform readout lengths, $t_{\text{RF}}$, are defined as
+  \begin{equation}
+    t_{\text{RF}} = N_{\text{RFB}} \times 20~\text{ns}
+    \label{eq:readoutwin}
+  \end{equation}
+  where each RF block is 20~ns and $N_{\text{RFB}}$ is the number of RF blocks.
+  There is a setting for the full waveform length, \texttt{numRF0TriggerBlocks}, and for how much waveform is saved preceding the moment the trigger fired, \texttt{numRFPreTriggerBlocks}. 
+  The dominant effect on reconstruction quality was found to be the pre-trigger window, whereas the waveform length does not significantly affect the analysis.
+  For example, having a pre-trigger window that is too small means that the impulsive signals from calibration pulser events are clipped at the start of some waveforms which reduces the amount of information available for event reconstruction. 
+  This effect on calibration pulser reconstruction is shown in Figure~\ref{fig:cp5_smear}.
+  This setting was corrected in 2020 starting with run 16963 by increasing the pre-trigger window from 180~ns to 280~ns.
+  As this behavior did not line up with previously established station livetime configurations, this led to a reevaluation of configurations.
+
+  \begin{table}
+    \centering
+    \begin{tabular} {
+      | >{\centering\arraybackslash} m{2cm}
+      >{\centering\arraybackslash} m{2.5cm}
+      >{\centering\arraybackslash} m{2cm}
+      | >{\centering\arraybackslash} m{2cm}
+      >{\centering\arraybackslash} m{2cm}
+      >{\centering\arraybackslash} m{2cm} |
+    }
+      \hline
+      Run Config- uration & Runs & Livetime (days) & Trigger Window (ns) & Pre-Trigger Readout Window (ns) & Masked Hardware \\
+      \hline
+      1 & 0 - 3036 & 239.00 & 30 & 200 &  \\
+      2 & 3037 - 4028 & 157.85 & 110 & 200 &  \\
+      3 & 4029 - 7623 & 595.10 & 170 & 280 & Ch 15 \\
+      4 & 7624 - 9578 & 192.50 & 170 & 180 & Ch 15 \\
+      5 & 9579 - 15526 & 490.20 & 170 & 200 & Ch 15 \\
+      6 & 15527 - 16962 & 148.89 & 170 & 200 & String 1 + Ch 15 \\
+      7 & 16963 - 19826 & 298.84 & 170 & 280 & String 1 + Ch 15 \\
+      \hline
+    \end{tabular}
+    \caption{
+      Table with the driving characteristics of the 7 A2 livetime configurations. 
+      For each run configuration, the start and end of the configuration is presented as dates and run numbers. 
+      The livetime of each configuration along with the trigger window, pre-trigger readout window, relevant masks are presented.
+    }
+    \label{tab:configs}
+  \end{table}
+  
+  Table~\ref{tab:configs} shows the new A2 livetime configurations and the station settings driving these delineations.   
+  The analysis of A2 and A3 data presented in \citep{ara_a23} and summarized in Section~\ref{sec:analysis_a23} placed emphasis on the masked antennas, trigger window, presence of trigger delays, and full waveform length. 
+  While trigger delays and the full waveform length affect station performance, every new station livetime configuration requires a distinct set of noise, signal, and effective volume simulations that are very computationally heavy. 
+  For this reason, the number of livetime configuration permutations for A2 are minimized by only considering the trigger window, pre-trigger readout window, the status of antenna masking, and spectral coefficients of noise. 
+  The configurations of A3 and A4 also changed during this analysis, but the details are presented elsewhere for those stations.
+  
+  % \begin{figure}
+  %   \centering
+  %   \includegraphics[
+  %     width=0.75\textwidth,
+  %     alt={
+  %       Three vertically stacked plots showing the number of blocks in a RF-triggered waveform, the number of pre-RF blocks used to center a waveform, and the number of blocks in a software-triggered waveform as a function of run number. 
+  %       Colored backgrounds for the three plots distinguish the 7 A2 livetime configurations.
+  %       The colored backgrounds line up with many changes in RF trigger block and pre-RF trigger block settings.
+  %     }
+  %   ]{sections/5sa-cleaning/images/a2_2013_2021_woBadRuns_blk_info.png}
+  %   \caption{
+  %     The number of RF Trigger blocks (waveform length for RF events), the number of Pre-RF Trigger Blocks (amount of time before the triggering block to include in RF event read out, affects where the trigger block lays in the waveform), and the number of Software Trigger blocks (waveform length of software triggered events) as a function of run number extracted from A2 configuration files.
+  %     The differently colored backgrounds of the plot delineate the 7 different configurations in A2. 
+  %     The number of pre-RF blocks are an important setting driving station livetime configurations.
+  %     This figure does not include run configuration data from known bad runs as some have extreme values for special calibration runs.
+  %   }
+  %   \label{fig:configs}
+  % \end{figure}
+
+  % This overflows the hbox
+  % \begin{table}
+  %   \centering
+  %   \begin{tabular}{|c|c|c|c|c|c|c|c|}
+  %     \hline
+  %     Run Configuration & Dates & Runs & Livetime [days] & Trigger Window [ns] & Pre-Readout Window [ns] & Hardware + Analysis Masks & Trigger Mask \\
+  %     \hline
+  %     1 & 2/18/13 - 2/12/14 & 0 - 3036 & 239.00 & 2 & Default (10) &  & D4BH \\
+  %     \hline
+  %   \end{tabular}
+  %   \caption{x}
+  %   \label{tab:}
+  
+\section{Using the \texttt{AraProc} Analysis Pipeline \label{sec:araproc}}
+
+  \texttt{AraProc}\footnote{\url{https://github.com/ara-software/AraProc/tree/main}} is a Python-based framework created by Marco Muzio and Brian Clark and developed by the analysis team.
+  \texttt{AraProc} creates L2 data containing a suite of analysis variables for each event calculated on the metadata and waveforms in L1 ARA data.
+  Preexisting metadata that we save from the L1 data includes the time of an event, the trigger type, and the detector configuration among other settings. 
+  The calculated analysis variables generated by \texttt{AraProc} include the interferometrically reconstructed azimuth, elevation, and signal correlation further described in Section~\ref{sec:reco}. 
+  Other analysis variables include the root-mean-square (RMS) voltage calculated over the noise portion of the waveforms from like-polarization antennas, the average signal-to-noise ratio (SNR) of all like-polarization antennas, the SNR of the coherently summed waveform for an event, the impulsivity, and the spark power ratio. 
+  The RMS is calculated as
+  \begin{equation}
+    \sigma = \sqrt{ \frac{1}{N} \sum_i^N V_i^2}
+  \end{equation}
+  where $V_i$ is the voltage recorded at one time and $N$ is the total number of data points\footnote{During data conditioning, the average value of all waveforms is asserted to be 0~V.}.
+  The SNR is defined as 
+  \begin{equation}
+    \text{SNR} = \frac{1}{2} \big( \text{max}(V) - \text{min}(V) \big) ~/~ \sigma 
+    \label{eq:snr}
+  \end{equation}
+  where $V$ is a series of voltage data points.
+  Some more of these analysis variables will be explained in the coming sections as they are used to employ various cuts, but all analysis variables are explained in Appendix~\ref{app:5savariables}.
+  The ROOT-formatted L1 data, which includes raw waveforms, take up roughly 7 GB of space per 3-hour run in the 100\% sample. 
+  The ROOT-formatted L2 data, condensed to only analysis variables, takes up roughly 6 MB of space per run. 
+
+  \subsection{Angular Event Reconstruction\label{sec:reco}}
+
+    There are two methods for event reconstruction used in this analysis. 
+    The first is a hit time-based algorithm called \texttt{AraVertex} which is built into ARA's data handling package \texttt{AraRoot}\footnote{\url{https://github.com/ara-software/AraRoot/tree/master}}.
+    For a collection of antennas (e.g. vertically polarized antennas), the first instance in each waveform with an SNR$\geq 5.0$ is identified and referred to as the corresponding antenna's ``hit time''. 
+    Assuming that this moment corresponds to the time when a spherical wave arrives at the detector, we use the hit time for all antennas to reconstruct the azimuth, elevation, and distance to the emitted spherical wave. 
+    We perform this calculation separately for vertically and horizontally polarized antennas. 
+  
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=\textwidth,
+        alt={
+          2-dimensional heat map for the correlation scores of a calibration pulser event with arriving from particular azimuth (y-axis) and elevation (x-axis) angles. 
+          The highest correlation score is near the marker for CP1, the expected location of one of A2's calibration pulsers.
+        }
+        ]{sections/5sa-cleaning/images/event_cp_station_2_run_19291_eventNo_6365_map_pulser_v.pdf} 
+        % python plot_skymap.py --station_id 2 --run_number 19291 --event_number 6365 --data_type data --map_type pulser_v
+      \caption{
+        Example reconstruction skymap of a calibration pulser event (A2 run 19291 event 6365, shown in Fig.~\ref{fig:cpevent_wf}) that displays the event's correlation score with the ansatz of arriving from all points on the $4\pi$ sky, evenly binned in elevation and azimuth.
+        This reconstruction sphere used the ``nearby, pulser'' radius defined in Tab.~\ref{tab:cpdist}, 42.86~m. 
+      }
+      \label{fig:cpevent_reco}
+    \end{figure}
+  
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=\textwidth,
+        alt={
+          16 panels, one for each channel in A2, displaying the recorded voltage as a function of time for this calibration pulser event.
+        }
+        ]{sections/5sa-cleaning/images/event_cp_station_2_run_19291_eventNo_6365_trace.pdf} 
+        % python plot_event.py --station_id 2 --run_number 19291 --event_number 6365 --data_type data
+      \caption{
+        Example waveforms of a calibration pulser observation recorded during A2 run 9291 event 6365.
+        We can see clear, impulsive signals recorded by Channels 1, 4, 5, 6, and 7 though Channel 4 is masked to analysis.
+        Each station string corresponds to one column and the antennas are rearranged so that like-polarization antennas are adjacent to each other to aid in quick visual event reconstruction.
+        From top to bottom, the top vertically polarized (VPol) antenna is plotted, then the bottom VPol antenna, then the top horizontally polarized (HPol) antenna, then the bottom HPol antenna.
+        In this example, the observation of the signal in Channel 5 (a bottom VPol antenna) before Channel 1 (a top VPol antenna) indicates an up-traveling signal. 
+        In this configuration of A2, String 1 is masked to analysis due to nonphysical duplication of signals in the waveforms. 
+        Channel 15 is also masked as it was nonfunctional after installation.
+      }
+      \label{fig:cpevent_wf}
+    \end{figure}
+
+    The second method used is an interferometric reconstruction also built into \texttt{AraRoot}. 
+    The signal is assumed to originate from elevations evenly distributed in 1 degree bins between $-89.5^{\circ}$ and $89.5^{\circ}$ and from azimuth angles between $-179.5^{\circ}$ and $179.5^{\circ}$ on a sphere of a specific radius.
+    For each azimuth and elevation on this sphere and for every pair of antennas $i$ and $j$, the difference in propagation time from the given azimuth and elevation between antenna $i$ and antenna $j$, $\tau$, is calculated and used to shift one antenna $j$'s waveform in time. 
+    If a common signal from this direction was observed by antenna $j$ and is shifted in this way, the signals observed by both antennas should now overlap.
+    Next, the cross correlation between waveform $i$ and waveform $j$ is calculated:
+    \begin{equation}
+      C_{i,j}(\theta, \phi; R) = \frac{1}{\sigma_i ~ \sigma_j} \sum_{t=-\infty}^{\infty} ~ V_i(t) ~ V_j\big(t+\tau(\theta, \phi; R)\big)
+    \end{equation}
+    where $t$ is a time stamp in the waveform, and $\tau(\theta, \phi; R)$ is the time delay between antennas for a signal originating from a location ~\citep{thesis_clark}.
+    The total cross correlation score is the sum of cross correlations between all pairs of like-polarization antennas
+    \begin{equation}
+      C = \sum_{i,j} w_{i,j} ~ C_{i,j}(\tau)
+      \label{eq:crosscorr}
+    \end{equation}
+    where $w_{i,j}$ is a weighting term defined as 
+    \begin{equation}
+      w_{i,j} = \frac{ (SNR_i - 1) (SNR_j - 1)}{ \sum_{i', j'}(SNR_{i'} - 1)(SNR_{j'} - 1)}
+    \end{equation}
+    The $SNR$ terms in Equation~\ref{eq:crosscorr} increase the impact of high signal antenna pairs in this equation, down-weighting more thermal-like antenna pairs when cross correlating powerful signals.
+    After the cross correlation score has been calculated for every possible azimuth and elevation (each with their own corresponding $\tau$) on the reconstruction sphere.
+    The coordinate system used for event reconstruction is centered on the station's average antenna position.
+    The location on this sphere with the highest correlation score is reported as the best solution along with the corresponding azimuth and elevation.
+    2-dimensional maps of each azimuth, elevation, and associated correlation score, such as the one shown in Figure~\ref{fig:cpevent_reco} are called ``skymaps''.
+    These skymaps also plot landmarks such as
+    \begin{itemize}
+      \item Frequently identified anthropogenic backgrounds such as the South Pole (SP), IceCube Lab (ICL), and vehicles on the road to SPRESSO
+      \item Known radio emitters such as radio pulsers installed in the ice on IceCube strings (e.g. IC22S)
+      \item ARA Station objects such as calibration pulsers (identified as CP\#) and downhole antennas (identified as Ch\#)
+      \item The calculated elevation from which this event would have arrived if it was a plane wave
+      \item The total internal reflection angle refracted to the station's average antenna depth (identified as $\theta_c$)
+    \end{itemize}
+
+    % \begin{figure}
+    %   \centering
+    %   \includegraphics[
+    %       width=0.6\textwidth,
+    %       alt={}
+    %   ]{sections/5sa-cleaning/images/ara_pa_reco.png}
+    %   \caption{\comment{I worry showing this kind of reconstruction map will be confusing as its not the kind used in this analysis, albrecht agrees}}
+    %   \label{fig:pa_reco}
+    % \end{figure}
+
+    We perform reconstructions for distant events with a map radius of 300~m because correlation scores reach asymptotic solutions and cannot be well resolved beyond this distance.%, as show in Figure~\ref{fig:pa_reco}
+    However, A1 requires a smaller distant reconstruction radius of 145~m because 300~m reconstruction for this shallower station (as documented in Tab.~\ref{tab:station_lattices}) overlaps too much with the region of ice where emitted signals are physically unable to reach our stations, known as the ``shadow zone'' and a feature of the depth-dependent index of refraction in ice.
+    A dedicated study was performed to select this optimal reconstruction radius for A1 but is not presented here.
+    While the definition of the distant reconstruction map radius for each station is coincidentally driven by station depth, one could also consider station horizontal baselines as the driver for determining this radius. 
+    As stations with larger horizontal baselines have a better lever arm for reconstructing spherical waves, these stations should more reliably resolve the radial distance from the station to the point of emission which could support the use of a larger reconstruction map radius.%\comment{~\citep{idk}}.
+    The radius of the calibration pulser map used for reconstruction is set uniquely for each station based on the calibrated distance from a station's pulser to the station's center, as presented in Table~\ref{tab:cpdist}.
+
+    \begin{table}
+      \centering
+      \begin{tabular}{| c | c |}
+        \hline
+        Station & CP Map Radius [m] \\
+        \hline
+        1 & 48.02 \\
+        2 & 42.86 \\
+        3 & 41.08 \\
+        4 & 52.60 \\
+        5 & 49.23 \\
+        PA & 51.79 \\
+        \hline
+      \end{tabular}
+      \caption{
+        For each station, the reconstruction map radius used to reconstruct calibration pulser events and other nearby sources.
+      }
+      \label{tab:cpdist}
+    \end{table}
+
+  \subsection{Frequency Filtering\label{sec:freq_filtering}}
+    
+    % Albrecht and ali suggest "maybe" discussing dedispersion but its never mentioned again for the analysis.
+    Much of the radio wavelength contamination ARA observes is from man-made communications frequencies referred to as ``continuous wave'' (CW) contamination. 
+    If not removed, cross correlation scores are inflated across reconstruction skymaps as the CW contamination cross correlates strongly with itself, washing out the reconstruction of impulsive events. 
+    %A list of frequencies registered with the South Pole Stations communications team was shared with us and is available on \url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=3265}{ARA DocDB\#3265}.
+    The main communications frequencies that affect this analysis are the 450~MHz handheld radio frequencies (that motivated notch filters built into ARA event readout) and the $\sim \! 407$~MHz Radiosonde weather balloon.
+    To remove this contamination in analysis, we use the SineSubtract algorithm available in \texttt{libRootFftw}\footnote{\url{https://github.com/nichol77/libRootFftwWrapper}}.
+    % At the start of this analysis, we used the Phase Variance method described in~\citep{thesis_clark}, however we found that this did not reliably remove all CW contamination.
+
+    In addition to this so-called CW filtering, we also bandpass all out-of-band frequencies below 50~MHz and above 875~MHz.
+    This analysis level bandpassing is supplemental to the bandpassing done by the data acquisition board during event readout which removes frequencies below 150~MHz and above 850~MHz, as discussed in Section~\ref{sec:ARA_design}.
+  
+\section{Removing Contaminated Data \label{sec:cleaning_glitches}}
+
+  The first genre of cuts that will be discussed are those that remove bad events from the data. 
+  These events are usually the result of detector malfunctions. 
+
+  \subsection{Bad Configuration Cut}
+  
+    Station configurations where the livetime of data, excluding bad runs, is less than 30 days are excluded from analysis. 
+    Table~\ref{tab:badconfigs} shows the list of bad configurations for each station in the array. 
+    Due to challenges synchronizing the colocated A5 and PA instruments, A5 data recorded while the PA was running are omitted to remove the possibility that duplicate events (events triggered on by A5 then the PA, separately) appear in the analysis.
+    This leads to the removal of A5 Configuration 2 via the Bad Configuration Cut. 
+    %Configuration 2 of A5 has more than 30 days of raw livetime, but after excluding data taken while the PA was running, A5 has less than 30 days of livetime and is therefore excluded from the analysis. 
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{| c | c |}
+        \hline
+        Station & Bad Configuration \\
+        \hline
+        A1 & 1 \\
+        A2 & None \\
+        A3 & None \\
+        A4 & 1 \\
+        A5 & 2 \\
+        PA & 3 \\
+        \hline
+      \end{tabular}
+      \caption{For each station, the livetime configuration excluded from the analysis via the Bad Configuration Cut due to a lack of sufficient livetime, if applicable.}
+      \label{tab:badconfigs}
+    \end{table}
+
+  \subsection{Bad Run Cut \label{sec:brc}}
+
+    ARA manages a repository documenting runs that should be removed from analysis, called the ``runlogs''\footnote{\url{https://github.com/ara-software/runlogs/tree/main}}.
+    These so-called ``bad runs'' are removed for some of the following reasons:
+    \begin{itemize}
+      \item Bad detector configuration settings for trigger windows, trigger delays, channel masking, and others
+      \item Operator campaigns ``sweeps'' over values for trigger windows, trigger thresholds, waveform readout parameters, etc.
+      \item Calibration campaigns involving the IceCube Laboratory rooftop pulser, IceCube deep radio pulsing, pulsing in the SPICE Core hole, surface pulsing around the station, station calibration pulser attenuation sweeps and lifts
+      \item Firmware or software issues (e.g. Digitizing Daughter Array (DDA) is supplied with an unusual voltage)
+      \item Incomplete runs (likely due to an operator halting the run because firmware wasn't loaded)
+      \item Bad readout (e.g. unusual noise modeling parameters)
+    \end{itemize}
+    For this analysis we created a script that identifies runs to add to the Bad Run Log based on event rates, the length of a run, and the power supplied to the digitizers as summarized in Tab.~\ref{tab:automated_brc}
+    
+    \begin{table}
+      \centering
+      \begin{tabular}{|c|c|}
+        \hline
+        Cut Reason & Cut Threshold \\
+        \hline
+        RF Event Rate & $>10$~Hz \\
+        CP Event Rate & $< 0.25$~Hz, $>1.5$~Hz \\
+        Software Event Rate & $>1.5$~Hz \\
+        Number of Events & $< 500$ \\
+        Run Duration & $<10$~minutes \\
+        DDA Voltage & $< 3$~V, $>3.5$~V \\
+        \hline
+      \end{tabular}
+      \caption{
+        Run level metrics and the threshold used for each to add runs to the automated bad run cut. 
+      }
+      \label{tab:automated_brc}
+    \end{table}
+  
+  \subsection{N Minutes Cut}
+
+    As discussed in Section~\ref{sec:design_layout}, at the start of each run, as the station's power consumption increases and stabilizes to data taking levels, events from ARA stations are typically corrupted, as shown in Figure~\ref{fig:firstmin}.
+    The impulsive nature of these waveforms may mimic neutrino impulsivity so these events must be removed from the analysis. 
+    % Figure~\ref{fig:firstmin_2d} shows how this affects the trigger rate of an ARA detector.
+    % As the L1 trigger rate is stabilized after the first minute of the run we set this N Minutes Cut to 1 minute. % Albrecht noted the stabilization doesn't actually come until minute 8 or so but I don't have a good plot motivating the removal of just the first minute
+    
+    % \begin{figure}
+    %   \centering
+    %   \includegraphics[
+    %     width=0.6\linewidth,
+    %     alt={}
+    %   ]{sections/5sa-cleaning/images/firstminute_a1r18860.png}
+    %   % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=3251
+    %   \caption{
+    %     The L1 event trigger rate for the first 3 hours of A1 run 18860, demonstrating low and quickly changing rates for the first few minutes of the run. 
+    %   }
+    %   \label{fig:firstmin_2d}
+    % \end{figure}
+    % python plot_event.py --station_id 3 --event_index 522 --data_type veff --config 6 --root_file /data/ana/ARA/ARA03/sims/veff/lgE20.0/config6/veff_lgE20.0_A3_config6_merged_0003.root --channel 13 --ylims_wf -550 550 --ylims_spectrum -35 35
+    %  python plot_event.py --station_id 2 --run_number 17627 --sample 10pct --event_number 2 --data_type data --channel 13 --ylims_wf -550 550 --ylims_spectrum -35 35
+  
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/station_2_run_17627_eventNo_2_13_trace.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/station_3_veff_config_6_run_None_eventNo_522_13_trace.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/station_2_run_17627_eventNo_2_13_spectrum.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/station_3_veff_config_6_run_None_eventNo_522_13_spectrum.png}
+      \end{subfigure}
+      \caption{
+        Example voltage waveforms (top) and frequency spectra (bottom) for a first minute event (left, A2 run 17627 event 2) compared to a simulated event observing multiple stochastic losses from a muon which resulted from a charged-current muon neutrino interaction (right, this is the waveform observed in a different channel but for the same event shown in Figure~\ref{fig:waveform}).
+        The comparison of waveforms shows that the impulsivity and signal-like features of the data event can resemble a simulated event.
+        This comparison of frequency spectra shows that events taken in the first minute of a run have a flat frequency spectrum whereas physics events have a spectrum that falls as frequency increases.
+      }
+      \label{fig:firstmin}
+    \end{figure}
+    
+  \subsection{Spark Events \label{sec:sec}}
+    
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/spark_station_2_run_7100_eventNo_1467_trace.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/spark_station_2_run_7100_eventNo_1467_spectrum.png}
+      \end{subfigure}
+      \caption{Example waveform (left) and spectrum (right) for a spark event. Notice the significant waveform inflation in Channel 0, 4, 8, 12 (all from the same string, sharing a digitizing board) and the flattened spectrum that result from the digitizing board malfunction. This example is event 1467 of run 7100 in ARA2.}
+      \label{fig:spark_waveform}
+    \end{figure}
+  
+    Another class of detector glitch backgrounds is a Spark Event. 
+    These events occur when one of the Digitizing Daughter Arrays (DDAs) on the station's DAQ experiences a surge of current that inflates the digitized signal.
+    The waveform and spectrum of a spark event is shown in Figure~\ref{fig:spark_waveform}
+    As each DDA corresponds to one string, we identify these events by identifying strings with excessive RMS compared to the others.
+    The \texttt{spark\_power\_ratio} analysis variable is used for this and is calculated by determining the average RMS over all antennas, $N_{\text{ant}, s}$, on each string, $s$, as
+    \begin{equation}
+      \langle \sigma \rangle_s = \frac{1}{N_{\text{ant}, s}} \sum_a^{N_{\text{ant}, s}} \sigma_a
+    \end{equation}
+    then taking the ratio of the two strings with the greatest $\langle \sigma \rangle_s $.
+    We then plot a distribution of \texttt{spark\_power\_ratio}s for a given station's livetime configuration, as shown in Figure~\ref{fig:spr}, and fit the upper tail to an exponential function.
+    The \texttt{spark\_power\_ratio} cut is set where 1 background event is expected beyond the cut. 
+    The \texttt{spark\_power\_ratio} cut for each A2 configuration is shown in Table~\ref{tab:spr}.
+    An additional requirement for an event to be removed by the Spark Event Cut is placed on reconstructed elevation.
+    Simply using the \texttt{spark\_power\_ratio} cut removed too many neutrinos as some neutrino interactions have enough power to saturate the waveforms on one or more strings of the detector.
+    We expect neutrino events to have similar reconstructions when performed with horizontally polarized antennas and with vertically polarized antennas, but we do not expect sparky thermal-like backgrounds to do the same.
+    For this reason, if the reconstructed elevation using horizontally polarized antennas is more than $2.5^{\circ}$ different from the reconstruction using vertically polarized antennas and if the event has a sufficiently large \texttt{spark\_power\_ratio}, the event is removed by the Spark Event Cut.
+
+    \begin{table}
+      \centering
+      \begin{tabular}{|c|c|}
+        \hline
+        A2 Configuration & \texttt{spark\_power\_ratio} Cut \\
+        \hline
+        1 & 2.05 \\
+        2 & 1.91 \\
+        3 & 2.18 \\
+        4 & 2.29 \\
+        5 & 2.10 \\
+        6 & 2.08 \\
+        7 & 2.31 \\
+        \hline
+      \end{tabular}
+      \caption{
+        For each A2 livetime configuration, the value of the \texttt{spark\_power\_ratio} above which events are removed by the Spark Event Cut.
+      }
+      \label{tab:spr}
+    \end{table}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=0.8\textwidth,
+          alt={}
+      ]{sections/5sa-cleaning/images/A2_c7_spr.png}
+      \caption{The distribution of \texttt{spark\_power\_ratio}s for events in A2 configuration 7, the exponential function fit to the distribution's high-value tail, and cut established where the integral under the fit is equal to 1. This distribution does not include events removed by the Bad Run Cut or the N Minutes Cut.}
+      \label{fig:spr}
+    \end{figure}
+
+  \subsection{Anomalous Channel Cut \label{sec:acc}}
+    
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=0.6\textwidth,
+          alt={}
+      ]{sections/5sa-cleaning/images/s4r3733e40469.png}
+      \caption{
+        Event 40469 from A4 run 3733 demonstrating excessive recorded power in the bottom antennas of string 3. 
+        The \texttt{max\_rms\_ratio\_v} for this event is 2.34 and the \texttt{max\_rms\_corr\_v} is 0.21.
+        Note that 4 strings were instrumented for A4 but one string has never worked and, as such, is not shown here.
+      }
+      \label{fig:a4outlier}
+    \end{figure}
+
+    There are occasions where only some antennas on a string read out waveforms with more power than the rest, so the string as a whole does not have enough power to get flagged by the Spark Event Cut.
+    Event 40469 from run 3733 recorded by A4 inspired this cut as the impulsive, as shown in Figure~\ref{fig:a4outlier}.
+    This event is reminiscent of 3 similar events from A2 that passed all cuts in the analysis over 4 years of A2 and A3 data, presented in \citep{ara_a23} and summarized in Section~\ref{sec:analysis_a23}: Run 3439 event 19142, run 3689 event 87466, and run 6290 event 29583 which is shown in Figure~\ref{fig:ARA-A23-sparkevent}. % https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032 slide 5
+    
+    The anomalous channel cut is designed to remove events where one channel's waveform has (1) an unusually \textbf{high amount of power} and (2) \textbf{does not correlate well} with waveforms from other antennas of the same polarization using two analysis variables:
+    \begin{enumerate}
+      \item \texttt{max\_rms\_ratio} is computed by diving the maximum waveform RMS among like-polarization antennas by the average - like an antenna level \texttt{spark\_power\_ratio}:
+      \begin{equation}
+        \texttt{max\_rms\_ratio} = \frac{ \text{max}(\sigma) }{ \langle \sigma \rangle }
+      \end{equation}
+      \item \texttt{max\_rms\_corr} is computed by calculating the RMS of the cross correlation function between pairs of like-polarization antennas then identifying the maximum.
+    \end{enumerate}
+    We generate distributions of \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr}, shown in Fig.~\ref{fig:acc}, for both vertically and horizontally polarized antennas are composed, excluding all events removed by the Bad Run Cut, N Minutes Cut, and Spark Event Cut so the distributions are mostly thermal-like.
+    The tails on these four distributions are then fit to an exponential tail, the start of which is automatically adjusted to optimize the reduced $\chi^2$ of the fit.
+    Next, the cut on each polarization of \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} is established as the point beyond which the integral under the tail's fit is 1. 
+    Fits to these four variables are performed for each configuration on each station and reported in Table~\ref{tab:acc}. 
+
+    \begin{table}
+      \centering
+      \begin{tabular}{
+        | >{\centering\arraybackslash} m{2.5cm}
+        | >{\centering\arraybackslash} m{2.5cm}
+        >{\centering\arraybackslash} m{2.5cm}
+        >{\centering\arraybackslash} m{2.5cm}
+        >{\centering\arraybackslash} m{2.5cm}
+        |
+        }
+        \hline
+        Station Configuration & \texttt{max\_rms\_ ratio\_h} & \texttt{max\_rms\_ ratio\_v} & \texttt{max\_rms\_ corr\_h} & \texttt{max\_rms\_ corr\_v} \\
+        \hline
+        Cut Direction & greater & greater & less & less \\
+        \hline
+        1 & 2.244 & 1.915 & 0.378 & 0.347 \\
+        2 & 2.171 & 1.751 & 0.370 & 0.333 \\
+        3 & 2.093 & 1.817 & 0.438 & 0.397 \\
+        4 & 1.957 & 1.970 & 0.433 & 0.387 \\
+        5 & 2.230 & 2.174 & 0.436 & 0.379 \\
+        6 & 1.698 & 1.539 & 0.243 & 0.199 \\
+        7 & 1.661 & 1.565 & 0.237 & 0.207 \\
+        \hline
+      \end{tabular}
+      \caption{
+        For each A2 station livetime configuration, the value beyond which an event is removed via the Anomalous Channel cut for the \texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} calculated using vertically and horizontally polarized antennas.
+      }
+      \label{tab:acc}
+    \end{table}
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}  
+        ]{sections/5sa-cleaning/images/a2c7_max_rms_ratio_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+            ]{sections/5sa-cleaning/images/a2c7_max_rms_corr_v.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/a2c7_max_rms_ratio_h.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/a2c7_max_rms_corr_h.png}
+      \end{subfigure}
+      \caption{Distributions, tail fits, and cuts established for the variables used in the Anomalous Channel Cut (\texttt{max\_rms\_ratio} and \texttt{max\_rms\_corr} for both polarizations of antennas) for A2 Configuration 7, as reported in Table~\ref{tab:acc}.}
+      \label{fig:acc}
+    \end{figure}
+
+  \subsection{Low Reconstruction Confidence Cut \label{sec:lrcc}}
+
+    The last cut designed to remove spoiled data is one that removes signal-like events that do not reconstruct well. 
+    The Low Reconstruction Confidence Cut defines signal like events as those with above thermal
+    \begin{itemize}
+      \item \texttt{avg\_snr\_v}, the average SNR in like-polarization antennas, 
+      \item \texttt{global\_max\_corr\_v}, the maximum correlation between waveforms from pairs of like-polarization antennas, and 
+      \item \texttt{impSig\_v}, the significance of the hypothesis test between a linear fit to the waveform's impulsivity curve versus an error response function plus linear fit (see Appendix~\ref{app:5savariables} for more information and an example of an impulsivity curve). 
+    \end{itemize}
+    A poorly reconstructing event is identified as those with thermal
+    \begin{itemize} 
+      \item \texttt{corr\_contrast\_v}, the correlation contrast which is calculated by building a skymap of cross correlation scores and computing
+      \begin{equation}
+        \texttt{corr\_contrast} = \frac{\text{max}(\texttt{corr}) - \overline{\texttt{corr}}}{\overline{\texttt{corr}}}
+        \label{eq:corr_contrast}
+      \end{equation}
+    \end{itemize}
+    An example of an event with low correlation contrast is shown in Figure~\ref{fig:lowcorrcontrast}.
+    We perform fits the usual way: plotting distributions of each variable for events not removed by the Bad Run Cut, N Minutes Cut, and Spark Event Cut, then fitting the upper tail of this distribution.
+    The threshold is determined as the point beyond which the integral under the fit is 1.
+    Examples of fits to the four aforementioned variables are shown in Figure~\ref{fig:lrcc} and a summary of thresholds for each variable and A2 configuration are collected in Tab.~\ref{tab:lrcc}.
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=0.75\textwidth,
+          alt={}
+      ]{sections/5sa-cleaning/images/a4_lrcc.png}
+      \caption{An example of an A4 event with a low correlation contrast.}
+      \label{fig:lowcorrcontrast}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/a2c7_avg_snr_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/a2c7_global_max_corr_v.png}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/a2c7_impSig_v.png}
+      \end{subfigure}
+      ~
+      \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[
+            width=\textwidth,
+            alt={}
+        ]{sections/5sa-cleaning/images/a2c7_corr_contrast_v.png}
+      \end{subfigure}
+      \caption{Distributions, tail fits, and cuts established for the variables used in the Low Reconstruction Confidence Cut for A2 Configuration 7, as reported in Table~\ref{tab:lrcc}.}
+      \label{fig:lrcc}
+    \end{figure}
+
+    \begin{table}
+      \centering
+      \begin{tabular}{|c|cccc|}
+        \hline
+        Configuration & \texttt{avg\_snr\_v} & \texttt{global\_max\_corr\_v} & \texttt{impSig\_v} & \texttt{corr\_contrast\_v} \\
+        \hline
+        Cut Direction & greater & greater & greater & less \\
+        \hline
+        1 & 4.296 & 0.198 & 5.089 & 1.025 \\
+        2 & 4.173 & 0.194 & 4.634 & 1.011 \\
+        3 & 4.403 & 0.231 & 5.337 & 1.062 \\
+        4 & 4.347 & 0.225 & 4.807 & 0.998 \\
+        5 & 4.340 & 0.218 & 5.318 & 1.013 \\
+        6 & 4.443 & 0.136 & 4.299 & 1.344 \\
+        7 & 4.517 & 0.138 & 4.681 & 1.343 \\
+        \hline
+      \end{tabular}
+      \caption{
+        For each A2 livetime configuration, the value beyond which an event is removed by the Low Reconstruction Confidence Cut if the event's \texttt{avg\_snr\_v}, \texttt{global\_max\_corr\_v}, or \texttt{impSig\_v} is sufficient and if the \texttt{corr\_contrast\_v} is not large enough.
+      }
+      \label{tab:lrcc}
+    \end{table}
+
+\section{Removing Anthropogenic and Physics Backgrounds \label{sec:cleaning_anthropogenics}}
+
+  After all erroneously digitized and poorly reconstructing events are removed, events that include backgrounds we do not want to misclassify as neutrino signals must be removed. 
+  This includes untagged calibration pulser events removed by the Geometry Cut, runs with known anthropogenic backgrounds identified with our Gumbel Bad Run Identification, and potential cosmic ray and other surface-related events which we cut with the Zenith Cut and the Surface Like Cut. 
+
+  \subsection{Geometry Cut \label{sec:gc}}
+
+    The geometry cut is designed to catch calibration pulser (CP) events that are not tagged as calibration pulser events, as discussed in Section~\ref{sec:triggering}. 
+    This happens once in $\sim\!10^{4}$ events but these impulsive signals mimic neutrinos and must be removed. 
+    As these events reconstruct well in azimuth and elevation, we remove untagged CP events by excluding all events that reconstruct where CP events are observed.
+    
+    The signals from calibration pulsers are usually recorded with strong pulses, making the interferometric reconstruction of the calpulser event obvious. 
+    However, due to waveform readout and the number of pulses observed, pulser signal reconstruction can shift in such a way that secondary solutions for the reconstruction have a higher correlation score than the correct solution. 
+    This gives rise to populations of reconstructed calibration pulser events that are called ``mirrors''. 
+    
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.75\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/2d_reco_result_pulser_v_theta_vs_reco_result_pulser_v_phi_cp.png}
+      \caption{
+        Elevation and azimuth distribution of calibration pulser (CP) events with \texttt{avg\_snr\_v} $\geq 5$ and \texttt{reco\_result\_pulser\_v\_corr} $\geq 0.225$ showing 5 clusters of events.
+        The two largest clusters correspond to the two vertically polarized A2 CPs: CP5 at (-25, -25) and CP6 at (65, 5).
+        There are three additional clusters located at (-45, 37), (-25, 37), and (162, -18) that are mirrors of CP5. 
+        This distribution excludes events cut by the N Minutes Cut and the Spark Event Cut and excludes runs cut by the Bad Run Cut.
+      }
+      \label{fig:cps}
+    \end{figure}
+
+    % \begin{figure}
+    %   \centering
+    %   \includegraphics[
+    %     width=0.75\textwidth,
+    %     alt={x}
+    %   ]{sections/5sa-cleaning/images/a2cp5regions.png}
+    %   \caption{x}
+    %   \label{fig:cp_region_cartoon}
+    % \end{figure}
+
+    Figure~\ref{fig:cps} shows the reconstructed distribution for calibration pulser events with non-thermal \texttt{avg\_snr\_v}$\geq 5$ and \texttt{reco\_result\_pulser\_v\_corr}$\geq 0.225$.
+    We use the five clusters to form areas in reconstructed azimuth and elevation where we expect untagged CPs may come from.
+    We do so by fitting the distributions of reconstructed azimuth and elevation for each cluster using a Gaussian kernel density estimator (KDE) as shown in Fig.~\ref{fig:cp5fit} for CP5, Fig.~\ref{fig:cp5m1fit} for the first CP5 mirror, Fig.~\ref{fig:cp5m2fit} for the second CP5 mirror, and Fig.~\ref{fig:cp6fit} for CP6. 
+    The third mirror of CP5 had only two events, both of which reconstructed to (162.5, -18.5).
+    The upper and lower bound of each cluster's cut window is determined as the azimuth and elevation beyond which integral under the Gaussian KDE is $5\times10^{-6}$ events.
+    As the first and third CP5 mirrors have insufficient statistics ($\leq 1000$ events), we use their average azimuth and elevation to place the window and inherit the size of the main CP5 window.
+    The results of these fits are compiled in Tab.~\ref{tab:A2GC}.
+    
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp5_brc-nmc-sec_fit_251210.png}
+      \caption{
+        Azimuth and elevation distribution of calibration events in the CP5 window (blue) fitted with a Gaussian kernel density estimator (KDE, red), and the upper and lower boundaries beyond which the integral under the KDE sums to $10^{-5}$.
+      }
+      \label{fig:cp5fit}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp5m1_brc-nmc-sec_fit_251210.png}
+      \caption{
+        Azimuth and elevation distribution of calibration events in the window of the first CP5 mirror (blue) fitted with a Gaussian kernel density estimator (KDE, red), and the upper and lower boundaries beyond which the integral under the KDE sums to $10^{-5}$.
+      }
+      \label{fig:cp5m1fit}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp5m2_brc-nmc-sec_fit_251210.png}
+      \caption{
+        Azimuth and elevation distribution of calibration events in the window of the second CP5 mirror (blue) fitted with a Gaussian kernel density estimator (KDE, red), and the upper and lower boundaries beyond which the integral under the KDE sums to $10^{-5}$.
+      }
+      \label{fig:cp5m2fit}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.9\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/cp6_brc-nmc-sec_fit_251210.png}
+      \caption{
+        Azimuth and elevation distribution of calibration events in the CP6 window (blue) fitted with a Gaussian kernel density estimator (KDE, red), and the upper and lower boundaries beyond which the integral under the KDE sums to $10^{-5}$.
+      }
+      \label{fig:cp6fit}
+    \end{figure}
+
+    \begin{table}
+      \centering
+      \begin{tabular}{ | c | c c | c c |}
+        \hline
+        Object Being Cut & $\theta (^{\circ})$ & $\Delta\theta (^{\circ})$ & $\phi (^{\circ})$ & $\Delta\phi (^{\circ})$ \\
+        \hline
+        CP 5V & -25.40 & 9.44 & -24.17 & 9.21 \\
+        CP 5V Mirror 1 & 36.65 & 9.44 & --44.50 & 9.21 \\
+        CP 5V Mirror 2 & 36.74 & 7.89 & -25.11 & 6.67 \\
+        CP 5V Mirror 3 & -18.22 & 9.44 & 162.35 & 9.21 \\
+        CP 6V & 5.33 & 9.14 & 64.60 & 8.12 \\
+        \hline
+      \end{tabular}
+      \caption{
+        For each A2 calibration pulser cluster, the fitted center of the window in elevation and azimuth along with the width of the window. 
+        For CP5 Mirror 1 and 3, there were not enough events to set a window width, so the width of the CP5 mirror is used.
+      }
+      \label{tab:A2GC}
+    \end{table}
+
+  \subsection{Contaminated Run Identification}
+    
+    As discussed in Section~\ref{sec:brc}, the Bad Run Cut draws directly from the Bad Run Log for the appropriate ARA station and includes runs that should be excluded from analysis due to glitches, calibration campaigns, and known anthropogenic backgrounds that cannot be cleaned systematically (for example, a geometry cut cannot remove snowmobile backgrounds that move in reconstructed azimuth and elevation). 
+    There are runs during the South Pole summer season with large anthropogenic backgrounds that are not logged in the Bad Run Log and not easily removed by spatio-temporal and surface-related cuts.
+    For this reason, we created a pipeline to identify runs with large non-thermal populations of high correlation events and add them to the Bad Run Log, so they will be excluded from the analysis. 
+
+    We begin by plotting a distribution of the global maximum correlation for each RF event in a run.
+    We then use the Generalized Gumbel (GG) probability density functions (PDFs) to parameterize if there are one or two populations of events in the distribution of correlations~\citep{gumbel1, gumbel2}.
+    % GG PDFs are chosen because they are useful for modeling distributions that have a lot of outliers. 
+    The GG PDF is defined as
+    \begin{equation}
+      f(x) = A \frac{ \lambda^{\lambda} }{ \sigma ~ \Gamma(\lambda) } e^{- ( \lambda \frac{x-\mu}{\sigma} + \lambda e^{({-\frac{x-\mu}{\sigma} })} ) }
+      \label{eq:gumbel}
+    \end{equation}
+    where $A$ is a scaling factor, we initialize the fitting of $\lambda$ to 1 (typical handling in the UHECR community), $\sigma$ is called the scale parameter and is initialized as the average between the lower and upper 1$\sigma$ boundaries of the curve, and $\mu$ is called the location factor and is initialized as bin where the distribution is maximal. 
+    We fit a single GG PDF to the distribution of correlation scores for each event in a run and we also perform a fit using a function defined by the sum of two GG PDFs.
+    The test statistic,  $\Delta \text{TS}$, of the Poisson negative log-likelihoods comparing the single GG and dual GG fits is then calculated.
+    Examples of the GG curve fits to a clean and contaminated run of A2 are shown in Figure~\ref{fig:gumbel-clean} and Figure~\ref{fig:gumbel-dirty}, respectively. 
+    Clean runs with just a thermal population are described similarly by both the single GG distribution and the dual GG function (the second contribution in the dual GG function is suppressed by the fitting algorithm) therefore the total $\Delta \text{TS}$ comparing the two distributions is small. 
+    Runs contaminated with many high correlation outliers are well described by the dual component GG function with two distinct populations.
+    This does not compare strongly to the single component distribution, leading to a large $\Delta \text{TS}$.
+    The distribution of $\Delta \text{TS}$ values for each run in a station's livetime configuration is plotted and used to determine the $\Delta \text{TS}$ threshold that will be used to identify highly contaminated runs which should be added to the Bad Run Log, as shown for A2 configuration 5 in Fig.~\ref{fig:deltaTS-per-config}. 
+    For A2, the $\Delta \text{TS}$ is set to 1000 for all configurations.
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.6\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/Histogram_of_Gumbel_Delta_TSconfig_config_5_all_runs.png}
+      \caption{
+        Distribution of the $\Delta \text{TS}$ value for each run in A2 configuration 5.
+        The X-scale is logarithmic leading to some clustering but from investigation of runs in each population (e.g. Fig.~\ref{fig:gumbel-clean} and Fig.~\ref{fig:gumbel-dirty}) we establish that the thermal population in this distribution ends at $\Delta \text{TS}=10^3$. 
+        Runs with $\Delta \text{TS} \geq 10^3$ are therefore removed from the analysis.
+      }
+      \label{fig:deltaTS-per-config}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.6\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/gumbel_compare_test_16570.png}
+      \caption{
+        Distribution of \texttt{global\_max\_corr} (``Bin center'' in the plot) values for A2 Run 16570 (blue circles). A Gumbel distribution is fit to the data (red) and a function including two Gumbel distributions (blue, the two Gumbel components are plotted in orange and green). 
+        The single Gumbel distribution has a test statistic of 243.7 and the 2-Gumbel distribution has a test statistic of 31.0.
+        The difference between these test statistics is 212.6 which is a typical $\Delta \text{TS}$ score for a run with no outliers in correlation.
+      }
+      \label{fig:gumbel-clean}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+        width=0.6\textwidth,
+        alt={x}
+      ]{sections/5sa-cleaning/images/gumbel_compare_test_12547.png}
+      \caption{
+        Distribution of \texttt{global\_max\_corr} (``Bin center'' in the plot) values for A2 Run 12547 (blue circles). A Gumbel distribution is fit to the data (red) and a function including two Gumbel distributions (blue, the two Gumbel components are plotted in orange and green). 
+        The single Gumbel distribution has a test statistic of 10957.7 and the 2-Gumbel distribution has a test statistic of 53.5.
+        The difference between these test statistics is 10904.2 which is a typical $\Delta \text{TS}$ score for a run with many high correlation events which should be removed from the analysis.
+      }
+      \label{fig:gumbel-dirty}
+    \end{figure}
+    
+  \subsection{Spatio-Temporal Cut}
+
+    \begin{table}
+      \centering
+      \begin{tabular}{| 
+        >{\centering\arraybackslash}m{3cm} | 
+        >{\centering\arraybackslash}m{1.5cm} 
+        >{\centering\arraybackslash}m{2.25cm} 
+        >{\centering\arraybackslash}m{2.25cm} 
+        >{\centering\arraybackslash}m{2.25cm} 
+        >{\centering\arraybackslash}m{2.25cm} 
+      |}
+        \hline
+        Variable & \texttt{bImp\_v} & \texttt{corr \_contrast\_v} & \texttt{csw\_snr\_v} & \texttt{global\_max \_corr\_v} & \texttt{wavefront \_rms\_v} \\
+        \hline
+        Threshold type & greater & greater & greater & greater & less \\
+        \hline
+        Configuration & & & & & \\
+        \hline 
+        1 & 0.307 & 1.025 & 7.067 & 0.198 & 0.001 \\
+        2 & 0.266 & 1.011 & 6.534 & 0.194 & 0.001 \\
+        3 & 0.263 & 1.062 & 7.218 & 0.231 & 0.001 \\
+        4 & 0.236 & 0.998 & 6.825 & 0.225 & 0.001 \\
+        5 & 0.260 & 1.013 & 7.095 & 0.218 & 0.001 \\
+        6 & 0.220 & 1.344 & 6.905 & 0.136 & 0.001 \\
+        7 & 0.229 & 1.343 & 6.960 & 0.138 & 0.001 \\
+        \hline
+      \end{tabular}
+      \caption{
+        For each A2 configuration, the value beyond which an event is tagged as signal-like for the Spatio-Temporal Cut.
+      }
+      \label{tab:stc_variables}   
+    \end{table}
+  
+    This cut identifies events that occur in quick succession and reconstruct to the same region of the sky. 
+    Any anthropogenic background that is not removed by the Bad Run Cut (e.g. single occurrence South Pole radio emissions, snowmobiles, planes) is likely to be removed by the Spatio-Temporal Cut. 
+    Events are identified for removal in clusters by first finding ``signal-like'' events, then identifying time clusters of these events, then searching for spatial clusters of these events.
+
+    Signal-like events are identified as events that exceed one of three signal-ness thresholds.
+    These variables and thresholds are determined independently for each station. 
+    For A2, these thresholds are imposed on the impulsivity variable \texttt{bImp\_v}, reconstruction variables \texttt{corr\_contrast\_v} and \texttt{global\_max\_corr\_v}, signal strength variable \texttt{cs\_snr\_v}, and plane wave characterization variable \texttt{wavefront\_rms\_v}.
+    Thresholds on all variables except \texttt{wavefront\_rms\_v} are determined by plotting the distribution of each variable for all RF events not removed by the Bad Run Cut, N Minutes Cut, or Spark Event Cut.
+    Then, the upper tail of each distribution is fit to an exponential function.
+    The threshold for each variable is the value beyond which the integral under the fitted exponential function is 1.
+    The thresholds for A2 are presented in Table~\ref{tab:stc_variables}.
+    For A2, an event needs only one analysis variable to exceed the thresholds in Table~\ref{tab:stc_variables} to be labeled as a ``signal-like'' event.
+
+    Once signal-like events are identified, the time of each event is used to determine temporal clustering. 
+    The largest time window, $t_w$ used to assemble spatio-temporal clusters is also different on each station.
+    For A2 it is 60~s. 
+
+    Lastly, for each signal-like event clustered in time, the events' reconstructed azimuth and elevation are used to identify clusters in space. 
+    The clustering region, $\Omega_w$, in which events must reside to be removed via this cut decreases in size as the time separation, $t_w$, increases.
+    This relation has been defined such that a $t_w=1$~sec corresponds to $\Omega_w=4\pi$~steradian and a $t_w=1$~yr corresponds to $\Omega_w=1$~square degree:
+    \begin{equation}
+      \ln(\Omega_w / 1 \text{ sq deg})= \frac{\ln(4\pi / 1 \text{ sq deg})}{\ln(\text{yr}/\text{ sec})} \ln(t_w / \text{ sec}) + \ln( 1 \text{ sq deg})
+      \label{eq:stc_angularsize}
+    \end{equation}
+    where $t_w$ is at least 1 second and at most 1 year.
+    % This characterizes a line in $\ln-\ln$ space with a negative slope that relates $\Omega_w$ and $t_w$.  
+
+  \subsection{Zenith Cut and Surface-Like Cut \label{sec:zc_slc}}
+
+    The Zenith Cut\footnote{
+      Note, while traditionally referred to as the Zenith Cut, in this analysis this cut is imposed on events' reconstructed elevation.
+    } is employed at the end of the cleaning pipeline to remove any remaining anthropogenic surface events, such as cosmic ray initiated air showers. 
+    % The cosmic ray events that ARA can observe typically result from an ultra high energy cosmic ray (UHECR) interacting in the atmosphere, causing an airshower, and potentially impacting into the ice. 
+    Depending on the energy and direction of the cosmic ray, an ARA station may see radio signals from the air shower portion and/or the ice-impacting core. 
+    % Cite Nicolas, maybe show photos
+    The Zenith Cut is strict and is employed last so that it does not interfere with the Spatio-Temporal Cut and so other events can be more appropriately caught by other, more specialized cuts.
+
+    There are also events that originate on or near the surface but that reconstruct at elevations below the surface. 
+    This can occur if there are not enough antenna pairs with strongly correlated signals, giving rise to potential ``mirror'' solutions like those discussed in Section~\ref{sec:a2configs} and Section~\ref{sec:gc}.
+    % For example, an event with residual continuous wave contamination not removed by the algorithm discussed in Section~\ref{sec:freq_filtering} can appear as if it originated below the angle used for the Zenith Cut.
+    We therefore design a cut called the Surface-Like Cut which is designed to remove events that are signal-like but have a high probability of originating from the surface. 
+    An event is determined as signal-like using the same metrics defined in Section~\ref{sec:lrcc}.
+    We also introduce a new analysis variable, \texttt{mindepth\_v}, which calculates the highest depth with a correlation score at least 60\% of the maximum for the whole reconstruction. 
+    This is used to remove events that have their maximum reconstruction correlation score at a low elevation but have many solutions originating from the surface, like the event shown in Fig.~\ref{fig:lowmindepth}.
+
+    \begin{figure}
+      \centering
+      \includegraphics[
+          width=0.75\textwidth,
+          alt={}
+      ]{sections/5sa-cleaning/images/a1r3183e65990_mindepth.pdf}
+      \caption{
+        An example of an event with a high \texttt{mindepth\_v}, meaning this event reconstructs well at elevation angles where surface events are expected. 
+        Events originating from the surface will reconstruct to elevations at or above the critical angle of total internal reflection for the medium, plotted as a red dashed line and labelled $\theta_c$. 
+        In this plot, we see a green circle of highly scoring reconstruction solutions that both reconstruct towards deep ice and that approach $\theta_c$. 
+        Reconstruction using this algorithm therefore does not strongly distinguish if this event originates from the surface or deep ice.
+        This example is A1, run 3183, event 65990.
+      }
+      \label{fig:lowmindepth}
+    \end{figure}
+
+    To set these surface cuts, we model the surface backgrounds, fit the tail, and identify the highest cut thresholds where the number of passing events will not exceed 0.001. 
+    Our surface background dataset is built from a curated list of all events with an \texttt{avg\_snr\_v}$>4.517$ (the highest threshold in Tab.~\ref{tab:lrcc}) that are not removed by the N Minutes Cut, Spark Event Cut, Low Reconstruction Confidence Cut, Geometry Cut, and do not contain any in-ice radio pulsing campaigns (e.g. SPICE Core, IceCube pulsers, calibration pulser lifts or attenuation sweeps, etc.).
+    We fit the remaining events with a Gaussian Kernel Density Estimator (KDE) and model the low elevation tail with an exponential function. 
+    For A2, this algorithm set a Zenith Cut at an elevation of $19^{\circ}$ which is converted into a \texttt{mindepth\_v} threshold of 82~m for the 300~m distant reconstruction sphere and 166~m for the 42.86~m pulser reconstruction sphere. 
+    The surface cuts defined here are further optimized in Section~\ref{sec:optimization} in conjunction with the final signal-background discrimination, however the preliminary value determined here is used until then.
+
+\section{Quick Removal of Thermal-Like Events during 100\% Processing with the Fast Filter \label{sec:fast_filter}}
+
+  As every event in a run takes 1-2 seconds to be processed and there are typically $\mathcal{O}(10^5)$ events per full 100\% file, we designed an algorithm called the Fast Filter based on two computationally efficient analysis variables that can distinguish well between thermal-like and signal-like events. 
+  This Fast Filter uses a Linear Discriminant Analysis (LDA) that is trained with thermal-like data (i.e. the events that survived all cuts) from the 10\% sample and simulated neutrinos (also with all cuts applied) labeled for the LDA as background and signal, respectively.
+  The LDA is composed of four variables: 
+  \begin{itemize}
+    \item \texttt{wavefront\_rms\_v}: A measure of how compatible waveforms observed by vertically polarized antennas are with an arriving plane wave 
+    \item \texttt{wavefront\_rms\_h}: A measure of how compatible waveforms observed by horizontally polarized antennas are with an arriving plane wave 
+    \item \texttt{avg\_s2\_v}: A measure of signal causality for waveforms observed by vertically polarized antennas
+    \item \texttt{avg\_s2\_h}: A measure of signal causality for waveforms observed by horizontally polarized antennas
+  \end{itemize}
+  These variables can be calculated on waveforms alone, making them more efficient than building skymaps for multiple reconstruction radii and with each polarization of antennas\footnote{
+    We learned, after the unblinding proposal when we profiled our L2 processing code because it was taking longer than expected to run over the 100\% sample, that the main computational bottleneck was not the generation of reconstruction skymaps as we expected, but in performing the continuous waveform removal.
+    In future analyses we recommend attempting to speed up continuous waveform removal as opposed to identifying events to skip during L2 processing.
+  }. 
+  An example of the result of the LDA training is shown in Figure~\ref{fig:fastfilter_LDA} for A2 Configuration 7.
+  We choose a Fast Filter cut such that 90\% of simulated neutrinos would be preserved.
+  For A2 Configuration 7, this results in a removal of over 97\% of thermal-like events in the dataset.
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=0.75\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/a2c7_fastfilter.png}
+    \caption{Results of the Fast Filter's linear discriminant analysis trained on simulated neutrino data (blue, Signal line) and thermal-like data events (red, Background line). The Fast Filter Cut for A2 configuration 7 is -0.17.}
+    \label{fig:fastfilter_LDA}
+  \end{figure}
+  
+\pagebreak
+\section{Employment of Cuts and Impact on Potential Neutrino Events \label{sec:5sa_cleaningsummary}}
+
+  Once all cuts are solidified, they are applied to data in the following order: 
+  \begin{enumerate}
+    \item Fast Filter (100\% sample only)
+    \item Bad Run and Bad Configuration Cut
+    \item First Minute Cut
+    \item Spark Event Cut
+    \item Anomalous Channel Cut
+    \item Low Reconstruction Confidence Cut
+    \item Geometry and Known Sources Cut
+    \item Spatio-Temporal Cut
+    \item Zenith Cut
+    \item Surface-Like Cut
+  \end{enumerate}
+
+  After all of these cuts are applied, the remaining dataset only contains thermal-like data and neutrino candidates. 
+  Figure~\ref{fig:snrcorr} shows the distribution of events' \texttt{csw\_snr\_v} and \texttt{global\_max\_corr\_v} (signal strength and signal correlation) with no cuts and all cuts applied to data and simulation. 
+  With all cuts applied, all that remains are low signal strength and low correlation thermal-like events, no neutrino candidates. 
+  Figure~\ref{fig:brj} shows that 72.6\% of data RF events are removed by the cuts and Fig.~\ref{fig:sigeff} shows 43.3\% of neutrinos survive all cuts, with the Low Reconstruction Confidence Cut, Zenith Cut, and Surface Like Cut having the freatest effect on neutrino removal. 
+  This neutrino efficiency per cut is analyzed as a function of reconstructed \texttt{avg\_snr\_v} in Fig.~\ref{fig:sigeff_snr} and as a function of simulated neutrino energy in Fig.~\ref{fig:sigeff_energy}.
+  The full array-wide signal efficiency as a function of simulated neutrino energy is shown in Fig.~\ref{fig:LDA_efficiency_woLDA} 
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=0.49\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/a2cAll_10pct_noCuts_2d_global_max_corr_v_vs_avg_snr_v_rf.png}
+    % This was generated Jan 11, 2026
+    \includegraphics[
+      width=0.49\textwidth,
+      alt={}
+     ]{sections/5sa-cleaning/images/a2cAll_10pct_allCuts_filtered_2d_global_max_corr_v_vs_avg_snr_v_rf.png}
+    % This was generated Jan 11, 2026
+    \includegraphics[
+      width=0.49\textwidth,
+      alt={}
+    ]{sections/5sa-cleaning/images/a2c7_nu_noCuts_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+    \includegraphics[
+        width=0.49\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/a2c7_nu_allCuts_2d_global_max_corr_v_vs_csw_snr_v_rf.png}
+    \caption{
+      Left: Distribution of \texttt{global\_max\_corr\_v} plotted against \texttt{csw\_snr\_v} with no cuts applied for all science data taken by A2 (top) and simulated neutrinos (bottom).    
+      Right: Distribution of \texttt{global\_max\_corr\_v} plotted against \texttt{csw\_snr\_v} with all cuts applied for science data taken by A2 (top) and simulated neutrinos (bottom).
+      These events are low correlation and low SNR thermal-like data.  
+    }
+    \label{fig:snrcorr}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/inefficiencies_a2c7_data.png}
+    \caption{
+      Fraction of science data (RF triggers) in A2 configuration 7 rejected by each cut. 
+      The blue bars indicate the fraction of events that are removed if the cut is applied before all others. 
+      The green bars indicate the fraction removed if the cut is applied in the order defined at the start of this section and shown along the X-axis, red bars if the cut is applied last, and grey bars if the unixtime is randomized (to assess removal of random events by the Spatio-Temporal Cut). 
+      The final purple bar is the total fraction of events removed by all cuts in the right order.
+    }
+    \label{fig:brj}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/inefficiencies_a2c7_nu.png}
+    \caption{
+      Fraction of simulated events for A2 configuration 7 rejected by each cut. 
+      The blue bars indicate the fraction of events that are removed if the cut is applied before all others. 
+      The green bars indicate the fraction removed if the cut is applied in the order defined at the start of this section and shown along the X-axis, red bars if the cut is applied last, and grey bars if the unix time is randomized (to assess removal of random events by the Spatio-Temporal Cut). 
+      The final purple bar is the total fraction of simulated neutrino events removed by all cuts in the right order.
+    }
+    \label{fig:sigeff}
+  \end{figure}
+
+  \pagebreak
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=0.75\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/analysis_efficiencies_station2_config7_filtered_with_min_surface_snr.png}
+    \caption{
+      Fraction of simulated neutrinos removed by each cut as a function of the events' observed reconstructed \texttt{avg\_snr\_v}. 
+      The cuts are applied in the same order they are applied to data. 
+    }
+    \label{fig:sigeff_snr}
+  \end{figure}
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+        width=0.75\textwidth,
+        alt={}
+    ]{sections/5sa-cleaning/images/analysis_efficiencies_station2_config7_filtered_with_min_surface_energy.png}
+    \caption{
+      Fraction of simulated neutrinos removed by each cut as a function of simulated neutrino energy (presented as $\log( E_{\nu}\text{~eV})$). 
+      The cuts are applied in the same order they are applied to data. 
+    }
+    \label{fig:sigeff_energy}
+  \end{figure}
+  
+
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=0.7\linewidth,
+      alt={}
+    ]{sections/5sa-analysis/images/arraywide_efficiencies_vs_energy-withoutLDA.png}
+    \caption{
+      Array-wide efficiency for each array-wide configuration (colored lines) and the exposure-weighted efficiency over all array-wide configurations (black lines) presented as a function of neutrino energy. 
+      The two lines with the greatest signal efficiency are for array-wide configuration 48 and 50 during both of which, only the PA was active therefore demonstrating the signal efficiency of the PA detector in isolation.
+      This represents the array-wide signal efficiency after all cleaning cuts defined in this chapter were applied (using unoptimized Zenith Cuts and Surface Like Cuts).
+    }
+    \label{fig:LDA_efficiency_woLDA}
+  \end{figure}

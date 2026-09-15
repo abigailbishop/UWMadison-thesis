@@ -1,0 +1,90 @@
+source .bash_profile
+source ara_env-5sa.sh
+cd ara/FiveStation/scripts/L2
+
+
+# Spark Event
+STATION=2
+RUN=7100
+EVENT=1467
+python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVENT --data_type data
+python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
+python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
+
+# First Minute Event
+STATION=2
+RUN=17627
+EVENT=2
+python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVENT --data_type data
+python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
+python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
+
+# CP Event
+STATION=2
+RUN=19291
+EVENT=6365
+python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVENT --data_type data
+python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
+python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
+
+# RF Event
+STATION=2
+RUN=19291
+EVENT=6366
+python plot_event.py --station_id $STATION --run_number $RUN --event_number $EVENT --data_type data
+python plot_skymap.py --station_id $STATION --run_number $RUN --event_number $EVENT --map_type distant_v_dir
+python getEventSummary.py --station_id $STATION --run_number $RUN --event_number $EVENT
+
+# First minute from a run (this was not very telling)
+python
+import ROOT
+import numpy as np
+import matplotlib.pyplot as plt
+run = 16766
+file = ROOT.TFile.Open(f"/data/ana/ARA/processing/data/10pct/L2/station_2/year_2020/station_2_run_000{run}.root")
+plot_title = f"ARA2 Run {run}"
+file.results_tree.Draw("unixtime:avg_snr_v")
+n_events = file.results_tree.GetEntries()
+x_array = np.copy(np.frombuffer( file.results_tree.GetV1(), np.dtype(float), n_events))
+x_array = (x_array - x_array[0])/60
+y_array = np.copy(np.frombuffer( file.results_tree.GetV2(), np.dtype(float), n_events))
+fig, ax = plt.subplots()
+H, xbins, ybins = np.histogram2d(x_array, y_array, bins=180)
+extent = [xbins[0], xbins[-1], ybins[0], ybins[-1]]
+mappable = ax.imshow(H.T, extent=extent, cmap='viridis', 
+                        origin='lower', aspect='auto')
+ax.set_xlabel("Time Since Start of Run [min]")
+ax.set_ylabel("Average SNR in VPol Antennas")
+ax.set_title(plot_title)
+plt.colorbar(mappable=mappable, label="Number of Events")
+plt.tight_layout()
+plt.savefig(f"a2_r{run}_snrVStime.pdf")
+plt.savefig(f"a2_r{run}_snrVStime.png", dpi=400)
+
+
+
+# Geometry Cut Plots
+-5 -> 15 theta & 50 -> 75 phi # CP 5V, all configs
+-35 -> -15 theta & -35 -> -15 phi # CP 5V Mirror, config 5 and 7
+25 -> 45 theta & -50 -> -30 # CP 6V, configs 1-5
+
+python plot_L2.py --input_files $(ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_{2015..2016}/station_2_run_0000{6500..8097}.root; ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2018/station_2_run_0000{9505..9748}.root 2>/dev/null) --plots_to_make_2d global_max_phi:global_max_theta --plots_to_make_1d global_max_theta global_max_phi --title " A2 Geometry Cut Motivators" --plot_save_dir ./a2c5_gc1_
+
+python plot_L2.py --input_files $(
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2013/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2014/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2015/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2016/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2017/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2018/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2019/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2020/*.root 2>/dev/null; 
+  ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2021/*.root 2>/dev/null
+) --plots_to_make_2d global_max_phi:global_max_theta --plots_to_make_1d global_max_theta global_max_phi --title " A2 Calibration Pulsers" --plot_save_dir ./cps_ --is_simulation 0 --sample 10pct
+curl -X POST --data-urlencode 'payload={text:"Done getting A2 CPs on cobalt-12"}' https://hooks.slack.com/services/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
+
+I have geometry cut motivation plots generated with only the n_minute_cut and some thresholds on elevation and phi
+
+
+
+
