@@ -81,7 +81,6 @@ python plot_L2.py --input_files $(
   ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2020/*.root 2>/dev/null; 
   ls /data/ana/ARA/processing/data/10pct/L2/station_2/year_2021/*.root 2>/dev/null
 ) --plots_to_make_2d global_max_phi:global_max_theta --plots_to_make_1d global_max_theta global_max_phi --title " A2 Calibration Pulsers" --plot_save_dir ./cps_ --is_simulation 0 --sample 10pct
-curl -X POST --data-urlencode 'payload={text:"Done getting A2 CPs on cobalt-12"}' https://hooks.slack.com/services/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
 
 I have geometry cut motivation plots generated with only the n_minute_cut and some thresholds on elevation and phi
 
