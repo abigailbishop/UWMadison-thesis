@@ -7,7 +7,7 @@ I work mainly with the Askaryan Radio Array (ARA) but also with the Radio Neutri
 ARA is comprised of 5 radio stations and has taken data since 2012. 
 Updates to simulations of the array are discussed, highlighting the importance of simulating the outgoing muons and taus from charged current neutrino interactions of the same flavors and the benefits of simulating these events in an array-wide context which considers an event's ability to trigger multiple stations. 
 For example, secondary particle interactions make up 40\% of triggered events at $10^{21}$~eV and 35\% of triggered events trigger on multiple ARA stations at the same energy~\citep{ara_veff}.
-We also calculate that ARA is expected to have triggered on 21.64 neutrinos according to the global experimental upper limit on the UHE neutrino flux established by Refs.~\citep{icecube_search-ehe, anita_iv}. 
+We also calculate that ARA is expected to have triggered on 21.64 neutrinos according to the global experimental upper limit on the UHE neutrino flux established by \citep{icecube_search-ehe, anita_iv}. 
 These trigger level figures demonstrate the value of the ARA dataset~\citep{ara_secondaries, ara_veff}. 
 
 A neutrino search through 10.6 years of ARA data taken by all stations is conducted~\citep{ara_5sa-icrc}. 
@@ -23,7 +23,7 @@ Our analysis sets the world-leading upper limit on the cosmic neutrino flux abov
 Additionally, we estimate that this analysis would have identified 1.75 neutrino candidates if subjected to the flux established from the UHE neutrino observation of KM3NeT \citep{km3net_neutrino} and 2.79 if subjected to the flux established by \citep{flux-muzio} which can be compared to our upper limit based on 2.44 events.%\footnote{\comment{Marco suggests that for the KM3Net Flux and Muzio flux, I say these are ruled out at the 90\% confidence level by our upper limit which was established using the FC 90\% confidence level upper limit.}}.
 With the addition of the upper limit established by our analysis to the field, UHE radio detectors are now probing theoretical UHE neutrino flux models that could not be tested before, expanding both our knowledge of cosmic neutrinos but also the cosmic rays that produce many of them.
 
-This paragraph summarizes some reassurance, suggestions, and ideas for future analyses and detectors.
+The experience gained from this analysis has inspired several key technical insights and recommendations for future array developments.
 Firstly, one silver lining of the PA event that initially passed the analysis is that it was up-traveling, coherent radiation - exactly the kind of signal we search for. 
 This serves as a proof of concept for the search strategy developed for this analysis. 
 %The \comment{$\sim 35$\%} signal efficiency is primarily due to inefficient cuts designed to remove surface related events, mainly human-made anthropogenic backgrounds that mimic neutrinos and reconstruct deep into the ice. 
@@ -46,17 +46,26 @@ If a change is necessary, survey all stations for necessary changes and update t
         Also shown is the projected 10-year sensitivity of the proposed IceCube-Gen2 neutrino observatory for energies above $10^{16}$~eV (dark blue line)~\citep{icecube_gen2_tdr}.
         Previous experimental results from IceCube~\citep{icecube_search-ehe, icecube_search-combined-fit}, KM3NeT~\citep{km3net_neutrino}, Auger~\citep{flux-auger}, ARIANNA~\citep{arianna_testbed}, and ANITA I--IV~\citep{anita_iv} are also shown (colored solid lines).
         Shown as well are astrophysical UHE neutrino flux models based on neutrino production in active galactic nuclei (AGN, red dashed line)~\citep{flux-murase} and production in pulsars (pink band)~\citep{flux-fang-pulsars}. 
-        Cosmogenic models are also plotted, specifically the model from Ref.~\citep{flux-kotera} generated using a maximum proton acceleration energy of $10^{20.5}$~eV (pink dashed line), the model from Ref.~\citep{flux-ahlers-halzen} assuming a cosmic ray flux mass composition of 10\% protons (blue dash dot line), and a band of UHE neutrinos fluxes derived from a range of UHECR flux driving parameters presented in Ref.~\citep{flux_olinto} (grey band).
+        Cosmogenic models are also plotted, specifically the model from \citep{flux-kotera} generated using a maximum proton acceleration energy of $10^{20.5}$~eV (pink dashed line), the model from \citep{flux-ahlers-halzen} assuming a cosmic ray flux mass composition of 10\% protons (blue dash dot line), and a band of UHE neutrinos fluxes derived from a range of UHECR flux driving parameters presented in \citep{flux_olinto} (grey band).
     }
     \label{fig:sensitivity_future}
 \end{figure}
 
 The field of UHE neutrino astrophysics is a growing field still in the discovery phase. 
 As the majority of UHE neutrinos are expected to come from light UHECRs and as the Pierre Auger Observatory has published that UHECRs are heavier at the highest energies~\citep{pao_mass_composition}, it is expected that the flux of UHE neutrinos will be lower than the optimistic models we compare to so far. 
+Work presented in this thesis demonstrates that analyzing data over an inhomogeneous array of detectors is possible and can serve as a template for future analyses on ARA, \mbox{RNO-G}, and the IceCube-Gen2 radio array.
+We should pay attention to developments in signal-background separation algorithms that could improve the sensitivity of our analyses.
+In our neutrino search, we used a type of artificial intelligence algorithm called a Linear Discriminant Analysis, however a broad variety of more complicated and potentially more powerful algorithms exist. 
+Additionally, if radio antennas are deployed in the IceCube-Gen2 optical volume, as discussed in Appendix~\ref{chap:gen2_infill}, we could leverage the well established directional and energy reconstruction of events calculated using optical modules observing Cherenkov Radiation to calibrate reconstruction using radio-wavelength Askaryan Radiation\footnote{This note arises from fruitful discussions with committee member Professor Keith Bechtol during the review of this thesis.}.
+Our study in Appendix~\ref{chap:gen2_infill} indicated that $\mathcal{O}(10)$~events observed by the IceCube Gen2 optical volume would produce significant Askaryan radiation that could be captured by radio antennas colocated with optical modules.
+With more time, I would have simulated phased arrays of radio antennas within the IceCube-Gen2 optical volume instead. 
+It is plausible that this could significantly increase the number of events detected simultaneously in optical and radio due to the amplification of coherent signals when phased array waveforms are coherently summed together.
 
+
+To probe the UHE neutrino flux, however, we need to accumulate much more livetime.
 Fig.~\ref{fig:sensitivity_future} presents the upper limit established in this analysis alongside more conservative UHE neutrino flux models in addition to the projected sensitivity of future in-ice UHE neutrino radio arrays. 
-While ARA sets the most stringent upper limit on UHE neutrinos with energies greater than $4\times 10^{19}$~eV, the under-construction \mbox{RNO-G} experiment will reach a sensitivity that is an order of magnitude better.
-The proposed IceCube-Gen2 radio array will improve the field's UHE neutrino sensitivity by 2-3 orders of magnitude compared to current results.
-It will not only enable the discovery of, but also the characterization of the UHE neutrino spectrum and, potentially, the detection of their sources.
+While ARA sets the most stringent upper limit on UHE neutrinos with energies greater than $4\times 10^{19}$~eV with roughly 26 station-years of livetime, the under-construction \mbox{RNO-G} experiment will reach a sensitivity that is an order of magnitude better when we acquire the 175 station-years of livetime assumed when calculating the projected sensitivity shown.
+The proposed IceCube-Gen2 radio array will improve the field's UHE neutrino sensitivity by 2-3 orders of magnitude compared to current results after the hundreds of planned detectors amass data for ten years, resulting in thousands of station-years of livetime.
+More livetime and larger detectors will not only enable the discovery of, but also the characterization of the UHE neutrino spectrum and, potentially, the detection of their sources.
 With experiments like KM3NeT, IceCube, Auger and the radio detectors \mbox{RNO-G} and the IceCube-Gen2 radio array, UHE neutrino astrophysics will evolve from publishing upper limits within the next two decades. 
 We will establish the long sought after UHE neutrino flux and use our observations to enhance our understanding the extreme and enigmatic environments that create UHE neutrinos and UHECRs.

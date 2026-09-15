@@ -2,7 +2,8 @@
 
 \section{Ultra-High Energy Neutrinos and Cosmic Rays}
 
-  Neutrinos are neutral leptons, nearly massless, rarely interact, and exist in 3 flavors akin to their charged lepton counterparts: the electron, muon, and tau.
+  Neutrinos are neutral, nearly massless leptons that rarely interact. 
+  They exist in three flavors, akin to their charged lepton counterparts: electron, muon, and tau.
   Neutrinos are one of the four messengers used to study multi-messenger astrophysics: photons, cosmic rays, gravitational waves, and neutrinos.
   Photons (i.e. radio waves, optical light, X-rays, and gamma-rays) have been used in astronomy and astrophysics for over 10,000 years~\citep{snowmass_gammaray}. 
   They are abundant and easy to detect, but are easily attenuated by matter which obstructs our view of their sources, especially source interiors.
@@ -159,13 +160,34 @@
   \end{center}
   
   \noindent In total, one UHECR impacting on a cosmological photon can create 3 UHE neutrinos. 
-  As such, this neutrino production channel enables UHE neutrino observations to not only further the study the sources of astrophysical neutrinos but also to constrain the flux and atomic composition of UHECRs. 
+  As such, this neutrino production channel enables UHE neutrino observations to not only further the study of the sources of astrophysical neutrinos but also to constrain the flux and atomic composition of UHECRs. 
   As the sources of UHECRs are very powerful and rare, we expect them to mostly be extragalactic in origin. 
   UHECRs will be subjected to many magnetic fields that will deflect the UHECRs' trajectories on their way to Earth, obscuring the original source.
   UHE neutrino observations can therefore contribute to the study of UHECR sources.
+  Indeed, the composition of the UHECR flux and source evolutions are key drivers for models which predict the UHE neutrino flux. 
+  A selection of examples is shown in Figure~\ref{fig:neutrino_models}. 
+  The higher energy population in these models is produced by UHECRs interacting with the Cosmic Microwave Background (the upper tail being driven by the maximum energy UHECRs may be accelerated to) while the lower energy population is produced by interactions with infrared, ultraviolet, and optical extragalactic background light. 
+  Neutron decay can also produce neutrinos but, in this energy regime, this generates a predicted flux 2-3 orders of magnitude smaller than the flux predicted from UHECRs interacting with photons. 
+  The normalization of the curves is driven by the source model used (e.g. active galactic nuclei (AGN), gamma ray bursts (GRB), star formation rate (SFR)) and the composition of the UHECR flux (e.g. pure proton, pure iron, a galactic mix).
   Like the UHECRs, UHE neutrinos are expected to travel cosmological distances before arriving at Earth and, as such, the flavor ratio of the UHE neutrino flux is expected to be equally electron, muon, and tau-flavored. 
   Unfortunately, both cosmic rays and neutrinos in this energy regime are expected to interact with Earth once per year per square kilometer, as shown in Figure~\ref{fig:CRspectrum}, making them quite difficult to detect.
 
+  \begin{figure}
+    \centering
+    \includegraphics[
+      width=\textwidth,
+      alt={}
+    ]{sections/introduction/images/neutrino_models.pdf}
+    \caption{
+      Theoretical models of the UHE neutrino flux as a function of energy, collected from \citep{flux-muzio, flux-kotera}.
+      Orange lines show the UHE neutrino flux resulting from UHECR source models derived from active galactic nuclei (AGN), gamma ray bursts (GRB), and star formation rates (SFR). 
+      The dashed pink and solid light pink lines show the difference between a maximum cosmic ray acceleration energy ($E_{\text{max}}$) of $10^{21.5}$~eV and $10^{20.5}$~eV respectively.
+      The dashed pink and dotted pink lines demonstrate the effect of different UHECR flux compositions on the UHE neutrino flux.
+      IceCube's measurement of the neutrino flux \citep{icecube_search-combined-fit} along with upper limits on the neutrino flux set by IceCube \citep{icecube_search-ehe} and Auger \citep{flux-auger} are shown for comparison.
+    }
+    \label{fig:neutrino_models}
+  \end{figure}
+  
   Observations of UHE neutrinos also further our understanding of particle physics.
   The cross section of UHE neutrinos is shown in Figure~\ref{fig:neutrinocrosssection} and is only measured up to neutrino energies of 10~PeV.
   While particle colliders like the Large Hadron Collider can create particle collisions with a center of mass up to 100~PeV, current colliders can only observe neutrinos up to GeV energies~\citep{snowmass_neutrinofrontier}.
@@ -226,7 +248,7 @@
   %   I found an image of a hadronic shower that includes a lot of pions and EM cascades so I should double check that this is correct
   %   I'm thinking about the charge asymmetry and I do think I'm missing something
   % }}. 
-  The process of one nucleon imparting momentum on another nucleon, shredding the impacted atomic nucleus into multiple high energy nucleons and repeating until no more nucleons are sufficiently energetic to continue, is called a hadronic cascade.
+  The process of one nucleon imparting momentum to another nucleon, shredding the impacted atomic nucleus into multiple high energy nucleons and repeating until no more nucleons are sufficiently energetic to continue, is called a hadronic cascade.
   In CC interactions, the neutrino exchanges a $W^{+/-}$ boson with a quark in a nucleon, transferring electric charge towards the neutrino which converts it from a neutral lepton (a neutrino) into a charged lepton (an electron, muon, or tau particle). 
   \begin{center}
     \begin{tikzpicture}
@@ -269,7 +291,7 @@
   Outgoing electrons will immediately interact with surrounding matter, initiating an electromagnetic cascade of mostly Bremsstrahlung and pair-production processes. 
   Outgoing muons and taus also interact with surrounding matter but have longer interaction and decay lengths, allowing them to travel some distance, stochastically deposit momentum into their environment, and continue traveling. 
   Taus have decay lengths $\mathcal{O}$(10~km) at ultra-high energies, mediated predominantly by the $W^{+/-}$ boson again, converting the tau back into a tau neutrino and producing hadrons or a pair of neutral and charged leptons like with the muon decay.
-  If a pair of electron flavored leptons is generated, the outgoing electron or position immediately initiates an electromagnetic cascade. 
+  If a pair of electron flavored leptons is generated, the outgoing electron or positron immediately initiates an electromagnetic cascade. 
   If a pair of muon or tau leptons is generated, the outgoing taus, muons, and neutrinos continue to propagate.
 
   These highly energetic cascades are usually a few meters long and a couple centimeters in width. 
@@ -280,7 +302,7 @@
   This means that the cascade develops an overall charge asymmetry and behaves as a rod of moving charge. 
   % \comment{Add EM derivations.} 
   As a charge in motion generates an electromagnetic field, so does the cascade.
-  Due to the rod-like geometry of the cascade, wavelengths shorter than the extent of the rod deconstructively interfere while wavelengths longer than the cascade add coherently along a cone with an opening angle equal to the Cherenkov angle in the medium, 
+  Due to the rod-like geometry of the cascade, wavelengths shorter than the extent of the rod destructively interfere while wavelengths longer than the cascade add coherently along a cone with an opening angle equal to the Cherenkov angle in the medium, 
   \begin{equation}
     \theta_C = \sin^{-1}(\frac{c}{nv})
     \label{eq:cherenkovangle}
@@ -332,7 +354,7 @@
   Askaryan Radiation has a few important features of note including cone width, frequency spectra, and polarization.
   Ice is the dielectric medium used to monitor for UHE neutrino interactions in this thesis and the expected Askaryan Radiation is emitted in the radio-wavelengths 100~MHz-1~GHz, motivating the surveillance of ice with radio antennas. 
   Due to the long extent of UHE particle cascades, the Askaryan radiation exists in a narrow band around the emission cone. 
-  If a radio antenna is near a UHE particle cascade but is not located along this cone, the Askaryan Radiation will be not be observed.
+  If a radio antenna is near a UHE particle cascade but is not located along this cone, the Askaryan Radiation will not be observed.
   In fact, the radiation begins to deteriorate if an antenna exists just a couple degrees off of the emission cone, as shown in Figure~\ref{fig:askaryancone} where signal on-cone is impulsive and strong but drops dramatically with each degree the viewing angle is away from the Askaryan cone \citep{barwick_glaser_review}.
   The width of this cone of radiation is also larger for emission around 300~MHz compared to 1~GHz and for lower energy particle cascades, as shown in Figure~\ref{fig:askaryanconewidth}.
   Another important feature of Askaryan Radiation is that it is polarized perpendicularly to the emission cone, as shown in Figure~\ref{fig:askaryan_radiation}. 
@@ -360,7 +382,7 @@
     \label{fig:attenuation_glaciers}
   \end{figure}
 
-  Ice is an abundant resource on Earth and is promising for the observations of Askaryan Radiation from UHE neutrino interactions given long absorption and scattering lengths of radio waves in this medium, as shown in Figure~\ref{fig:attenuation_glaciers}. % cite?
+  Ice is an abundant resource on Earth and is promising for the observation of Askaryan Radiation from UHE neutrino interactions given long absorption and scattering lengths of radio waves in this medium, as shown in Figure~\ref{fig:attenuation_glaciers}. % cite?
   In 2006, as a proof of concept, Askaryan Radiation was observed experimentally for the first time by directing the beamline at the Stanford Linear Accelerator Center into a 7.5 metric tons ice target~\citep{slac}. 
   Since then, many experiments have been designed to surveil ice from within, from the surface of, and above glaciers in the hopes of observing UHE neutrinos. 
 
@@ -383,14 +405,14 @@
   Ice sheets on Greenland and Antarctica have been used to search for UHE neutrinos near stations established by the National Science Foundation. 
   In Greenland, detectors are built onto and into the 3000~m thick glacier near Summit Station. 
   In Antarctica, detectors are built on the 500~m thick Ross Ice Shelf near McMurdo Base, launched on balloons over the Antarctic glacier from the Long Duration Balloon facility also near McMurdo Base, and installed onto and into the 2800~m thick glacier near South Pole Station. 
-  The ice comprising these glaciers naturally changes as a function of glacier depth leading radio-wavelegth emission to bend, as shown in Figure~\ref{fig:raybending}. 
+  The ice comprising these glaciers naturally changes as a function of glacier depth, leading radio-wavelength emission to bend as shown in Figure~\ref{fig:raybending}. 
   This means that radiation emitted from different parts of the emission cone may travel different paths to arrive at the antenna. 
   We call these paths ``rays" and typically expect one ray to travel straight from the neutrino interaction to an antenna, while the second ray  may reflect off the surface of the ice or be overturned by the refractive properties of the ice.
 
   Glacial neutrino observatories use a variety of radio antennas, most shown in Figure~\ref{fig:Antenna-types}. 
   As some neutrino observatories are installed in narrow holes in the ice, we use antennas with less than 0.4~m in diameter. 
   To reconstruct the polarization of the signal, vertically polarized bicone antennas are used along with horizontally polarized quadslot antennas.%\footnote{\comment{One of my readers is confused what ``quadslot'' means. It seems from the testbed paper that at least ``bicone'' is jargon.?}}.
-  For shallow and surface stations, Logarithmically Polarized Dipole Antennas are used. 
+  For shallow and surface stations, Log-Periodic Polarized Dipole Antennas are used. 
   These are sensitive to one polarization but multiple are typically installed, oriented in a variety of directions for signal polarization reconstruction.
   Lastly, dually polarized horn antennas are used on balloon-based neutrino experiments, wrapping around the entire balloon payload.
 
@@ -465,7 +487,7 @@
     The ARIANNA collaboration creates neutrino and cosmic ray detectors primarily using antennas that can be deployed just below the surface of glaciers.
     They deployed a hexagonal array at Moore's Bay near McMurdo Station in 2014, and two prototype stations at the South Pole in 2017, among others~\citep{arianna_cr_arena18}. 
     Moore's bay is surrounded by mountains, allowing it to search not only for neutrino interactions in ice but also tau leptons air showers resulting from charged current tau neutrino interactions in the surrounding mountains (so-called earth skimming neutrino detection\index{Earth-skimming neutrinos}, the main detection channel for detectors looking for neutrinos by monitoring for Askaryan radiation in air). 
-    A schematic of the detection mechanism and the ARIANNA hexagonal array are shown in Fig.~\ref{fig:ARIANNA}
+    A schematic of the detection mechanism and the ARIANNA hexagonal array are shown in Fig.~\ref{fig:ARIANNA}.
     ARIANNA has published studies of cosmic ray showers and set upper limits on the UHE neutrino flux~\citep{arianna_cr, arianna_hex_search}. 
 
     \begin{figure}

@@ -8,9 +8,9 @@
 
   Once the LDA cut (discriminating signal from background) and the Zenith Cut (rejecting cosmic rays and unparameterized anthropogenic noise) are optimized based on the 10\% sample and simulated neutrino events, the analysis is applied to the 100\% dataset. 
   Post-unblinding, we assess the compatibility of the models built on the 10\% data which drove the optimized LDA Cut and Zenith Cut are compared with the now-unblinded 100\% data.
-  Any events that survive all analysis cuts (cleaning and LDA) are then passed through an isolation condition that removes any events that occurred between 5 seconds and 5.8 hours of each other, as we don't expect to find multiple neutrino events in close succession, except events that observe multiple particles or cascades (muon and tau tracks of stochastic losses and a tau decay), like those quantified in Fig.~\ref{fig:secondaries_contribution}. 
+  Any events that survive all analysis cuts (cleaning and LDA) are then passed through an isolation condition that removes any events that occurred between 5 seconds and 5.8 hours of each other, as we do not expect to find multiple neutrino events in close succession, except events that observe multiple particles or cascades (muon and tau tracks of stochastic losses and a tau decay), like those quantified in Fig.~\ref{fig:secondaries_contribution}. 
   We outline a plan for how to assess any remaining (``passing'') events, in case they are due to unforeseen backgrounds not present in the 10\% sample. 
-  Lastly, we use the expected background rates and the number of passing events to establish an upper limit on the flux of UHE neutrinos. 
+  Lastly, in Section~\ref{sec:5sa_results}, we use the expected background rates and the number of passing events to establish an upper limit on the flux of UHE neutrinos, which I took the lead in calculating. 
 
 \section{The Linear Discriminant Analysis \label{sec:lda}}
 
@@ -20,7 +20,7 @@
   LDAs, for each event, will take an array of analysis variables and combine them linearly into a single number by multiplying the variables for each event against a matrix that's been optimized to minimize LDA scores for background events and maximize scores for signal events. 
   This analysis uses the 19 variables summarized in Table~\ref{tab:LDAvars} to train the LDA. 
   These 19 variables are chosen based on their ability to distinguish thermal-like events from neutrino events while minimizing correlations between the variables.
-  This LDA is trained on a signal dataset composed of simulated neutrino events following the global experimental upper limit on the cosmic neutrino set (defined by Ref.~\citep{icecube_search-ehe} and Ref.~\citep{anita_iv}), and a background dataset composed of all events from each station's cleaned 10\% sample.   
+  This LDA is trained on a signal dataset composed of simulated neutrino events following the global experimental upper limit on the cosmic neutrino set (defined by \citep{icecube_search-ehe} and \citep{anita_iv}), and a background dataset composed of all events from each station's cleaned 10\% sample.   
   
   \begin{table}
     \centering
@@ -120,16 +120,68 @@
 
 \section{Optimization \label{sec:optimization}}
 
-  After the thermal background LDA model determined in Section~\ref{sec:lda} and the surface event elevation models determined in Section~\ref{sec:zc_slc} for each station-configuration are set, we feed them both into an algorithm that determines the best LDA cut and Zenith Cut for each array-wide configuration. 
+  After the thermal background LDA model determined in Section~\ref{sec:lda} and the surface event elevation models determined in Section~\ref{sec:zc_slc} are set, we feed them into an algorithm that determines the best LDA cut for each array-wide configuration and the best Zenith Cut for each station. 
   An array-wide configuration is defined by the combination of active stations (in their respective station livetime configuration) over time periods of at least 1 week. 
   There are 50 total array-wide combinations of the 29 total station configurations, as shown in Fig.~\ref{fig:ARA_configurations}.
   Each LDA cut is established within each array-wide configuration. 
   For example, A2 configuration 7 is present in array-wide configurations 40, 42, 43, and 44 and has a different LDA cut optimized for each array-wide configuration in the parameter space of the same parent distribution.
   Expanding on this, across the full 50 array-wide configurations there are 144 LDA cuts to establish using the same 29 parent datasets. 
+  This allows the optimizer to allocate the estimated background amongst all available stations which means that detectors with greater exposure can have less strict LDA cuts, enabling both more backgrounds and, ideally, neutrinos to pass all analysis cuts.
   We optimize just one zenith cut for each station (there are not enough statistics to do it based on station configuration like with the LDA).
   In total this results in 6 Zenith Cuts and 144 LDA Cuts to be optimized.
+
+  The optimization is designed around the $5\sigma$ discovery potential of a flux 
+  \begin{equation} 
+    \phi(E) = \phi_0^{\text{disc}}f(E)
+    \label{eq:optimizer_flux}
+  \end{equation}  
+  where $\phi_0^{\text{disc}}$ is the flux normalization at an energy of $E_0 = 10^{18.5}$~eV (the central energy of the logarithmic energy range used in this analysis) and $f(E)$ parameterizes the spectral shape. 
+  The shape function is defined such that $f(E)$ is unit-less, $f(E_0)=1$, and $f(E)$ follows the shape of the global experimental upper limit defined by \citep{icecube_search-ehe} and \citep{anita_iv}. 
+  The optimization script specifically minimizes the flux normalization as
+  \begin{equation}
+    \phi^{\text{disc}}_0 (\Sigma, \Theta) = \frac{\text{FC}(n_{\text{disc}}(B), B)}{\int f(E) \mathcal{E}(E) dE }
+    \label{eq:optimization}
+  \end{equation}
+  where $\Sigma$ is the collection of thermal LDA cuts and $\Theta$ is the collection of surface cuts for each station which are being tuned by the optimizer.
+  $\text{FC}(n_{\text{disc}}(B), B)$ is the Feldman Cousins 90\% confidence level upper limit given in \citep{feldman_cousins}, $n_{\text{disc}}$ is the number of events required for a $5\sigma$ discovery, and $B$ is the expected background (described in the next paragraph). 
+  $n_{\text{disc}}$ is determined via the Poisson cumulative distribution function
+  \begin{equation}
+    C(n_{\text{disc}}; B) = \sum_{k=0}^n \frac{B^k e^{-B}}{k!} \geq 1 - \beta
+    \label{eq:ndisc_B}
+  \end{equation}
+  where $\beta$ is the one-sided tail probability corresponding to the targeted $5\sigma$ significance.
+  To finish defining Equation~\ref{eq:optimization},  $\mathcal{E}(E)$ is the analysis-level exposure (the term defined in Equation~\ref{eq:exposure_trigger} multiplied by the analysis efficiency).
+  
+  The expected background, $B$, is defined as the sum of expected backgrounds from the Geometry Cut (defined in Section~\ref{sec:gc}), the Zenith Cut (described in Section~\ref{sec:zc_slc}), and the thermal LDA cut (described in Section~\ref{sec:lda}) after accounting for overlaps in some background populations.
+  The background rate from the Geometry Cut is constant over the full array (geometry cuts are applied to a station's full livetime, they do not change over time) and is designed for a background event rate of $2 \times 10^{-8}$ events per region being cut, resulting in a total array-wide background, $b_{\text{geom}}$, of $4.2 \times 10^{-7}$ events.
+  The Geometry Cut's background estimate is also assumed to have negligible influence on the Zenith Cut and thermal LDA cut and is therefore treated as independent of these cuts.
+  The background rate for the Zenith Cut and thermal LDA cut are correlated, however. 
+  The Zenith Cut's background is defined as
+  \begin{equation}
+    b_{\text{surf}}(\Sigma, \Theta) = \sum_s b_s(\theta_{\text{th}, s}) ~ f_s(\Sigma)
+    \label{eq:surface_background}
+  \end{equation}
+  and the thermal LDA cut is defined as
+  \begin{equation}
+    b_{\text{therm}}(\Sigma, \Theta) = \sum_{a,s,c} w_{a, s, c} ~ b_{s,c}(\sigma_{\text{th}, a, s}) ~ f_s(\theta_{\text{th},s })
+    \label{eq:thermal_background}
+  \end{equation}
+  where $a$ corresponds to an array-wide configuration, $s$ to a station, and $c$ to a station configuration.
+  For Equation~\ref{eq:thermal_background}, $b_s(\theta_{\text{th}, s})$ is the surface background for station $s$ over the full analysis livetime, calculated as the integral of events existing in the surface model beyond the cut on reconstructed elevation angle $\theta_{\text{th}}$.
+  $f_s(\Sigma)$ is a correction factor accounting for the fraction of leaked surface events on station $s$ which survive the thermal LDA cut. 
+  For Equation~\ref{eq:thermal_background}, $b_{s,c}(\sigma_{\text{th}, a, s})$ is the thermal background rate of station $s$ in configuration $c$ for the thermal LDA cut $\sigma_{\text{th}, a, s}$ for station $s$ in the context of array-wide configuration $a$.
+  Since the thermal LDA cut changes as a function of time, a weighting factor, $w_{a, s, c}$, is applied to each term in the sum and is defined as the livetime of station $s$ in array-wide configuration $a$ divided by the full livetime of the corresponding station-configuration $c$.
+  Similarly to the Zenith Cut's background calculation, $f_s(\theta_{\text{th},s })$ is a correction factor applied to the thermal LDA background rate which accounts for the fraction of events removed by the Zenith Cut on station $s$.
+  In total, the array-wide background rate is the sum of these three contributions:
+  \begin{equation}
+    B(\Sigma, \Theta) = b_{\text{geom}} + b_{\text{surf}}(\Sigma, \Theta) + b_{\text{therm}}(\Sigma, \Theta)
+    \label{eq:total_background}
+  \end{equation}
+
   The optimized A2 Zenith Cut is set to an elevation angle of $10.31^{\circ}$ and the minimum and maximum LDA cut for each A2 configuration are presented in Table~\ref{tab:ldacuts}. 
   The signal efficiency of the analysis over the entire array is plotted as a function of simulated neutrino energy in Fig.~\ref{fig:LDA_efficiency_wLDA} with the optimized LDA applied.
+  The total array-wide background event rate is 0.13 events, of which $4.2 \times 10^{-7}$ events are from the Geometry Cut, 0.045 events are from the surface cut, and 0.086 events are from the thermal LDA cut.
+  The expected number of observed events, $n_{\text{disc}}$, is 0. 
 
   \begin{table}
     \centering
@@ -169,7 +221,7 @@
   Running the analysis pipeline over the full 100\% data and viewing which events survived all cuts for the first time is commonly referred to as ``opening the box". 
   After opening the box we investigate any events that pass the analysis and construct our analysis' sensitivity to UHE neutrinos.
   But, before we analyze the full data sample, we ensure that the surface background elevation model and the thermal background LDA model constructed with the 10\% dataset and used to establish the final Zenith and LDA Cuts are compatible with the 100\% data. 
-  There is also one final cut to remove any array-wide temporal clusters of events which removes events that occur array-wide called the Time Isolation Cut.
+  There is also one final cut to remove any array-wide temporal clusters of events, called the Time Isolation Cut.
 
   \subsection{Surface Cut Cross Checks}
 
@@ -226,8 +278,8 @@
     \end{figure}
 
     To quantify the agreement between the background model predicted by the 10\% sample and the one observed in the 100\% sample, we ran pseudoexperiments following a similar procedure used in Section~\ref{sec:optimization}. 
-    The distribution of pseudoexperiments in relation to the observed log-likelihood with respect to the surface background model is shown in Fig.\ref{fig:backgroundcheck_zenith_toys}.
-    The A2 model built on the 10\% data passed our check as the p-vale of the observed log-likelihood compared to the pseudoexperiments was greater than 0.05.
+    The distribution of pseudoexperiments in relation to the observed log-likelihood with respect to the surface background model is shown in Fig.~\ref{fig:backgroundcheck_zenith_toys}.
+    The A2 model built on the 10\% data passed our check as the p-value of the observed log-likelihood compared to the pseudoexperiments was greater than 0.05.
     The models for all other stations also passed this check. 
 
   \subsection{Thermal Background Cross Checks}
@@ -249,7 +301,7 @@
       \caption{
         Top: The distribution of thermal events (events that passed all cuts defined in Chapter~\ref{chap:5sa_cleaning}) from the 100\% sample of A2 configuration 3 (black dots with blue error bars).
         Only events with LDA scores greater than the $x_{\text{min}}$ used to fit the background model in Section~\ref{sec:lda} (black dotted line) and less than the appropriate LDA Cut established in Section~\ref{sec:optimization} are plotted (grey dashed lines).
-        These are events are fit to an exponential (green line) plotted along the model built on the 10\% data multiplied by 10 (red dotted line).
+        These events are fit to an exponential (green line) plotted along the model built on the 10\% data multiplied by 10 (red dotted line).
         Bottom: Ratio of the 100\% LDA distribution of thermal events (black dots in top panel) divided by the model built on the 10\% data scaled up by a factor of 10 (red dotted line in top panel).
       }
       \label{fig:backgroundcheck_a2c3}
@@ -289,7 +341,7 @@
           alt={}
       ]{sections/5sa-analysis/images/a2c4_100pct_lda_backgroundfit_toys.png}
       \caption{
-        Distribution of the log-likelihood of pseudoexperiments built on 100\% A2 Configuration 4 data (blue distribution) compared to the log-likelihood of the observed 100\% data (red line) both calculated against the 10\% background model scaled up for a factor of 10.
+        Distribution of the log-likelihood of pseudoexperiments built on 100\% A2 Configuration 4 data (blue distribution) compared to the log-likelihood of the observed 100\% data (red line) both calculated against the 10\% background model scaled up by a factor of 10.
       }
       \label{fig:backgroundcheck_a2c4_toys}
     \end{figure}
@@ -526,7 +578,7 @@
       This showed that the AraVertex algorithm reconstructed the A5 event within $20^{\circ}$ of the locations of antennas 4 and 12. 
       The same effect was observed when we plotted the skymap of correlation scores for the A5 event's interferometric reconstruction using a map radius equal to the distance between A5 antenna 4 and the station center - the best interferometric reconstruction is $20^{\circ}$ away from the locations of antenna 4 and 12. 
       We repeated this exercise for the A4 event shown in Fig.~\ref{fig:a4outlier} and found the event reconstructed where antennas 6 and 14 are, the same channels exhibiting power surge behavior.
-      The analysis presented in Ref.~\citep{ara_a23} also discovered 7 events of this nature which gave rise to the original Spark Event Cut.% \footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
+      The analysis presented in \citep{ara_a23} also discovered 7 events of this nature which gave rise to the original Spark Event Cut.% \footnote{\url{https://aradocs.wipac.wisc.edu/cgi-bin/DocDB/ShowDocument?docid=2032}}.
 
       The impulsive signatures on the strings presented in Fig.~\ref{fig:a4outlier} were not understood when designing the Anomalous Channel Cut, but would not be classified as potential neutrino observations given the string of anomalous waveforms in the same event. 
       The anomalous waveforms were assumed to have been created by the data acquisition board which is housed in the vault at the surface, but as the impulsive signals in the same event resemble coherent radio emission reconstructing in deep ice, this suggests that the technical malfunction occurs on the string itself near the antennas. 
@@ -550,7 +602,7 @@
     The 90\% confidence level upper limit factor relies on the number of observed events (0, for this analysis) and the number of expected backgrounds. 
     We modeled backgrounds for the Geometry Cut, the Zenith Cut, and the LDA Cut.
     As discussed in Section~\ref{sec:gc}, the windows used in the Geometry Cut were defined such that the number of passing events was $2\times10^{-5}$ for the 10\% sample, meaning $2\times10^{-4}$ for the 100\% sample. 
-    We multiply this by our expected untagged calibration pulser event rate of $10^{-4}$ for each station to achieve a background leakage of $2\times 10^{-8}$ events per window.  
+    We multiply this by our expected untagged calibration pulser event rate of $10^{-4}$ for each station to achieve a background of $2\times 10^{-8}$ events per window.  
     For both the Zenith Cut and LDA Cut, the number of expected background events is an output from the optimization performed in Section~\ref{sec:optimization}. 
     The number of background events per station and array-wide are presented in Table~\ref{tab:backgrounds}.
 

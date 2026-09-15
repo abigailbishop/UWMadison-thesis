@@ -4,7 +4,7 @@
   When the livetime of the five ARA stations are added together, it totals approximately 28 station-years of data.
   However, only 9 of those station-years have been used in analyses prior to this work.
   This is partly because of how long it takes to calibrate stations; define analysis configurations for each station; prepare noise, electronics gain, and antenna models for each configuration of each station; and build a software package to analyse so much data.
-  It is also time consuming to design cuts that encompass every unique detector glitch and anthropogenic background.
+  It is also time consuming to design cuts that encompass every unique detector glitch and anthropogenic background class.
   ARA currently has 5 graduate students, 1 postdoctoral researcher, and a faculty member who are devoted to analyzing the full 28 station-years of ARA data. 
   We isolate a randomized 10\% of our dataset, build an analysis on this 10\% sample and a collection of simulated neutrino signal, and finally apply the analysis framework to the full 100\% data sample.
 
@@ -17,7 +17,7 @@
     \caption{
       Flowchart depicting the design of a Linear Discriminant Analysis (LDA) trained to discriminate between simulated neutrino events and thermal-like background data. 
       The dataset of thermal-like backgrounds is created from 10\% of all ARA data which has instrumental, anthropogenic, and surface backgrounds removed via cuts that are also applied to the simulated neutrino dataset.
-      The LDA event score that designates an event as signal or background is optimized along with the cut that removes events that reconstruct where events of surface origin are expected to reconstruct before the full suite of cuts is applied to the full ARA dataset.
+      The LDA event score that designates an event as signal or background is optimized along with the cut that removes events that reconstruct where events of surface origin are expected to originate before the full suite of cuts is applied to the full ARA dataset.
     }
     \label{fig:analysis-flowchart}
   \end{figure}
@@ -26,13 +26,15 @@
   Chapter~\ref{chap:5sa_cleaning} discusses the generation of neutrino simulation, a surface background dataset, and a thermal background dataset through a process called ``cleaning''.
   The signal simulation was already described in Chapter~\ref{chap:veff}. 
   Rather than simulating the thermal background, we use the experimental data to build a process to separate the thermal background from the signal.
-  Through data cleaning we remove events with traces of hardware glitches, anthropogenic backgrounds, and data not suitable for analysis which leaves just a thermal data sample in the end.
+  Through data cleaning we remove events with traces of hardware glitches, anthropogenic backgrounds, and data not suitable for analysis which leaves only a thermal data sample in the end.
   Then, Chapter~\ref{chap:5sa_analysis} presents the Linear Discriminant Algorithm (LDA) trained to separate thermal events from neutrinos, the optimization of the LDA Cut and the Surface Cut, and the results of applying the analysis to the 100\% dataset including the analysis' sensitivity.
 
   This chapter begins by detailing the creation of simulated neutrino events in Section~\ref{sec:5sa_sims}. 
-  These simulations will be used to ensure that analysis cuts don't remove the very events we are searching for.
-  Section~\ref{sec:a2configs} details how A2 data is partitioned into livetime configurations for analysis and simulation.
+  These simulations will be used to ensure that analysis cuts don't remove the very events we are searching for and were largely orchestrated by me.
+  Section~\ref{sec:a2configs} details how A2 data is partitioned into livetime configurations for analysis and simulation, as this was the station I was dedicated to cleaning.
   Next, the Python package used to generate analysis variables for each event is presented in Section~\ref{sec:araproc}.
+  We all worked as a team to develop this package and review each other's work.
+  I configured our software stack so that these analysis variables could be calculated on the Open Science Grid along with our simulation sets, increasing our throughput by roughly a factor of 10.
   The cleaning process then begins in Section~\ref{sec:cleaning_glitches} with the removal of events not suitable for analysis (e.g. events with glitches or poor reconstructions).
   Cleaning continues in Section~\ref{sec:cleaning_anthropogenics} with the removal of science and physics backgrounds (e.g. impacting cores from cosmic ray air showers). 
   The process for generating the surface background dataset is also discussed.
@@ -92,7 +94,7 @@
   \end{figure}
   
   Noise-only simulations are also generated using frequency-dependent noise models, as shown in Fig.~\ref{fig:noise_model}, which are calculated from the ``software trigger" events that are read out once per second on each station.
-  The accuracy of these simulations are important for simulating neutrino signal waveforms with realistic thermal background noise. 
+  The accuracy of these simulations is important for simulating neutrino signal waveforms with realistic thermal background noise. 
   An example of a software trigger used to extract the noise model is shown in Fig.~\ref{fig:software_event} and a thermal-like waveform is shown next to a simulated thermal-noise waveform in Fig.~\ref{fig:noiseevent}
 
   The signal and noise simulations are fed through the cleaning pipeline described in Section~\ref{sec:araproc} so that, as cuts are designed to remove backgrounds from the dataset, we can ensure that we do so in a way that retains as much signal as possible.
@@ -100,7 +102,7 @@
 \section{Defining Livetime Configurations for A2\label{sec:a2configs}}
 
   As detector settings and hardware change, so does the behavior of triggering and readout. 
-  This has significant effects on event reconstruction and analysis (e.g. if a string is masked, this significantly affects reconstruction of events), so each station's livetime is divided into what we call ``livetime configurations". 
+  This has significant effects on event reconstruction and analysis (e.g., if a string is masked, this significantly affects reconstruction of events), so each station's livetime is divided into what we call ``livetime configurations". 
   Cleaning is then performed separately for each livetime configuration - the cuts are the same but the exact cut thresholds change between configurations.
 
   \begin{figure}
@@ -112,7 +114,7 @@
     \caption{
       The reconstructed elevation of one A2 calibration pulser (CP5) is shown for events with \texttt{avg\_snr\_v} $\geq 5$ plotted over the entire A2 livetime from 2013 to 2021. 
       The true elevation of CP5 is $-25.40^{\circ}$ but ``mirror'' solutions can be seen around $36^{\circ}$ as well. 
-      The large spread of reconstructed elevations from unixtimes of 1.579e9~s to 1.591e9~s (149 days) is due the detector using a pre-trigger window too small to capture enough waveform in all events, leading to skewed reconstructions. 
+      The large spread of reconstructed elevations from unixtimes of 1.579e9~s to 1.591e9~s (149 days) is due to the detector using a pre-trigger window too small to capture enough waveform in all events, leading to skewed reconstructions. 
       This feature vanishes when excluding all events with \texttt{reco\_result\_pulser\_v\_corr} $\leq 0.225$, as shown in Figure~\ref{fig:cps}.
     }
     \label{fig:cp5_smear}
@@ -225,8 +227,8 @@
   \end{equation}
   where $V$ is a series of voltage data points.
   Some more of these analysis variables will be explained in the coming sections as they are used to employ various cuts, but all analysis variables are explained in Appendix~\ref{app:5savariables}.
-  The ROOT-formatted L1 data which includes raw waveforms take up roughly 7 GB of space per 3-hour run in the 100\% sample. 
-  The ROOT-formatted L2 data, condensed to only analysis variables, takes up roughly 6 MB of space per run\comment{ (check that this was a 100\% run)}. 
+  The ROOT-formatted L1 data, which includes raw waveforms, take up roughly 7 GB of space per 3-hour run in the 100\% sample. 
+  The ROOT-formatted L2 data, condensed to only analysis variables, takes up roughly 6 MB of space per run. 
 
   \subsection{Angular Event Reconstruction\label{sec:reco}}
 
@@ -1177,7 +1179,6 @@
       Array-wide efficiency for each array-wide configuration (colored lines) and the exposure-weighted efficiency over all array-wide configurations (black lines) presented as a function of neutrino energy. 
       The two lines with the greatest signal efficiency are for array-wide configuration 48 and 50 during both of which, only the PA was active therefore demonstrating the signal efficiency of the PA detector in isolation.
       This represents the array-wide signal efficiency after all cleaning cuts defined in this chapter were applied (using unoptimized Zenith Cuts and Surface Like Cuts).
-      \comment{Ensure correct ``cut-level'' was used when this plot was generated.}
     }
     \label{fig:LDA_efficiency_woLDA}
   \end{figure}

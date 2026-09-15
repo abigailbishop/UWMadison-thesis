@@ -6,9 +6,9 @@
 
   I led two simulation studies of neutrino interactions and their secondary particles in ARA as a part of my graduate work.
   The colleagues I conducted these studies with were Austin Cummings, Ryan Krebs, Will Lusczak, Marco Muzio, and Alan Salcedo Gomez.
-  Section~\ref{sec:previous_sims} describes the current field of UHE neutrino simulations and describes topline results from the first simulation study. 
-  The full report from the first study is presented in Appendix~\ref{app:veff_pyrex}.
-  The rest of the chapter is taken from the second simulation study's manuscript which is in the review process with Physical Review D. 
+  Section~\ref{sec:previous_sims} describes the current field of UHE neutrino simulations and describes topline results from the first simulation study we conducted \citep{ara_secondaries}. 
+  Our full report from the first study is presented in Appendix~\ref{app:veff_pyrex}.
+  The rest of the chapter is taken from the manuscript for the second simulation study I orchestrated, which is in the review process with Physical Review D \citep{ara_veff}. 
   We explain the generation of simulated neutrinos in Section~\ref{sec:eventLists}, detector simulation in Section~\ref{sec:veffpaper_AraSim}, and calculation of ARA's acceptance in the data-taking period between 2013 and 2023 in Section~\ref{sec:veffpaper_calculations}.
   In Section~\ref{sec:veffpaper_results}, we present ARA's trigger-level sensitivity and expected number of events predicted for several neutrino flux models.
   In Section~\ref{sec:veffpaper_discussion}, we discuss the signatures and implications of events with multiple observed pulses (due to propagation effects or observing several cascades from the same event) and multi-station detections, and how these results could influence designs for future detectors such as the IceCube-Gen2 radio array.
@@ -50,11 +50,11 @@
     \label{fig:eventtopos}
   \end{figure}
 
-  These considerations motivated the first simulation study I led, which was an ARA-focused study inspired by Ref.~\citep{secondaries_garciafernandez}.
+  These considerations motivated the first simulation study I led, which was an ARA-focused study inspired by \citep{secondaries_garciafernandez}.
   In this work, \texttt{NuLeptonSim} was used to generate an event list of neutrino interactions along with secondary particle losses and decays.
   The event list was then passed to \texttt{PyREx} which simulated the Askaryan emission and its observation by ARA stations A1-A5. 
   Figure~\ref{fig:eventdisplay} shows an example of the interaction of a tau neutrino followed by multiple stochastic losses and the rays of emission traced to each of the four stations that triggered.
-  In this simulation study, we calculated that an array composed of stations A1-A5 operating for 5 years is expected to trigger on 2.09~events when subjected to the $E_{\text{max}}=10^{21.5}$~eV flux from Ref.~\citep{flux-kotera}.
+  In this simulation study, we calculated that an array composed of stations A1-A5 operating for 5 years is expected to trigger on 2.09~events when subjected to the $E_{\text{max}}=10^{21.5}$~eV flux from \citep{flux-kotera}.
   Figure~\ref{fig:eventrates} presents the expected number of triggered events broken down by event type both as a function of energy and as the integrated topline number.
 
   \begin{figure}
@@ -105,7 +105,7 @@
     }
   \end{center}
 
-  The rest of this chapter is taken from Ref.~\citep{ara_veff} and explains how we simulated ARA in preparation for the preparation of 10.6~years of data presented in Chapter~\ref{chap:5sa_cleaning} and the neutrino search through that data presented in Chapter~\ref{chap:5sa_analysis}.
+  The rest of this chapter is taken from \citep{ara_veff} and explains how we simulated ARA in preparation for the preparation of 10.6~years of data presented in Chapter~\ref{chap:5sa_cleaning} and the neutrino search through that data presented in Chapter~\ref{chap:5sa_analysis}.
 
   The neutrino simulations used to calculate ARA's sensitivity are divided into three parts: event generation, detector simulation, and sensitivity calculation.
   First, \nuleptonsim{}~\citep{nuleptonsim} performs a forward propagation of primary neutrinos through the Earth.
@@ -121,7 +121,7 @@
     % The study presented in Appendix~\ref{app:veff_pyrex} simulated cascades individually, did not incorporate detector deadtime, and did not consider the effects of observing multiple subsequent cascades from the same particle (such as multiple stochastic losses from a UHE muon) in a single waveform.
     % Using a significantly enhanced simulation pipeline, which adds data-driven detector simulations and fully incorporates secondary particle production, we calculate the trigger-level acceptance of the entire array.
     % Particle cascades initiated by secondary particle interactions and decays can significantly contribute to the sensitivity of neutrino detectors~\citep{secondaries_garciafernandez,Coleman-flavor} and provide opportunities for flavor identification in radio detectors~\citep{Coleman-flavor}.
-    % Previous studies~\citep{nuleptonsim_arena22, ara_secondaries} of ARA's total neutrino sensitivity, using an idealized detector simulation with the \texttt{PyREx} package, showed that $25\%$ of observable cascades are due to secondary particle cascades when folded with the flux model of Ref.~\citep{flux-kotera}.
+    % Previous studies~\citep{nuleptonsim_arena22, ara_secondaries} of ARA's total neutrino sensitivity, using an idealized detector simulation with the \texttt{PyREx} package, showed that $25\%$ of observable cascades are due to secondary particle cascades when folded with the flux model of \citep{flux-kotera}.
     % We compare the resulting trigger-level sensitivity to constraints on the UHE neutrino flux from other detectors.
     % Given its exposure from 2013 to 2023, we find that ARA achieves a world-leading sensitivity above about $10^{19}$~eV, depending on the details of the event selection used in a search.
     % Moreover, we find that up to 13 neutrinos are predicted to have been observed in this period at trigger-level, assuming the most optimistic neutrino flux models.
@@ -166,7 +166,7 @@
         
         % Two distinct classes of particle cascades are produced by neutrino and secondary lepton interactions: hadronic showers, initiated by the hadrons generated by deep inelastic scattering and photonuclear interactions; and electromagnetic (EM) showers, initiated by electrons/positrons and photons.
         % EM showers are less dense compared to hadronic showers, due to the smaller average multiplicity of their interactions and the Landau–Pomeranchuk–Migdal (LPM) effect~\citep{lpm:lp, lpm:m} at ultra-high energies.
-        % The radio emission of the hadronic and EM showers must be modeled separately due to these differences in their shower profiles, as discussed in Ref.~\citep{ARZ-signal2} and in Appendix~\ref{app:askaryan_model}.
+        % The radio emission of the hadronic and EM showers must be modeled separately due to these differences in their shower profiles, as discussed in \citep{ARZ-signal2} and in Appendix~\ref{app:askaryan_model}.
 
         % \begin{figure}
         %     \centering
@@ -190,7 +190,7 @@
         % In addition, the $\tau$ leptons produce another shower when they decay.
 
         % Particle cascades initiated by secondary particle interactions and decays can significantly contribute to the sensitivity of neutrino detectors~\citep{secondaries_garciafernandez,Coleman-flavor} and provide opportunities for flavor identification in radio detectors~\citep{Coleman-flavor}.
-        % Previous studies~\citep{nuleptonsim_arena22, ara_secondaries} of ARA's total neutrino sensitivity, using an idealized detector simulation with the \texttt{PyREx} package,\footnote{\url{https://github.com/abigailbishop/pyrex}} showed that $25\%$ of observable cascades are due to secondary particle cascades when folded with the flux model of Ref.~\citep{flux-kotera}.
+        % Previous studies~\citep{nuleptonsim_arena22, ara_secondaries} of ARA's total neutrino sensitivity, using an idealized detector simulation with the \texttt{PyREx} package,\footnote{\url{https://github.com/abigailbishop/pyrex}} showed that $25\%$ of observable cascades are due to secondary particle cascades when folded with the flux model of \citep{flux-kotera}.
         % These studies simulated cascades individually, did not incorporate detector deadtime, and did not consider the effects of observing multiple subsequent cascades from the same particle (such as multiple stochastic losses from a UHE muon) in a single waveform.
             
     % \subsection{The Askaryan Radio Array}\label{sec:veffpaper_ara}
@@ -299,7 +299,7 @@
       Second, the neutrino is forward propagated towards the fiducial volume from the initial Earth intersection along the chosen chord.
       The Earth is modeled using a layer-averaged density profile derived from PREM~\citep{prem} to allow for rapid calculation of propagation lengths.
       To model the Antarctic glacial ice, the Earth is enveloped by a 3~km thick shell of ice with a uniform density of $0.92$~g/cm$^3$.
-      Individual neutrino interaction distances and interaction types are sampled according to the neutrino-nucleon cross section of Ref.~\citep{ctw-interaction}, while cascade and secondary particle energies are determined using inelasticity tables from the CTEQ5 parton distribution~\citep{cteq5}.
+      Individual neutrino interaction distances and interaction types are sampled according to the neutrino-nucleon cross section of \citep{ctw-interaction}, while cascade and secondary particle energies are determined using inelasticity tables from the CTEQ5 parton distribution~\citep{cteq5}.
       Secondary particle interactions are calculated using parameterized differential cross sections.
       Particle propagation stops when particles exit the fiducial volume or when their energy drops below $E_{\text{th}} = \text{min}(10~\text{PeV}, E_{\nu}/10)$.
       This energy threshold was chosen to minimize computation time while retaining all particles that contribute to ARA's sensitivity.
@@ -344,7 +344,7 @@
       Figure~\ref{fig:ARA_configurations} summarizes both the station-level and array-wide configurations in this period.
       The upcoming analysis of data taken between 2013 and 2023 is expected to be the most sensitive search for UHE neutrinos conducted by any in-ice radio detector to date~\citep{ara_5sa-icrc}.
 
-      \arasim{} has been significantly updated for this study, compared to the version used in Refs.~\citep{ara_a23, ara_pa_analysis}.
+      \arasim{} has been significantly updated for this study, compared to the version used in \citep{ara_a23, ara_pa_analysis}.
       These updates include the incorporation of data-driven detector modeling and the realistic simulation of multi-pulse signals in the detector.
       Here, we summarize the important updates made for this work.
       A detailed description of \arasim{} is presented in Appendix~\ref{app:AraSim}.
@@ -523,7 +523,7 @@
       \begin{figure}
           \centering
           \includegraphics[width=0.6\linewidth]{sections/araveff/images/veffPaper/sensitivityPaper_comparison_a2_pa.pdf}
-          \caption{Trigger-level acceptance of A2 and PA calculated in this work compared to results presented for A2 in Ref.~\citep{ara_a23} and PA in Ref.~\citep{ara_pa_analysis}, converted into an acceptance.} 
+          \caption{Trigger-level acceptance of A2 and PA calculated in this work compared to results presented for A2 in \citep{ara_a23} and PA in \citep{ara_pa_analysis}, converted into an acceptance.} 
           \label{fig:comp}
       \end{figure}
 
@@ -709,7 +709,7 @@
   However, this class of events can improve the overall signal efficiency of neutrino searches.
   Neutrinos which generate triggers in multiple stations are more likely to survive the event selection on at least one station, since they will be observed with different signal strengths and from different directions in each station.
   This is illustrated in Fig.~\ref{fig:single_multistation_efficiency}, which demonstrates that multi-station detections are responsible for a significant improvement in the overall signal efficiency at high energies.
-  Multi-station triggers also create the potential for a multi-station reconstruction of an event's arrival direction, as discussed in Refs.~\citep{nuradiomc2, secondaries_garciafernandez}.
+  Multi-station triggers also create the potential for a multi-station reconstruction of an event's arrival direction, as discussed in \citep{nuradiomc2, secondaries_garciafernandez}.
   Traditionally, the spacing of large radio arrays has been designed to minimize overlap between stations, but the multi-messenger potential of multi-station triggers may motivate reducing the separation between stations.
   Future large radio arrays should keep this balance in mind.
 
